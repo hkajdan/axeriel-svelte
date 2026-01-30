@@ -1,4 +1,4 @@
-// See https://svelte.dev/docs/kit/types#app.d.ts
+// See https://svelte.dev/axeriel-svelte/apps/web/src/app.d.ts
 // for information about these interfaces
 declare global {
   namespace App {
@@ -6,7 +6,13 @@ declare global {
     interface Locals {
       sanity: SanityLocals
     }
-    // interface PageData {}
+    interface PageData {
+      previewEnabled: any
+      navbar?: any
+      footer?: any
+      settings?: any
+      page?: any
+    }
     // interface PageState {}
     // interface Platform {}
   }

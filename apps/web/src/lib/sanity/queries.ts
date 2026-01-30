@@ -194,3 +194,66 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     }
   }
 }`)
+
+export const navbarQuery = defineQuery(`*[_type == "navbar"][0]{
+  label,
+  columns[]{
+    _type,
+    _key,
+    _type == "navbarColumn" => {
+      "type": "navbarColumn",
+      title,
+      links[]{
+        name,
+        url,
+        image
+      }
+    },
+    _type == "navbarLink" => {
+      "type": "navbarLink",
+      name,
+      url
+    }
+  },
+  buttons
+}`)
+
+export const footerQuery = defineQuery(`*[_type == "footer"][0]{
+  label,
+  subtitle,
+  download,
+  logo,
+  columns[]{
+    title,
+    links[]{
+      name,
+      url
+    }
+  },
+  contact,
+  contactAuthor->{
+    name,
+    position,
+    email,
+    image,
+    bio
+  },
+  location
+}`)
+
+export const settingsQuery = defineQuery(`*[_type == "settings"][0]{
+  siteTitle,
+  siteDescription,
+  logo,
+  contactEmail,
+  socialLinks,
+  floatingButton
+}`)
+
+export const authorQuery = defineQuery(`*[_type == "author" && _id == $authorId][0]{
+  name,
+  position,
+  email,
+  image,
+  bio
+}`)
