@@ -1,15 +1,14 @@
 import { pageBySlugQuery } from '$lib/sanity/queries';
 import type { PageServerLoad } from './$types';
-import { serverClient } from '$lib/sanity/client.server';
 
 export const load: PageServerLoad = async ({ params, locals: { sanity } }) => {
-  const { previewEnabled } = sanity;
+  const { client, previewEnabled } = sanity;
   const options = { stega: previewEnabled ? true : false };
 
   try {
     // Try to fetch from Sanity first
     // Add leading slash to match Sanity slug format
-    const page = await serverClient.fetch(pageBySlugQuery, { slug: `/${params.slug}` }, options);
+    const page = await client.fetch(pageBySlugQuery, { slug: `/${params.slug}` }, options);
 
     if (page) {
       return {
