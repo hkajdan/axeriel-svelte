@@ -31,7 +31,7 @@ This plan outlines the implementation strategy for creating a fully typed Svelte
 
 **Objective**: Ensure types are automatically generated and available throughout the Svelte app
 
-#### Tasks:
+#### Tasks
 
 1. **Verify & Enhance Type Generation**
    - Confirm `sanity-typegen.json` configuration
@@ -50,7 +50,7 @@ This plan outlines the implementation strategy for creating a fully typed Svelte
    - GROQ query builder with type inference
    - Environment variable support
 
-#### Expected Output:
+#### Expected Output
 
 - `apps/web/src/lib/sanity/client.ts` - Typed Sanity client
 - `apps/web/src/lib/sanity/sanity.types.ts` - Auto-generated types
@@ -60,30 +60,43 @@ This plan outlines the implementation strategy for creating a fully typed Svelte
 
 **Objective**: Create fully typed Svelte components that map to Sanity page builder blocks
 
-#### Tasks:
+#### Tasks
 
 1. **Component Structure Setup**
 
    ```
-   apps/web/src/lib/components/page-builder/
-   ├── blocks/          # Individual block components
-   ├── PageBuilder.svelte  # Main page builder component
-   ├── types.ts         # Component-specific types
-   └── index.ts         # Exports
+   apps/web/src/lib/
+   └── components/
+       ├── blocks/          # Individual block components
+       ├── PageBuilder.svelte  # Main page builder component
+       ├── types.ts         # Component-specific types
+       └── index.ts         # Exports
+   ```
+
+   apps/web/src/lib/components/
+   ├── blocks/ # Individual block components
+   ├── PageBuilder.svelte # Main page builder component
+   ├── types.ts # Component-specific types
+   └── index.ts # Exports
+
+   ```
+
    ```
 
 2. **Block Component Implementation**
    - Create Svelte components for each Sanity block type
    - Each component fully typed based on generated Sanity types
    - Proper TypeScript interfaces for props
+   - Use TailwindCSS for styling and not the <style> tag of Svelte
 
 3. **Dynamic Component Loading**
    - Component registry mapping Sanity block types to Svelte components
    - Dynamic component rendering based on Sanity schema
 
-#### Expected Output:
+#### Expected Output
 
 - 14+ typed Svelte components matching Sanity blocks
+- All components styled with tailwindCSS
 - Dynamic page builder component
 - Type-safe component registry
 
@@ -91,7 +104,7 @@ This plan outlines the implementation strategy for creating a fully typed Svelte
 
 **Objective**: Generate static routes based on Sanity page content
 
-#### Tasks:
+#### Tasks
 
 1. **Route Generation Strategy**
    - Script to read Sanity pages and generate routes
@@ -103,7 +116,7 @@ This plan outlines the implementation strategy for creating a fully typed Svelte
    - Proper caching and SSR strategies
    - TypeScript interfaces for API responses
 
-#### Expected Output:
+#### Expected Output
 
 - Dynamic route generation based on Sanity content
 - Typed page load functions
@@ -113,7 +126,7 @@ This plan outlines the implementation strategy for creating a fully typed Svelte
 
 **Objective**: Ensure complete type safety and good developer experience
 
-#### Tasks:
+#### Tasks
 
 1. **Type Augmentation**
    - Extend generated Sanity types with Svelte utilities
@@ -130,7 +143,7 @@ This plan outlines the implementation strategy for creating a fully typed Svelte
    - Runtime validation for Sanity content
    - Fallback components for missing types
 
-#### Expected Output:
+#### Expected Output
 
 - Enhanced type system
 - Development workflow improvements
@@ -244,13 +257,13 @@ export const load: PageLoad = async ({ params }) => {
 
 ## 📋 Next Steps
 
-### Immediate Actions:
+### Immediate Actions
 
 1. Set up Sanity client with proper typing
 2. Implement basic page builder infrastructure
 3. Create initial route generation
 
-### Long-term Maintenance:
+### Long-term Maintenance
 
 1. Regular type generation updates
 2. Component library expansion
