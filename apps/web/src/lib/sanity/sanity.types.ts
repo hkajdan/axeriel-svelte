@@ -1685,12 +1685,297 @@ export type PageBySlugQueryResult = {
   }> | null;
 } | null;
 
+// Source: ../web/src/lib/sanity/queries.ts
+// Variable: homePageQuery
+// Query: *[_type == "homePage"][0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...@    },    _type == "cta" => {      "type": "cta",      ...@    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...@    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
+export type HomePageQueryResult = {
+  title: string | null;
+  slug: Slug | null;
+  pageBuilder: Array<{
+    _type: "carousel";
+    _key: string;
+    type: "carousel";
+    title?: string;
+    richText?: RichText;
+    images?: Array<{
+      image?: ImagesObjectImage;
+      richText?: RichText;
+      _key: string;
+    }>;
+    anchor?: string;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+  } | {
+    _type: "cta";
+    _key: string;
+    type: "cta";
+    eyebrow?: string;
+    title?: string;
+    richText?: RichText;
+    buttons?: Array<{
+      _key: string;
+    } & Button>;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+    anchor?: string;
+  } | {
+    _type: "featureCardsIcon";
+    _key: string;
+    type: "featureCardsIcon";
+    eyebrow?: string;
+    title?: string;
+    richText?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        customLink?: CustomUrl;
+        _type: "customLink";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    cards?: Array<{
+      icon?: IconPicker;
+      title?: string;
+      richText?: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          customLink?: CustomUrl;
+          _type: "customLink";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }>;
+      _type: "featureCardIcon";
+      _key: string;
+    }>;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+    anchor?: string;
+  } | {
+    _type: "hero";
+    _key: string;
+    type: "hero";
+    badge?: string;
+    title?: string;
+    richText?: RichText;
+    image?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    video?: MuxVideo;
+    buttons?: Array<{
+      _key: string;
+    } & Button>;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+    anchor?: string;
+  } | {
+    _type: "histogram";
+    _key: string;
+    type: "histogram";
+    title?: string;
+    subtitle?: string;
+    bars?: Array<{
+      label?: string;
+      value?: number;
+      color?: string;
+      _type: "bar";
+      _key: string;
+    }>;
+    maxValue?: number;
+    minValue?: number;
+    valueSuffix?: string;
+    showValues?: boolean;
+    animationDuration?: number;
+    anchor?: string;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+  } | {
+    _type: "imageLinkCards";
+    _key: string;
+    type: "imageLinkCards";
+    eyebrow?: string;
+    title?: string;
+    richText?: RichText;
+    buttons?: Array<{
+      _key: string;
+    } & Button>;
+    cards?: Array<{
+      title?: string;
+      description?: string;
+      image?: ImageLinkCardImage;
+      url?: CustomUrl;
+      _type: "imageLinkCard";
+      _key: string;
+    }>;
+    anchor?: string;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+  } | {
+    _type: "jobOffers";
+    _key: string;
+    type: "jobOffers";
+    eyebrow?: string;
+    title?: string;
+    richText?: RichText;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+    anchor?: string;
+  } | {
+    _type: "logoList";
+    _key: string;
+    type: "logoList";
+    title?: string;
+    richText?: RichText;
+    logos?: Array<{
+      image?: ObjectImage;
+      text?: string;
+      url?: CustomUrl;
+      _key: string;
+    }>;
+    anchor?: string;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+  } | {
+    _type: "productList";
+    _key: string;
+    type: "productList";
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+    products?: Array<{
+      _key: string;
+    } & ProductReference>;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+    anchor?: string;
+  } | {
+    _type: "statList";
+    _key: string;
+    type: "statList";
+    title?: string;
+    richText?: RichText;
+    stats?: Array<{
+      prefix?: string;
+      value?: string;
+      suffix?: string;
+      text?: string;
+      _key: string;
+    }>;
+    textAlign?: "center" | "left" | "right";
+    animateNumbers?: boolean;
+    animationDuration?: number;
+    anchor?: string;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+  } | {
+    _type: "subscribeNewsletter";
+    _key: string;
+    type: "subscribeNewsletter";
+    title?: string;
+    subTitle?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        customLink?: CustomUrl;
+        _type: "customLink";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    helperText?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        customLink?: CustomUrl;
+        _type: "customLink";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    anchor?: string;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+  } | {
+    _type: "textImage";
+    _key: string;
+    type: "textImage";
+    title?: string;
+    richText?: RichText;
+    rows?: Array<{
+      richText?: RichText;
+      image?: RowsObjectImage;
+      imagePosition?: "left" | "right";
+      _key: string;
+    }>;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+    anchor?: string;
+  } | {
+    _type: "timeline";
+    _key: string;
+    type: "timeline";
+    badge?: string;
+    title?: string;
+    timeline?: Array<{
+      date?: number;
+      title?: string;
+      richText?: RichText;
+      image?: TimelineObjectImage;
+      _key: string;
+    }>;
+    anchor?: string;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+  } | {
+    _type: "videoSection";
+    _key: string;
+    type: "videoSection";
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+    video?: MuxVideo;
+    thumbnailTime?: number;
+    videoCaption?: string;
+    aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+    autoplay?: boolean;
+    loop?: boolean;
+    backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
+    anchor?: string;
+  }> | null;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"page\"] | order(_createdAt asc)[0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageQueryResult;
     "*[_type == \"page\" && slug.current == $slug][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageBySlugQueryResult;
+    "*[_type == \"homePage\"][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": HomePageQueryResult;
   }
 }
 
