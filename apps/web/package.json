@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@sanity/client": "^7.14.1",
+    "@sanity/image-url": "^2.0.3",
     "@sanity/sveltekit": "^1.0.5"
   }
 }

@@ -8,7 +8,7 @@ import {
 export const client = createClient({
   projectId: PUBLIC_SANITY_PROJECT_ID,
   dataset: PUBLIC_SANITY_DATASET,
-  apiVersion: '2025-10-01',
+  apiVersion: '2024-10-28',
   useCdn: true,
   stega: {
     enabled: true,
