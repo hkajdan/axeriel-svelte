@@ -1117,7 +1117,7 @@ type ArrayOf<T> = Array<T & {
   _key: string;
 }>;
 
-// Source: ../web/src/lib/queries.ts
+// Source: ../web/src/lib/sanity/queries.ts
 // Variable: pageQuery
 // Query: *[_type == "page"][0]{title}
 export type PageQueryResult = {

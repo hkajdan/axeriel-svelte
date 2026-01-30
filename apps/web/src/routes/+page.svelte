@@ -4,4 +4,4 @@
   const {data}: PageProps = $props()
 </script>
 
-<h1>{data.page.title}</h1>
+<h1>{data.page?.title}</h1>

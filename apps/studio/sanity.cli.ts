@@ -5,6 +5,12 @@ export default defineCliConfig({
     projectId: 'rr45fpa4',
     dataset: 'production'
   },
+  typegen: {
+    "path": "'../web/src/**/*.{ts,tsx,js,jsx}'",
+    "schema": "schema.json",
+    "generates": "../web/src/lib/sanity/sanity.types.ts",
+
+  },
   deployment: {
     /**
      * Enable auto-updates for studios.
