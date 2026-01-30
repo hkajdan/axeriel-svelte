@@ -1,4 +1,4 @@
-import { pageQuery } from '$lib/queries'
+import { pageQuery } from '$lib/sanity/queries'
 import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async ({ locals: { sanity } }) => {
