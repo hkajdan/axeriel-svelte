@@ -55,7 +55,7 @@
                 {#if item.richText}
                   <div class="prose prose-sm max-w-none">
                     {#each item.richText as block}
-                      {#if block.children}
+                      {#if block._type === 'block' && block.children}
                         <p class="text-gray-600">{block.children[0].text}</p>
                       {/if}
                     {/each}

@@ -32,15 +32,15 @@
         <h2 class="text-3xl lg:text-4xl font-bold tracking-tight">{title}</h2>
       {/if}
       
-      {#if richText}
-        <div class="prose prose-lg max-w-none mx-auto">
-          {#each richText as block}
-            {#if block.children}
-              <p class="text-lg text-gray-600">{block.children[0].text}</p>
-            {/if}
-          {/each}
-        </div>
-      {/if}
+        {#if richText}
+          <div class="prose prose-lg max-w-none mx-auto">
+            {#each richText as block}
+              {#if block._type === 'block' && block.children}
+                <p class="text-lg text-gray-600">{block.children[0].text}</p>
+              {/if}
+            {/each}
+          </div>
+        {/if}
       
       {#if buttons && buttons.length > 0}
         <div class="flex flex-wrap justify-center gap-4">

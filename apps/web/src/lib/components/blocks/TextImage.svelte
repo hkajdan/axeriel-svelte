@@ -34,17 +34,17 @@
           {#each rows as row, index}
             <div class="grid lg:grid-cols-2 gap-12 items-center">
               {#if row.imagePosition === 'right'}
-                <div class="order-2 lg:order-1">
-                  {#if row.richText}
-                    <div class="prose prose-lg max-w-none">
-                      {#each row.richText as block}
-                        {#if block.children}
-                          <p class="text-lg text-gray-600">{block.children[0].text}</p>
-                        {/if}
-                      {/each}
-                    </div>
-                  {/if}
-                </div>
+              <div class="order-2 lg:order-1">
+                {#if row.richText}
+                  <div class="prose prose-lg max-w-none">
+                    {#each row.richText as block}
+                      {#if block._type === 'block' && block.children}
+                        <p class="text-lg text-gray-600">{block.children[0].text}</p>
+                      {/if}
+                    {/each}
+                  </div>
+                {/if}
+              </div>
                 
                 <div class="order-1 lg:order-2">
                   {#if row.image?.asset}
@@ -70,7 +70,7 @@
                   {#if row.richText}
                     <div class="prose prose-lg max-w-none">
                       {#each row.richText as block}
-                        {#if block.children}
+                        {#if block._type === 'block' && block.children}
                           <p class="text-lg text-gray-600">{block.children[0].text}</p>
                         {/if}
                       {/each}

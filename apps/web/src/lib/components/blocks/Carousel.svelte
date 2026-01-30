@@ -31,7 +31,7 @@
         {#if richText}
           <div class="prose prose-lg max-w-none mx-auto">
             {#each richText as block}
-              {#if block.children}
+              {#if block._type === 'block' && block.children}
                 <p class="text-lg text-gray-600">{block.children[0].text}</p>
               {/if}
             {/each}
@@ -48,7 +48,7 @@
                   {#if image.image?.asset}
                     <img 
                       src={urlForImage(image.image).url()}
-                      alt={image.richText?.[0]?.children?.[0]?.text || `Slide ${index + 1}`}
+                      alt={(image.richText?.[0] as any)?._type === 'block' && (image.richText?.[0] as any)?.children?.[0]?.text || `Slide ${index + 1}`}
                       class="w-full h-96 object-cover"
                     />
                   {/if}
@@ -57,7 +57,7 @@
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
                       <div class="prose prose-invert max-w-none">
                         {#each image.richText as block}
-                          {#if block.children}
+                          {#if block._type === 'block' && block.children}
                             <p class="text-white">{block.children[0].text}</p>
                           {/if}
                         {/each}

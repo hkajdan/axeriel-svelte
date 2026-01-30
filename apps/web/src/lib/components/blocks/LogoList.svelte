@@ -31,7 +31,7 @@
         {#if richText}
           <div class="prose prose-lg max-w-none mx-auto">
             {#each richText as block}
-              {#if block.children}
+              {#if block._type === 'block' && block.children}
                 <p class="text-lg text-gray-600">{block.children[0].text}</p>
               {/if}
             {/each}

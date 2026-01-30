@@ -30,7 +30,7 @@
       {#if subTitle}
         <div class="prose prose-lg max-w-none mx-auto">
           {#each subTitle as block}
-            {#if block.children}
+            {#if block._type === 'block' && block.children}
               <p class="text-lg text-gray-600">{block.children[0].text}</p>
             {/if}
           {/each}
@@ -56,7 +56,7 @@
         {#if helperText}
           <p class="text-sm text-gray-500">
             {#each helperText as block}
-              {#if block.children}
+              {#if block._type === 'block' && block.children}
                 {block.children[0].text}
               {/if}
             {/each}
