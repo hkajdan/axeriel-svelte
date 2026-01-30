@@ -1969,6 +1969,182 @@ export type HomePageQueryResult = {
   }> | null;
 } | null;
 
+// Source: ../web/src/lib/sanity/queries.ts
+// Variable: navbarQuery
+// Query: *[_type == "navbar"][0]{  label,  columns[]{    _type,    _key,    _type == "navbarColumn" => {      "type": "navbarColumn",      title,      links[]{        name,        url,        image      }    },    _type == "navbarLink" => {      "type": "navbarLink",      name,      url    }  },  buttons}
+export type NavbarQueryResult = {
+  label: string | null;
+  columns: Array<{
+    _type: "navbarColumn";
+    _key: string;
+    type: "navbarColumn";
+    title: string | null;
+    links: Array<{
+      name: string | null;
+      url: CustomUrl | null;
+      image: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      } | null;
+    }> | null;
+  } | {
+    _type: "navbarLink";
+    _key: string;
+    type: "navbarLink";
+    name: string | null;
+    url: CustomUrl | null;
+  }> | null;
+  buttons: Array<{
+    _key: string;
+  } & Button> | null;
+} | null;
+
+// Source: ../web/src/lib/sanity/queries.ts
+// Variable: footerQuery
+// Query: *[_type == "footer"][0]{  label,  subtitle,  download,  logo,  columns[]{    title,    links[]{      name,      url    }  },  contact,  contactAuthor->{    name,    position,    email,    image,    bio  },  location}
+export type FooterQueryResult = {
+  label: string | null;
+  subtitle: string | null;
+  download: {
+    file?: {
+      asset?: SanityFileAssetReference;
+      media?: unknown;
+      _type: "file";
+    };
+    label?: string;
+    openInNewTab?: boolean;
+  } | null;
+  logo: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  columns: Array<{
+    title: string | null;
+    links: Array<{
+      name: string | null;
+      url: CustomUrl | null;
+    }> | null;
+  }> | null;
+  contact: {
+    richText?: RichText;
+    buttons?: Array<{
+      _key: string;
+    } & Button>;
+  } | null;
+  contactAuthor: {
+    name: string | null;
+    position: string | null;
+    email: string | null;
+    image: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+    bio: string | null;
+  } | null;
+  location: {
+    title?: string;
+    address?: string;
+    city?: string;
+    phone?: string;
+  } | null;
+} | null;
+
+// Source: ../web/src/lib/sanity/queries.ts
+// Variable: settingsQuery
+// Query: *[_type == "settings"][0]{  siteTitle,  siteDescription,  logo,  contactEmail,  socialLinks,  floatingButton}
+export type SettingsQueryResult = {
+  siteTitle: string | null;
+  siteDescription: string | null;
+  logo: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  contactEmail: string | null;
+  socialLinks: {
+    linkedin?: string;
+    facebook?: string;
+    twitter?: string;
+    instagram?: string;
+    youtube?: string;
+  } | null;
+  floatingButton: {
+    enabled?: boolean;
+    image?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    link?: CustomUrl;
+    tooltip?: string;
+    position?: "bottom-left" | "bottom-right";
+  } | null;
+} | null;
+
+// Source: ../web/src/lib/sanity/queries.ts
+// Variable: authorQuery
+// Query: *[_type == "author" && _id == $authorId][0]{  name,  position,  email,  image,  bio}
+export type AuthorQueryResult = {
+  name: string | null;
+  position: string | null;
+  email: string | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  bio: string | null;
+} | null;
+
+// Source: ../web/src/lib/sanity/queries.ts
+// Variable: pageAuthorBySlugQuery
+// Query: *[_type == "page" && slug.current == $slug][0].author->{  name,  position,  email,  image,  bio}
+export type PageAuthorBySlugQueryResult = {
+  name: string | null;
+  position: string | null;
+  email: string | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  bio: string | null;
+} | null;
+
+// Source: ../web/src/lib/sanity/queries.ts
+// Variable: homePageAuthorQuery
+// Query: *[_type == "homePage"][0].author->{  name,  position,  email,  image,  bio}
+export type HomePageAuthorQueryResult = {
+  name: string | null;
+  position: string | null;
+  email: string | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  bio: string | null;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -1976,6 +2152,12 @@ declare module "@sanity/client" {
     "*[_type == \"page\"] | order(_createdAt asc)[0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageQueryResult;
     "*[_type == \"page\" && slug.current == $slug][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageBySlugQueryResult;
     "*[_type == \"homePage\"][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": HomePageQueryResult;
+    "*[_type == \"navbar\"][0]{\n  label,\n  columns[]{\n    _type,\n    _key,\n    _type == \"navbarColumn\" => {\n      \"type\": \"navbarColumn\",\n      title,\n      links[]{\n        name,\n        url,\n        image\n      }\n    },\n    _type == \"navbarLink\" => {\n      \"type\": \"navbarLink\",\n      name,\n      url\n    }\n  },\n  buttons\n}": NavbarQueryResult;
+    "*[_type == \"footer\"][0]{\n  label,\n  subtitle,\n  download,\n  logo,\n  columns[]{\n    title,\n    links[]{\n      name,\n      url\n    }\n  },\n  contact,\n  contactAuthor->{\n    name,\n    position,\n    email,\n    image,\n    bio\n  },\n  location\n}": FooterQueryResult;
+    "*[_type == \"settings\"][0]{\n  siteTitle,\n  siteDescription,\n  logo,\n  contactEmail,\n  socialLinks,\n  floatingButton\n}": SettingsQueryResult;
+    "*[_type == \"author\" && _id == $authorId][0]{\n  name,\n  position,\n  email,\n  image,\n  bio\n}": AuthorQueryResult;
+    "*[_type == \"page\" && slug.current == $slug][0].author->{\n  name,\n  position,\n  email,\n  image,\n  bio\n}": PageAuthorBySlugQueryResult;
+    "*[_type == \"homePage\"][0].author->{\n  name,\n  position,\n  email,\n  image,\n  bio\n}": HomePageAuthorQueryResult;
   }
 }
 

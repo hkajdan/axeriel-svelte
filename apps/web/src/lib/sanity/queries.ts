@@ -257,3 +257,19 @@ export const authorQuery = defineQuery(`*[_type == "author" && _id == $authorId]
   image,
   bio
 }`)
+
+export const pageAuthorBySlugQuery = defineQuery(`*[_type == "page" && slug.current == $slug][0].author->{
+  name,
+  position,
+  email,
+  image,
+  bio
+}`)
+
+export const homePageAuthorQuery = defineQuery(`*[_type == "homePage"][0].author->{
+  name,
+  position,
+  email,
+  image,
+  bio
+}`)

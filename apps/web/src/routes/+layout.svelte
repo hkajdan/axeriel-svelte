@@ -4,9 +4,10 @@
 
   const {children, data}: LayoutProps = $props()
   const {previewEnabled, navbar, footer, settings} = data
+  const pageAuthor = (data as any).pageAuthor
 
   // Debug: log the layout data
-  console.log('Layout data:', { navbar, footer, settings })
+  console.log('Layout data:', { navbar, footer, settings, pageAuthor })
 </script>
 
 <PreviewMode enabled={previewEnabled}>
@@ -38,7 +39,16 @@
           <p class="text-gray-600">Footer data loaded with {footer.columns?.length || 0} columns</p>
           
           <!-- Display page-specific author if available, otherwise use footer's contactAuthor -->
-          {#if footer.contactAuthor}
+          {#if pageAuthor}
+            <div class="mt-4 p-4 bg-white rounded-lg shadow">
+              <h4 class="font-medium">Page Contact</h4>
+              <p>{pageAuthor.name} - {pageAuthor.position}</p>
+              <p class="text-sm text-gray-500">{pageAuthor.email}</p>
+              {#if pageAuthor.bio}
+                <p class="text-xs text-gray-400 mt-1">{pageAuthor.bio}</p>
+              {/if}
+            </div>
+          {:else if footer.contactAuthor}
             <div class="mt-4 p-4 bg-white rounded-lg shadow">
               <h4 class="font-medium">Contact Author</h4>
               <p>{footer.contactAuthor.name} - {footer.contactAuthor.position}</p>
