@@ -5,10 +5,9 @@
 ```
 axeriel-svelte/
 ├── apps/
-│   ├── web/          # SvelteKit frontend application
+│   ├── web/          # SvelteKit frontend application (includes all UI components)
 │   └── studio/       # Sanity CMS backend/studio
 ├── packages/
-│   ├── ui/           # Shared React UI components
 │   ├── eslint-config/ # Shared ESLint configuration
 │   └── typescript-config/ # Shared TypeScript configuration
 └── README.md         # This file
@@ -20,12 +19,20 @@ axeriel-svelte/
 
 ```mermaid
 graph TD
-    A[Sanity CMS Studio] -->|Content API| B[SvelteKit Frontend]
-    B --> C[User Browser]
-    A -->|Type Generation| D[TypeScript Types]
-    D --> B
-    B -->|Static Files| E[CDN]
-    E --> C
+    subgraph SvelteKit Frontend
+        B4[Svelte UI Components] --> B2
+        B5[TypeScript Types] --> B2
+    end
+
+    subgraph Shared Packages
+        C2[ESLint Config] --> A1
+        C2 --> B2
+        C3[TypeScript Config] --> A1
+        C3 --> B2
+    end
+
+    A3 --> B1
+    A1 --> B5
 ```
 
 ### Detailed Component Architecture
@@ -42,12 +49,11 @@ graph TD
     subgraph SvelteKit Frontend
         B1[Content Fetcher] --> B2[Svelte Components]
         B2 --> B3[Pages/Routes]
-        B4[Shared UI] --> B2
+        B4[Svelte UI Components] --> B2
         B5[TypeScript Types] --> B2
     end
 
     subgraph Shared Packages
-        C1[UI Components] --> B4
         C2[ESLint Config] --> A1
         C2 --> B2
         C3[TypeScript Config] --> A1
@@ -73,9 +79,9 @@ graph TD
    - Real-time preview capabilities
 
 3. **Component-Based Architecture**
-   - Svelte components for frontend
-   - React components for CMS UI
-   - Shared UI components package
+   - Svelte components for frontend (including all UI components)
+   - React components for CMS UI only
+   - No shared UI components package
 
 ### Scalability Considerations
 
@@ -91,7 +97,8 @@ graph TD
 apps/
 ├── web/
 │   ├── src/
-│   │   ├── lib/          # Shared components and utilities
+│   │   ├── lib/          # Shared components, utilities, and Sanity client
+│   │   │   └── sanity/   # Sanity types and client utilities
 │   │   ├── routes/       # SvelteKit routes and pages
 │   │   └── app.d.ts      # Type declarations
 │   ├── static/          # Static assets
@@ -113,15 +120,18 @@ apps/
    - Environment variables integrated
    - Comprehensive plugin setup
    - Custom structure for content organization
+   - Type generation configured for Svelte frontend
 
 2. **Type Generation**
-   - Configured to generate types for frontend
+   - Configured to generate types directly to web app
    - TypeScript interfaces for all schema types
+   - Automatic type updates with Sanity schema changes
 
 3. **Build Pipeline**
    - Turborepo configured for efficient builds
    - Separate build scripts for each app
    - Linting and type checking integrated
+   - Simplified architecture without UI package dependencies
 
 ### Maintainability
 
@@ -224,18 +234,30 @@ pnpm run check-types
 - ✅ Turborepo setup complete
 - ✅ SvelteKit application configured
 - ✅ Sanity CMS studio fully configured
-- ✅ Type generation configured
-- ✅ Shared packages created
+- ✅ Type generation configured (direct to web app)
+- ✅ Shared configuration packages created
 - ⚠️ Frontend implementation minimal (needs expansion)
 - ⚠️ Content fetching not yet implemented
 - ⚠️ Testing strategy not defined
+- ✅ Simplified architecture (no UI package dependency)
+
+### Architecture Benefits
+
+The simplified architecture provides several advantages:
+
+1. **Direct Type Usage**: Svelte components can directly import and use generated Sanity types
+2. **Reduced Complexity**: No cross-package dependencies for UI components
+3. **Better Type Safety**: All components have access to the same type system
+4. **Easier Maintenance**: Components are co-located with their usage
+5. **Faster Development**: No need to publish/update shared UI packages
 
 ### Next Steps
 
 1. **Frontend Development**
    - Implement content fetching from Sanity
    - Build out pages based on Sanity schemas
-   - Create Svelte components for content blocks
+   - Create Svelte components for content blocks (directly in web app)
+   - Implement page builder component system
 
 2. **Content Strategy**
    - Define content governance processes
@@ -246,6 +268,7 @@ pnpm run check-types
    - Add comprehensive testing
    - Implement CI/CD pipelines
    - Enhance documentation
+   - Optimize type generation workflow
 
 ## 🤔 Actionable Questions
 
@@ -254,12 +277,13 @@ pnpm run check-types
 - Should we implement ISR (Incremental Static Regeneration)?
 - How to handle authentication/authorization?
 - What caching strategy for Sanity content?
+- How to structure Svelte components for optimal type safety?
 
 ### Development
 
 - What testing framework to adopt?
-- How to structure the frontend content components?
-- Should we implement a design system?
+- How to structure Svelte components for maximum type safety?
+- Should we implement a Svelte-specific design system?
 
 ### Content
 
