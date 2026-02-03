@@ -1,11 +1,16 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
-  "tasks": {
+  "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*",
+        "apps/**/*.env*",
+        "packages/**/*.env*"
+      ],
+      "outputs": ["dist/**", ".svelte-kit/**", "!.svelte-kit/cache/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -15,7 +20,14 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": [
+        "PUBLIC_SANITY_PROJECT_ID",
+        "PUBLIC_SANITY_DATASET",
+        "PUBLIC_SANITY_API_VERSION",
+        "PUBLIC_SANITY_STUDIO_URL",
+        "PUBLIC_ANALYTICS"
+      ]
     }
   }
 }
