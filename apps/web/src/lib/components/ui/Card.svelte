@@ -52,8 +52,8 @@
     </div>
   </a>
 {:else}
-  <div
-    class="bg-white {shadowClasses[shadow]} border border-neutral-200 {roundedClasses[rounded]} {hoverClasses} {interactiveClasses}"
+   <div
+    class="bg-white {shadowClasses[shadow]} border border-[--color-neutral-200] {roundedClasses[rounded]} {hoverClasses} {interactiveClasses}"
   >
     <div class="p-6">
       <slot />

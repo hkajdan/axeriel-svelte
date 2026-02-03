@@ -25,14 +25,14 @@
   // Base classes with subtle transitions
   const baseClasses = 'font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
 
-  // Variant classes with brand colors
-  const variantClasses = {
-    primary: 'bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500 transform hover:translate-y-[-1px]',
-    secondary: 'bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-500',
-    outline: 'border border-primary-500 text-primary-500 hover:bg-primary-50 focus:ring-primary-500',
-    ghost: 'bg-transparent text-primary-500 hover:bg-primary-50 focus:ring-primary-500 border border-transparent',
-    text: 'bg-transparent text-primary-500 hover:text-primary-600 focus:ring-primary-500'
-  };
+   // Variant classes with brand colors
+   const variantClasses = {
+     primary: 'bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500 transform hover:translate-y-[-1px]',
+     secondary: 'bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-500',
+     outline: 'border border-primary-500 text-primary-500 hover:bg-primary-50 focus:ring-primary-500',
+     ghost: 'bg-transparent text-primary-500 hover:bg-primary-50 focus:ring-primary-500 border border-transparent',
+     text: 'bg-transparent text-primary-500 hover:text-primary-600 focus:ring-primary-500'
+   };
 
   // Size classes
   const sizeClasses = {

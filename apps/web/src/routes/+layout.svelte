@@ -1,11 +1,12 @@
 <script lang="ts">
   import {PreviewMode,VisualEditing} from '@sanity/sveltekit'
   import type {LayoutProps} from './$types'
-
+  import './layout.css'
+  
   const {children, data}: LayoutProps = $props()
   const {previewEnabled, navbar, footer, settings} = data
   const pageAuthor = (data as any).pageAuthor
-
+  
   // Debug: log the layout data
   console.log('Layout data:', { navbar, footer, settings, pageAuthor })
 </script>
