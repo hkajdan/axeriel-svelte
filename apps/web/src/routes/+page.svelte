@@ -9,8 +9,6 @@
 </script>
 
 {#if page}
-  <h1 class="text-4xl font-bold text-center my-8">{page.title}</h1>
-
   {#if page.pageBuilder && page.pageBuilder.length > 0}
     <PageBuilder pageBuilder={page.pageBuilder} />
   {:else}

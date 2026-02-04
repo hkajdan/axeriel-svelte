@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { ImageLinkCards } from '$lib/sanity/sanity.types';
   import { urlForImage } from '$lib/sanity/image';
-  
+  import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links';
+ 
   export let eyebrow: ImageLinkCards['eyebrow'];
   export let title: ImageLinkCards['title'];
   export let richText: ImageLinkCards['richText'];
@@ -9,7 +10,7 @@
   export let cards: ImageLinkCards['cards'];
   export let backgroundColor: ImageLinkCards['backgroundColor'];
   export let anchor: ImageLinkCards['anchor'];
-  
+ 
   // Background color classes
   const bgClasses = {
     '': 'bg-white',
@@ -19,7 +20,7 @@
     'grey': 'bg-gray-100',
     'light-grey': 'bg-gray-50'
   };
-  
+ 
   const bgClass = bgClasses[backgroundColor || ''] || bgClasses[''];
 </script>
 
@@ -49,7 +50,9 @@
           <div class="flex flex-wrap justify-center gap-4">
             {#each buttons as button}
               <a 
-                href={button.url?.external || (button.url?.internal as any)?.slug?.current || '#'}
+                href={resolveSanityUrl(button.url)}
+                target={getLinkTarget(button.url)}
+                rel={getLinkRel(button.url)}
                 class={`px-6 py-3 rounded-lg font-medium transition-colors 
                   ${button.variant === 'secondary' ? 'bg-gray-100 hover:bg-gray-200' : 
                   button.variant === 'outline' ? 'border border-blue-600 hover:bg-blue-50' : 
@@ -63,11 +66,13 @@
         {/if}
       </div>
       
-      {#if cards && cards.length > 0}
+       {#if cards && cards.length > 0}
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {#each cards as card}
             <a 
-              href={card.url?.external || (card.url?.internal as any)?.slug?.current || '#'}
+              href={resolveSanityUrl(card.url)}
+              target={getLinkTarget(card.url)}
+              rel={getLinkRel(card.url)}
               class="block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden"
             >
               {#if card.image?.asset}

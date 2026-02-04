@@ -1119,7 +1119,7 @@ type ArrayOf<T> = Array<T & {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: pageQuery
-// Query: *[_type == "page"] | order(_createdAt asc)[0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...@    },    _type == "cta" => {      "type": "cta",      ...@    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...@    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
+// Query: *[_type == "page"] | order(_createdAt asc)[0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "cta" => {      "type": "cta",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      },      cards[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@,      logos[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...@    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
 export type PageQueryResult = {
   title: string | null;
   slug: Slug | null;
@@ -1143,9 +1143,35 @@ export type PageQueryResult = {
     eyebrow?: string;
     title?: string;
     richText?: RichText;
-    buttons?: Array<{
+    buttons: Array<{
       _key: string;
-    } & Button>;
+      _type: "button";
+      variant?: "default" | "link" | "outline" | "secondary";
+      text?: string;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
+    }> | null;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
     anchor?: string;
   } | {
@@ -1213,9 +1239,35 @@ export type PageQueryResult = {
       _type: "image";
     };
     video?: MuxVideo;
-    buttons?: Array<{
+    buttons: Array<{
       _key: string;
-    } & Button>;
+      _type: "button";
+      variant?: "default" | "link" | "outline" | "secondary";
+      text?: string;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
+    }> | null;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
     anchor?: string;
   } | {
@@ -1245,17 +1297,65 @@ export type PageQueryResult = {
     eyebrow?: string;
     title?: string;
     richText?: RichText;
-    buttons?: Array<{
+    buttons: Array<{
       _key: string;
-    } & Button>;
-    cards?: Array<{
+      _type: "button";
+      variant?: "default" | "link" | "outline" | "secondary";
+      text?: string;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
+    }> | null;
+    cards: Array<{
       title?: string;
       description?: string;
       image?: ImageLinkCardImage;
-      url?: CustomUrl;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
       _type: "imageLinkCard";
       _key: string;
-    }>;
+    }> | null;
     anchor?: string;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
   } | {
@@ -1273,12 +1373,34 @@ export type PageQueryResult = {
     type: "logoList";
     title?: string;
     richText?: RichText;
-    logos?: Array<{
+    logos: Array<{
       image?: ObjectImage;
       text?: string;
-      url?: CustomUrl;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
       _key: string;
-    }>;
+    }> | null;
     anchor?: string;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
   } | {
@@ -1403,7 +1525,7 @@ export type PageQueryResult = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: pageBySlugQuery
-// Query: *[_type == "page" && slug.current == $slug][0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...@    },    _type == "cta" => {      "type": "cta",      ...@    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...@    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
+// Query: *[_type == "page" && slug.current == $slug][0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "cta" => {      "type": "cta",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      },      cards[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@,      logos[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...@    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
 export type PageBySlugQueryResult = {
   title: string | null;
   slug: Slug | null;
@@ -1427,9 +1549,35 @@ export type PageBySlugQueryResult = {
     eyebrow?: string;
     title?: string;
     richText?: RichText;
-    buttons?: Array<{
+    buttons: Array<{
       _key: string;
-    } & Button>;
+      _type: "button";
+      variant?: "default" | "link" | "outline" | "secondary";
+      text?: string;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
+    }> | null;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
     anchor?: string;
   } | {
@@ -1497,9 +1645,35 @@ export type PageBySlugQueryResult = {
       _type: "image";
     };
     video?: MuxVideo;
-    buttons?: Array<{
+    buttons: Array<{
       _key: string;
-    } & Button>;
+      _type: "button";
+      variant?: "default" | "link" | "outline" | "secondary";
+      text?: string;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
+    }> | null;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
     anchor?: string;
   } | {
@@ -1529,17 +1703,65 @@ export type PageBySlugQueryResult = {
     eyebrow?: string;
     title?: string;
     richText?: RichText;
-    buttons?: Array<{
+    buttons: Array<{
       _key: string;
-    } & Button>;
-    cards?: Array<{
+      _type: "button";
+      variant?: "default" | "link" | "outline" | "secondary";
+      text?: string;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
+    }> | null;
+    cards: Array<{
       title?: string;
       description?: string;
       image?: ImageLinkCardImage;
-      url?: CustomUrl;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
       _type: "imageLinkCard";
       _key: string;
-    }>;
+    }> | null;
     anchor?: string;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
   } | {
@@ -1557,12 +1779,34 @@ export type PageBySlugQueryResult = {
     type: "logoList";
     title?: string;
     richText?: RichText;
-    logos?: Array<{
+    logos: Array<{
       image?: ObjectImage;
       text?: string;
-      url?: CustomUrl;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
       _key: string;
-    }>;
+    }> | null;
     anchor?: string;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
   } | {
@@ -1687,7 +1931,7 @@ export type PageBySlugQueryResult = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: homePageQuery
-// Query: *[_type == "homePage"][0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...@    },    _type == "cta" => {      "type": "cta",      ...@    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...@    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
+// Query: *[_type == "homePage"][0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "cta" => {      "type": "cta",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      },      cards[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@,      logos[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...@    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
 export type HomePageQueryResult = {
   title: string | null;
   slug: Slug | null;
@@ -1711,9 +1955,35 @@ export type HomePageQueryResult = {
     eyebrow?: string;
     title?: string;
     richText?: RichText;
-    buttons?: Array<{
+    buttons: Array<{
       _key: string;
-    } & Button>;
+      _type: "button";
+      variant?: "default" | "link" | "outline" | "secondary";
+      text?: string;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
+    }> | null;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
     anchor?: string;
   } | {
@@ -1781,9 +2051,35 @@ export type HomePageQueryResult = {
       _type: "image";
     };
     video?: MuxVideo;
-    buttons?: Array<{
+    buttons: Array<{
       _key: string;
-    } & Button>;
+      _type: "button";
+      variant?: "default" | "link" | "outline" | "secondary";
+      text?: string;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
+    }> | null;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
     anchor?: string;
   } | {
@@ -1813,17 +2109,65 @@ export type HomePageQueryResult = {
     eyebrow?: string;
     title?: string;
     richText?: RichText;
-    buttons?: Array<{
+    buttons: Array<{
       _key: string;
-    } & Button>;
-    cards?: Array<{
+      _type: "button";
+      variant?: "default" | "link" | "outline" | "secondary";
+      text?: string;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
+    }> | null;
+    cards: Array<{
       title?: string;
       description?: string;
       image?: ImageLinkCardImage;
-      url?: CustomUrl;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
       _type: "imageLinkCard";
       _key: string;
-    }>;
+    }> | null;
     anchor?: string;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
   } | {
@@ -1841,12 +2185,34 @@ export type HomePageQueryResult = {
     type: "logoList";
     title?: string;
     richText?: RichText;
-    logos?: Array<{
+    logos: Array<{
       image?: ObjectImage;
       text?: string;
-      url?: CustomUrl;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
       _key: string;
-    }>;
+    }> | null;
     anchor?: string;
     backgroundColor?: "" | "blue" | "grey" | "light-blue" | "light-grey" | "white";
   } | {
@@ -1971,7 +2337,7 @@ export type HomePageQueryResult = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: navbarQuery
-// Query: *[_type == "navbar"][0]{  label,  columns[]{    _type,    _key,    _type == "navbarColumn" => {      "type": "navbarColumn",      title,      links[]{        name,        url,        image      }    },    _type == "navbarLink" => {      "type": "navbarLink",      name,      url    }  },  buttons}
+// Query: *[_type == "navbar"][0]{  label,  columns[]{    _type,    _key,    _type == "navbarColumn" => {      "type": "navbarColumn",      title,      links[]{        name,        url{          ...,          internal->{            slug,            _type          }        },        image      }    },    _type == "navbarLink" => {      "type": "navbarLink",      name,      url{        ...,        internal->{          slug,          _type        }      }    }  },  buttons[]{    ...,    url{      ...,      internal->{        slug,        _type      }    }  }}
 export type NavbarQueryResult = {
   label: string | null;
   columns: Array<{
@@ -1981,7 +2347,29 @@ export type NavbarQueryResult = {
     title: string | null;
     links: Array<{
       name: string | null;
-      url: CustomUrl | null;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
       image: {
         asset?: SanityImageAssetReference;
         media?: unknown;
@@ -1995,16 +2383,64 @@ export type NavbarQueryResult = {
     _key: string;
     type: "navbarLink";
     name: string | null;
-    url: CustomUrl | null;
+    url: {
+      _type: "customUrl";
+      type?: "external" | "file" | "internal";
+      openInNewTab?: boolean;
+      external?: string;
+      href?: string;
+      internal: {
+        slug: Slug | null;
+        _type: "blog";
+      } | {
+        slug: Slug | null;
+        _type: "blogIndex";
+      } | {
+        slug: Slug | null;
+        _type: "page";
+      } | null;
+      file?: {
+        asset?: SanityFileAssetReference;
+        media?: unknown;
+        _type: "file";
+      };
+      anchor?: string;
+    } | null;
   }> | null;
   buttons: Array<{
     _key: string;
-  } & Button> | null;
+    _type: "button";
+    variant?: "default" | "link" | "outline" | "secondary";
+    text?: string;
+    url: {
+      _type: "customUrl";
+      type?: "external" | "file" | "internal";
+      openInNewTab?: boolean;
+      external?: string;
+      href?: string;
+      internal: {
+        slug: Slug | null;
+        _type: "blog";
+      } | {
+        slug: Slug | null;
+        _type: "blogIndex";
+      } | {
+        slug: Slug | null;
+        _type: "page";
+      } | null;
+      file?: {
+        asset?: SanityFileAssetReference;
+        media?: unknown;
+        _type: "file";
+      };
+      anchor?: string;
+    } | null;
+  }> | null;
 } | null;
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: footerQuery
-// Query: *[_type == "footer"][0]{  label,  subtitle,  download,  logo,  columns[]{    title,    links[]{      name,      url    }  },  contact,  contactAuthor->{    name,    position,    email,    image,    bio  },  location}
+// Query: *[_type == "footer"][0]{  label,  subtitle,  download,  logo,  columns[]{    title,    links[]{      name,      url{        ...,        internal->{          slug,          _type        }      }    }  },  contact,  contactAuthor->{    name,    position,    email,    image,    bio  },  location}
 export type FooterQueryResult = {
   label: string | null;
   subtitle: string | null;
@@ -2028,7 +2464,29 @@ export type FooterQueryResult = {
     title: string | null;
     links: Array<{
       name: string | null;
-      url: CustomUrl | null;
+      url: {
+        _type: "customUrl";
+        type?: "external" | "file" | "internal";
+        openInNewTab?: boolean;
+        external?: string;
+        href?: string;
+        internal: {
+          slug: Slug | null;
+          _type: "blog";
+        } | {
+          slug: Slug | null;
+          _type: "blogIndex";
+        } | {
+          slug: Slug | null;
+          _type: "page";
+        } | null;
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        anchor?: string;
+      } | null;
     }> | null;
   }> | null;
   contact: {
@@ -2149,11 +2607,11 @@ export type HomePageAuthorQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"page\"] | order(_createdAt asc)[0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageQueryResult;
-    "*[_type == \"page\" && slug.current == $slug][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageBySlugQueryResult;
-    "*[_type == \"homePage\"][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": HomePageQueryResult;
-    "*[_type == \"navbar\"][0]{\n  label,\n  columns[]{\n    _type,\n    _key,\n    _type == \"navbarColumn\" => {\n      \"type\": \"navbarColumn\",\n      title,\n      links[]{\n        name,\n        url,\n        image\n      }\n    },\n    _type == \"navbarLink\" => {\n      \"type\": \"navbarLink\",\n      name,\n      url\n    }\n  },\n  buttons\n}": NavbarQueryResult;
-    "*[_type == \"footer\"][0]{\n  label,\n  subtitle,\n  download,\n  logo,\n  columns[]{\n    title,\n    links[]{\n      name,\n      url\n    }\n  },\n  contact,\n  contactAuthor->{\n    name,\n    position,\n    email,\n    image,\n    bio\n  },\n  location\n}": FooterQueryResult;
+    "*[_type == \"page\"] | order(_createdAt asc)[0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageQueryResult;
+    "*[_type == \"page\" && slug.current == $slug][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageBySlugQueryResult;
+    "*[_type == \"homePage\"][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": HomePageQueryResult;
+    "*[_type == \"navbar\"][0]{\n  label,\n  columns[]{\n    _type,\n    _key,\n    _type == \"navbarColumn\" => {\n      \"type\": \"navbarColumn\",\n      title,\n      links[]{\n        name,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        },\n        image\n      }\n    },\n    _type == \"navbarLink\" => {\n      \"type\": \"navbarLink\",\n      name,\n      url{\n        ...,\n        internal->{\n          slug,\n          _type\n        }\n      }\n    }\n  },\n  buttons[]{\n    ...,\n    url{\n      ...,\n      internal->{\n        slug,\n        _type\n      }\n    }\n  }\n}": NavbarQueryResult;
+    "*[_type == \"footer\"][0]{\n  label,\n  subtitle,\n  download,\n  logo,\n  columns[]{\n    title,\n    links[]{\n      name,\n      url{\n        ...,\n        internal->{\n          slug,\n          _type\n        }\n      }\n    }\n  },\n  contact,\n  contactAuthor->{\n    name,\n    position,\n    email,\n    image,\n    bio\n  },\n  location\n}": FooterQueryResult;
     "*[_type == \"settings\"][0]{\n  siteTitle,\n  siteDescription,\n  logo,\n  contactEmail,\n  socialLinks,\n  floatingButton\n}": SettingsQueryResult;
     "*[_type == \"author\" && _id == $authorId][0]{\n  name,\n  position,\n  email,\n  image,\n  bio\n}": AuthorQueryResult;
     "*[_type == \"page\" && slug.current == $slug][0].author->{\n  name,\n  position,\n  email,\n  image,\n  bio\n}": PageAuthorBySlugQueryResult;

@@ -8,11 +8,31 @@ export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)
     _key,
     _type == "hero" => {
       "type": "hero",
-      ...@
+      ...@,
+      buttons[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "cta" => {
       "type": "cta",
-      ...@
+      ...@,
+      buttons[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "featureCardsIcon" => {
       "type": "featureCardsIcon",
@@ -24,7 +44,27 @@ export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)
     },
     _type == "imageLinkCards" => {
       "type": "imageLinkCards",
-      ...@
+      ...@,
+      buttons[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      },
+      cards[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "subscribeNewsletter" => {
       "type": "subscribeNewsletter",
@@ -36,7 +76,17 @@ export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)
     },
     _type == "logoList" => {
       "type": "logoList",
-      ...@
+      ...@,
+      logos[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "timeline" => {
       "type": "timeline",
@@ -73,11 +123,31 @@ export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current ==
     _key,
     _type == "hero" => {
       "type": "hero",
-      ...@
+      ...@,
+      buttons[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "cta" => {
       "type": "cta",
-      ...@
+      ...@,
+      buttons[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "featureCardsIcon" => {
       "type": "featureCardsIcon",
@@ -89,7 +159,27 @@ export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current ==
     },
     _type == "imageLinkCards" => {
       "type": "imageLinkCards",
-      ...@
+      ...@,
+      buttons[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      },
+      cards[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "subscribeNewsletter" => {
       "type": "subscribeNewsletter",
@@ -101,7 +191,17 @@ export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current ==
     },
     _type == "logoList" => {
       "type": "logoList",
-      ...@
+      ...@,
+      logos[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "timeline" => {
       "type": "timeline",
@@ -138,11 +238,31 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     _key,
     _type == "hero" => {
       "type": "hero",
-      ...@
+      ...@,
+      buttons[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "cta" => {
       "type": "cta",
-      ...@
+      ...@,
+      buttons[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "featureCardsIcon" => {
       "type": "featureCardsIcon",
@@ -154,7 +274,27 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     },
     _type == "imageLinkCards" => {
       "type": "imageLinkCards",
-      ...@
+      ...@,
+      buttons[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      },
+      cards[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "subscribeNewsletter" => {
       "type": "subscribeNewsletter",
@@ -166,7 +306,17 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     },
     _type == "logoList" => {
       "type": "logoList",
-      ...@
+      ...@,
+      logos[]{
+        ...,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        }
+      }
     },
     _type == "timeline" => {
       "type": "timeline",
@@ -205,17 +355,38 @@ export const navbarQuery = defineQuery(`*[_type == "navbar"][0]{
       title,
       links[]{
         name,
-        url,
+        url{
+          ...,
+          internal->{
+            slug,
+            _type
+          }
+        },
         image
       }
     },
     _type == "navbarLink" => {
       "type": "navbarLink",
       name,
-      url
+      url{
+        ...,
+        internal->{
+          slug,
+          _type
+        }
+      }
     }
   },
-  buttons
+  buttons[]{
+    ...,
+    url{
+      ...,
+      internal->{
+        slug,
+        _type
+      }
+    }
+  }
 }`)
 
 export const footerQuery = defineQuery(`*[_type == "footer"][0]{
@@ -227,7 +398,13 @@ export const footerQuery = defineQuery(`*[_type == "footer"][0]{
     title,
     links[]{
       name,
-      url
+      url{
+        ...,
+        internal->{
+          slug,
+          _type
+        }
+      }
     }
   },
   contact,

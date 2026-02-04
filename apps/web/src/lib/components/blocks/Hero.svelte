@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { Hero } from '$lib/sanity/sanity.types';
   import { urlForImage } from '$lib/sanity/image';
-  
+  import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links';
+ 
   export let badge: Hero['badge'];
   export let title: Hero['title'];
   export let richText: Hero['richText'];
@@ -10,7 +11,7 @@
   export let buttons: Hero['buttons'];
   export let backgroundColor: Hero['backgroundColor'];
   export let anchor: Hero['anchor'];
-  
+ 
   // Background color classes
   const bgClasses = {
     '': 'bg-white',
@@ -20,7 +21,7 @@
     'grey': 'bg-gray-100',
     'light-grey': 'bg-gray-50'
   };
-  
+ 
   const bgClass = bgClasses[backgroundColor || ''] || bgClasses[''];
 </script>
 
@@ -54,7 +55,9 @@
           <div class="flex flex-wrap gap-4">
             {#each buttons as button}
               <a 
-                href={button.url?.external || (button.url?.internal as any)?.slug?.current || '#'}
+                href={resolveSanityUrl(button.url)}
+                target={getLinkTarget(button.url)}
+                rel={getLinkRel(button.url)}
                 class={`px-6 py-3 rounded-lg font-medium transition-colors 
                   ${button.variant === 'secondary' ? 'bg-gray-100 hover:bg-gray-200' : 
                   button.variant === 'outline' ? 'border border-blue-600 hover:bg-blue-50' : 
