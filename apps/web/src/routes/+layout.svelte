@@ -2,13 +2,28 @@
   import {PreviewMode,VisualEditing} from '@sanity/sveltekit'
   import type {LayoutProps} from './$types'
   import './layout.css'
+  import NavbarDesktop from '$lib/components/Navbar/NavbarDesktop.svelte'
+  import { onMount } from 'svelte'
   
   const {children, data}: LayoutProps = $props()
   const {previewEnabled, navbar, footer, settings} = data
   const pageAuthor = (data as any).pageAuthor
   
-  // Debug: log the layout data
+  // Debug: log des données pour le diagnostic
   console.log('Layout data:', { navbar, footer, settings, pageAuthor })
+  
+  // Vérification que les données nécessaires sont présentes
+  onMount(() => {
+    if (!navbar) {
+      console.warn('Navbar data is missing')
+    }
+    if (!settings) {
+      console.warn('Settings data is missing')
+    }
+    if (!footer) {
+      console.warn('Footer data is missing')
+    }
+  })
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,11 +34,8 @@
   <VisualEditing enabled={previewEnabled}>
     <!-- Header/Navbar will go here -->
     <header>
-      {#if navbar}
-        <div class="bg-blue-600 text-white p-4">
-          <h2 class="text-xl font-bold">{navbar.label || 'Navigation'}</h2>
-          <p class="text-sm">Navbar data loaded: {navbar.columns?.length || 0} items</p>
-        </div>
+      {#if navbar && settings}
+        <NavbarDesktop {navbar} {settings} />
       {:else}
         <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3">
           <p>No navbar data available</p>

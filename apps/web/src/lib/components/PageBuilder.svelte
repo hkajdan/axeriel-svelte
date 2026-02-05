@@ -24,20 +24,33 @@
   export let pageBuilder: PageBuilder;
   
   // Debug: log the pageBuilder data when it changes
-  $: if (pageBuilder) {
-    console.log('PageBuilder received data:', pageBuilder);
+  $: {
+    console.log('PageBuilder data update:', {
+      hasData: !!pageBuilder,
+      length: pageBuilder?.length,
+      firstBlock: pageBuilder?.[0]
+    });
   }
   
   // Get the component loader function for a block type
   function getComponentLoader(block: any) {
-    console.log('Block data:', block); // Debug: log the entire block
+    if (!block) {
+      console.error('Block is undefined or null');
+      return null;
+    }
+    
     const blockType = (block as any).type || block._type;
-    console.log('Looking for component:', blockType); // Debug: log what we're looking for
+    if (!blockType) {
+      console.error('Block type is missing:', block);
+      return null;
+    }
+    
     const componentLoader = componentMap[blockType];
     if (!componentLoader) {
       console.error(`Component not found for block type: ${blockType}. Available types:`, Object.keys(componentMap));
       return null;
     }
+    
     return componentLoader;
   }
 </script>
