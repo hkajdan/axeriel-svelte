@@ -17,7 +17,7 @@
     '': 'bg-white',
     'white': 'bg-white',
     'light-blue': 'bg-blue-50',
-    'blue': 'bg-blue-600 text-white',
+    'blue': 'bg-primary-600 text-white',
     'grey': 'bg-gray-100',
     'light-grey': 'bg-gray-50'
   };
@@ -25,7 +25,7 @@
   const bgClass = bgClasses[backgroundColor || ''] || bgClasses[''];
 </script>
 
-<section class={`py-16 lg:py-24 ${bgClass}`} id={anchor}>
+<section class={`py-16 lg:pt-40 lg:pb-24 ${bgClass} `} id={anchor}>
   <div class="container mx-auto px-4">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <!-- Text Content -->

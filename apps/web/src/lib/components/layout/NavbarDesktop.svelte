@@ -10,16 +10,16 @@
 
 </script>
 
-<nav class="sticky z-50 bg-white backdrop-blur-sm rounded-xl mx-auto max-w-7xl px-6 shadow-sm ">
-  <div class="flex items-center h-20 self-center align-middle justify-between">
+<nav class="sticky z-50 bg-white rounded-xl mx-auto max-w-7xl  shadow-sm ">
+  <div class="relative flex items-center px-6 h-20 justify-between">
     <!-- Logo -->
-    <div class="flex items-center z-50">
+    <div class="flex z-50">
       {#if props.settings?.logo?.asset}
         <a href="/">
           <img
             src={urlFor(props.settings.logo).width(120).height(40).url()}
             alt={props.settings.siteTitle || 'Company Logo'}
-            class="h-8 w-auto"
+            class="h-12 w-auto"
           />
   </a>
       {:else}
@@ -30,9 +30,9 @@
     </div>
 
     <!-- Menu principal -->
-    <ul class="hidden lg:flex items-center space-x-6">
+    <ul class="hidden lg:flex items-center space-x-4">
       {#each props.navbar?.columns as column (column._key || `col-${column._type}-${column.title}`)}
-        <li class="relative group">
+        <li class="group">
           {#if column._type === 'navbarColumn'}
             <button class="flex items-center px-3 py-2 text-neutral-700 hover:text-primary-600 transition-colors font-medium bg-white">
               {column.title}
@@ -41,32 +41,34 @@
               </svg>
             </button>
             
-            <!-- Panel de sous-menu -->
-            <div class="absolute left-0 mt-2 w-full bg-white rounded-md shadow-lg rpacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-              <div class="flex h-80 w-full">
-                {#each column.links as link (link._key || `link-${link.name}-${link.description}`)}
-                  <a 
-                    href={resolveSanityUrl(link.url)}
-                    class="flex-1 p-4 hover:bg-neutral-50 flex flex-col items-center transition-colors relative rounded-md overflow-hidden h-full w-full bg-white"
-                  >
-                    {#if link.image?.asset}
-                      <img
-                        src={urlFor(link.image).width(200).height(200).url()}
-                        alt={link.name || ''}
-                        class="absolute w-full h-full brightness-50 object-cover rounded-md hover:scale-105 transition-transform duration-200 ease-in-out"
-                        loading="eager"
-                      />
-                    {/if}
-                    <div class="absolute bottom-5 left-5 text-white z-10">
-                      <div class="text-xl font-semibold w-2/3">{link.name}</div>
-                      {#if link.description}
-                        <p class="text-sm leading-snug line-clamp-2">{link.description}</p>
+            <!-- Panel de sous-menu - n'apparaît que si des liens existent -->
+            {#if column.links && column.links.length > 0}
+              <div class="absolute left-0 mt-4 w-full bg-white rounded-b-md shadow-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div class="flex h-80 w-full mx-auto p-4">
+                  {#each column.links as link (link._key || `link-${link.name}-${link.description}`)}
+                    <a 
+                      href={resolveSanityUrl(link.url)}
+                      class="flex-1 p-4 flex flex-row items-center transition-colors relative rounded-md overflow-hidden h-full w-full bg-white hover:bg-gray-50"
+                    >
+                      {#if link.image?.asset}
+                        <img
+                          src={urlFor(link.image).width(200).height(200).url()}
+                          alt={link.name || ''}
+                          class="absolute w-full h-full brightness-50 object-cover rounded-md hover:scale-105 transition-transform duration-200 ease-in-out"
+                          loading="eager"
+                        />
                       {/if}
-                    </div>
-                  </a>
-                {/each}
+                      <div class="absolute bottom-4 left-4 text-white z-10">
+                        <div class="text-lg font-semibold">{link.name}</div>
+                        {#if link.description}
+                          <p class="text-sm leading-snug line-clamp-1">{link.description}</p>
+                        {/if}
+                      </div>
+                    </a>
+                  {/each}
+                </div>
               </div>
-            </div>
+            {/if}
             
           {:else}
             <a 
