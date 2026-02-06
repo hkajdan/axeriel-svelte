@@ -2,7 +2,7 @@
   import {PreviewMode,VisualEditing} from '@sanity/sveltekit'
   import type {LayoutProps} from './$types'
   import './layout.css'
-  import NavbarDesktop from '$lib/components/Navbar/NavbarDesktop.svelte'
+  import Navbar from '$lib/components/layout/Navbar.svelte'
   import { onMount } from 'svelte'
   
   const {children, data}: LayoutProps = $props()
@@ -35,7 +35,7 @@
     <!-- Header/Navbar will go here -->
     <header>
       {#if navbar && settings}
-        <NavbarDesktop {navbar} {settings} />
+        <Navbar {navbar} {settings} />
       {:else}
         <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3">
           <p>No navbar data available</p>

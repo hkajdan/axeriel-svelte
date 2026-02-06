@@ -19,16 +19,18 @@
   }
 </script>
 
-<nav class="sticky top-5 z-50 bg-white/90 backdrop-blur-sm rounded-full mx-auto max-w-7xl px-6 py-3 shadow-sm border border-neutral-100">
+<nav class="sticky z-50 bg-white/90 backdrop-blur-sm rounded-full mx-auto max-w-7xl px-6 py-3 shadow-sm ">
   <div class="flex items-center justify-between">
     <!-- Logo -->
     <div class="flex items-center z-50">
       {#if props.settings?.logo?.asset}
-        <img
-          src={urlFor(props.settings.logo).width(120).height(40).url()}
-          alt={props.settings.siteTitle || 'Company Logo'}
-          class="h-8 w-auto"
-        />
+        <a href="/">
+          <img
+            src={urlFor(props.settings.logo).width(120).height(40).url()}
+            alt={props.settings.siteTitle || 'Company Logo'}
+            class="h-8 w-auto"
+          />
+  </a>
       {:else}
         <div class="h-8 w-24 bg-neutral-200 rounded flex items-center justify-center text-sm font-medium text-neutral-600">
           {props.settings?.siteTitle || 'Logo'}
@@ -37,7 +39,7 @@
     </div>
 
     <!-- Menu principal -->
-    <ul class="sticky hidden lg:flex items-center space-x-6">
+    <ul class="hidden lg:flex items-center space-x-6">
       {#each props.navbar?.columns as column (column._key || `col-${column._type}-${column.title}`)}
         <li class="relative group">
           {#if column._type === 'navbarColumn'}
