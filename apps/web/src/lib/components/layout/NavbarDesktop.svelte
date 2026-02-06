@@ -1,26 +1,17 @@
 <script lang="ts">
   import type { Settings, Navbar } from '$lib/sanity/sanity.types';
   import { urlForImage as urlFor } from '$lib/sanity/image';
+    import { resolveSanityUrl } from '$lib/sanity/links';
   
   let props = $props<{
     settings: Settings;
     navbar: Navbar;
   }>();
 
-  function getLinkHref(url: any, anchor?: string | null): string {
-    if (!url) return '#';
-    
-    const baseHref = url.href || url.external || url.internal?.slug?.current || '#';
-    const normalizedBase = baseHref.startsWith('/') || baseHref.startsWith('http')
-      ? baseHref
-      : `/${baseHref}`;
-      
-    return anchor ? `${normalizedBase}#${anchor}` : normalizedBase;
-  }
 </script>
 
-<nav class="sticky z-50 bg-white/90 backdrop-blur-sm rounded-full mx-auto max-w-7xl px-6 py-3 shadow-sm ">
-  <div class="flex items-center justify-between">
+<nav class="sticky z-50 bg-white backdrop-blur-sm rounded-xl mx-auto max-w-7xl px-6 shadow-sm ">
+  <div class="flex items-center h-20 self-center align-middle justify-between">
     <!-- Logo -->
     <div class="flex items-center z-50">
       {#if props.settings?.logo?.asset}
@@ -32,7 +23,7 @@
           />
   </a>
       {:else}
-        <div class="h-8 w-24 bg-neutral-200 rounded flex items-center justify-center text-sm font-medium text-neutral-600">
+        <div class="h-8 w-24 rounded flex items-center justify-center text-sm font-medium text-neutral-600">
           {props.settings?.siteTitle || 'Logo'}
         </div>
       {/if}
@@ -55,7 +46,7 @@
               <div class="flex h-80 w-full">
                 {#each column.links as link (link._key || `link-${link.name}-${link.description}`)}
                   <a 
-                    href={getLinkHref(link.url, link.anchor)}
+                    href={resolveSanityUrl(link.url)}
                     class="flex-1 p-4 hover:bg-neutral-50 flex flex-col items-center transition-colors relative rounded-md overflow-hidden h-full w-full bg-white"
                   >
                     {#if link.image?.asset}
@@ -79,8 +70,8 @@
             
           {:else}
             <a 
-              href={getLinkHref(column.url, column.anchor)}
-              class="px-3 py-2 text-white bg-blue rounded-full hover:bg-primary-600 transition-colors font-medium"
+              href={resolveSanityUrl(column.url)}
+              class="px-3 py-2 text-white bg-blue rounded-full bg-primary-500 hover:bg-primary-600 transition-colors font-medium"
             >
               {column.name}
             </a>
@@ -94,7 +85,7 @@
           {#each props.navbar.buttons as button (button._key || `btn-${button.label}`)}
             <a 
               href={button.url?.href || '#'} 
-              class="px-4 py-2 border border-primary-600 text-primary-600 rounded-full hover:bg-primary-600 hover:text-white transition-colors text-sm font-medium"
+              class="px-4 py-2 border border-primary-600 text-primary-600 bg-primary-500 hover:text-white transition-colors text-sm font-medium"
             >
               {button.label}
             </a>
@@ -105,13 +96,3 @@
   </div>
 </nav>
 
-<style>
-  /* Couleurs personnalisées pour les boutons simples */
-  .bg-blue {
-    background-color: #0092D6;
-  }
-  
-  .hover\:bg-primary-600:hover {
-    background-color: #0077B6;
-  }
-</style>
