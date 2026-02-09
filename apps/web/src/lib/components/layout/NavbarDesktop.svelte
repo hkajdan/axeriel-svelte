@@ -11,7 +11,7 @@
 </script>
 
 <nav class="sticky z-50 bg-white rounded-xl mx-auto max-w-7xl  shadow-sm ">
-  <div class="relative flex items-center px-6 h-20 justify-between">
+  <div class="relative flex items-center pl-6  justify-between">
     <!-- Logo -->
     <div class="flex z-50">
       {#if props.settings?.logo?.asset}
@@ -23,18 +23,18 @@
           />
   </a>
       {:else}
-        <div class="h-8 w-24 rounded flex items-center justify-center text-sm font-medium text-neutral-600">
+        <div class=" w-24 rounded flex items-center justify-center text-sm font-medium text-neutral-600">
           {props.settings?.siteTitle || 'Logo'}
         </div>
       {/if}
     </div>
 
     <!-- Menu principal -->
-    <ul class="hidden lg:flex items-center space-x-4">
+    <ul class="hidden lg:flex items-center">
       {#each props.navbar?.columns as column (column._key || `col-${column._type}-${column.title}`)}
-        <li class="group">
+        <li class="group nth-[n+5]:bg-primary-500 px-2 py-8 last:pr-6 last:rounded-r-xl">
           {#if column._type === 'navbarColumn'}
-            <button class="flex items-center px-3 py-2 text-neutral-700 hover:text-primary-600 transition-colors font-medium bg-white">
+            <button class="flex items-center px-3 text-neutral-700 hover:text-primary-600 h-full transition-colors font-medium bg-white">
               {column.title}
               <svg class="ml-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -50,8 +50,7 @@
                       href={resolveSanityUrl(link.url)}
                       class="flex-1 p-4 flex flex-row items-center transition-colors relative rounded-md overflow-hidden h-full w-full bg-white hover:bg-gray-50"
                     >
-                      {#if link.image?.asset}
-                        <img
+                      {#if link.image?.asset} <img
                           src={urlFor(link.image).width(200).height(200).url()}
                           alt={link.name || ''}
                           class="absolute w-full h-full brightness-50 object-cover rounded-md hover:scale-105 transition-transform duration-200 ease-in-out"
@@ -73,7 +72,7 @@
           {:else}
             <a 
               href={resolveSanityUrl(column.url)}
-              class="px-3 py-2 text-white bg-blue rounded-full bg-primary-500 hover:bg-primary-600 transition-colors font-medium"
+              class="px-3 text-white bg-blue rounded-full h-full hover:bg-primary-600 transition-colors font-medium"
             >
               {column.name}
             </a>
@@ -83,11 +82,11 @@
       
       <!-- Boutons -->
       {#if props.navbar?.buttons && props.navbar.buttons.length > 0}
-        <li class="flex items-center space-x-2 ml-4">
+        <li class="flex items-center h-full space-x-2 ml-4">
           {#each props.navbar.buttons as button (button._key || `btn-${button.label}`)}
             <a 
               href={button.url?.href || '#'} 
-              class="px-4 py-2 border border-primary-600 text-primary-600 bg-primary-500 hover:text-white transition-colors text-sm font-medium"
+              class="px-4 py-2 h-full border border-primary-600 text-primary-600 bg-primary-500 hover:text-white transition-colors text-sm font-medium"
             >
               {button.label}
             </a>
