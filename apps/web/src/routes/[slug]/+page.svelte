@@ -4,8 +4,7 @@
 
   const { data }: PageProps = $props();
   
-  // Use real data only
-  const page = data.page;
+  let page = $derived(data.page);
 </script>
 
 {#if page}

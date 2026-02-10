@@ -4,8 +4,8 @@
 
   const {data}: PageProps = $props()
   
-  // Use real data only
-  const page = data.page
+  // Use $derived to make page reactive
+  let page = $derived(data.page)
 </script>
 
 {#if page}
