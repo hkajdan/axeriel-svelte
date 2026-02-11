@@ -9,10 +9,11 @@
     navbar: Navbar;
   }>();
 
-  // State for navbar visibility
+   // State for navbar visibility
   let isVisible = $state(true);
   let lastScrollPosition = $state(0);
   let navbarHeight = $state(0);
+  let showSubmenu = $state(true);
 
   // Handle scroll events for hide/show behavior
   const handleScroll = () => {
@@ -82,22 +83,28 @@
       {#each props.navbar?.columns as column (column._key || `col-${column._type}-${column.title}`)}
         <li class="group nth-[n+5]:bg-primary-500 px-4 h-full" >
           {#if column._type === 'navbarColumn'}
-            <button class="flex items-center text-neutral-700 group-hover:text-primary-500 h-full transition-colors ">
+            <button class="flex items-center text-neutral-700 group-hover:text-primary-500 h-full transition-colors " onmouseenter={() => showSubmenu = true}>
               {column.title}
               <svg class="ml-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
             </button>
             
-            <!-- Submenu panel - only appears if links exist -->
-            {#if column.links && column.links.length > 0}
-              <div class="absolute left-0 mt-4 w-full bg-white rounded-b-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-40">
+             <!-- Submenu panel - only appears if links exist -->
+             {#if column.links && column.links.length > 0}
+               <div class="absolute left-0 mt-4 w-full bg-white rounded-b-md shadow-lg opacity-0 invisible transition-all duration-200 z-40"
+                    class:group-hover:opacity-100={showSubmenu}
+                    class:group-hover:visible={showSubmenu}
+                    class:opacity-100={!showSubmenu && false}
+                    class:visible={!showSubmenu && false}
+               >
                 <div class="flex h-80 w-full mx-auto p-4">
-                  {#each column.links as link (link._key || `link-${link.name}-${link.description}`)}
-                    <a 
-                      href={resolveSanityUrl(link.url)}
-                      class="flex-1 p-4 flex flex-row items-center transition-colors relative rounded-md overflow-hidden h-full w-full bg-white hover:bg-gray-50"
-                    >
+                   {#each column.links as link (link._key || `link-${link.name}-${link.description}`)}
+                     <a 
+                       href={resolveSanityUrl(link.url)}
+                       class="flex-1 p-4 flex flex-row items-center transition-colors relative rounded-md overflow-hidden h-full w-full bg-white hover:bg-gray-50"
+                       onclick={() => showSubmenu = false}
+                     >
                       {#if link.image?.asset} <img
                           src={urlFor(link.image).width(200).height(200).url()}
                           alt={link.name || ''}
