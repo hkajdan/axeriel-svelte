@@ -23,7 +23,7 @@ export type SanityImageAssetReference = {
 export type SeoImage = {
   asset?: SanityImageAssetReference;
   media?: unknown // Unable to locate the referenced type "seoImage.media" in schema
-  ;
+;
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   _type: "image";
@@ -32,7 +32,7 @@ export type SeoImage = {
 export type ImageLinkCardImage = {
   asset?: SanityImageAssetReference;
   media?: unknown // Unable to locate the referenced type "imageLinkCard.image.media" in schema
-  ;
+;
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   _type: "image";
@@ -41,7 +41,7 @@ export type ImageLinkCardImage = {
 export type ObjectImage = {
   asset?: SanityImageAssetReference;
   media?: unknown // Unable to locate the referenced type "object.image.media" in schema
-  ;
+;
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   _type: "image";
@@ -50,7 +50,7 @@ export type ObjectImage = {
 export type TimelineObjectImage = {
   asset?: SanityImageAssetReference;
   media?: unknown // Unable to locate the referenced type "timeline.object.image.media" in schema
-  ;
+;
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   _type: "image";
@@ -59,7 +59,7 @@ export type TimelineObjectImage = {
 export type RowsObjectImage = {
   asset?: SanityImageAssetReference;
   media?: unknown // Unable to locate the referenced type "rows.object.image.media" in schema
-  ;
+;
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   _type: "image";
@@ -68,7 +68,7 @@ export type RowsObjectImage = {
 export type ImagesObjectImage = {
   asset?: SanityImageAssetReference;
   media?: unknown // Unable to locate the referenced type "images.object.image.media" in schema
-  ;
+;
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   _type: "image";
@@ -1113,13 +1113,9 @@ export type AllSanitySchemaTypes = SanityImageAssetReference | SeoImage | ImageL
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
-type ArrayOf<T> = Array<T & {
-  _key: string;
-}>;
-
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: pageQuery
-// Query: *[_type == "page"] | order(_createdAt asc)[0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "cta" => {      "type": "cta",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      },      cards[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@,      logos[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...@    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
+// Query: *[_type == "page"] | order(_createdAt asc)[0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...,      video {        asset-> {          playbackId        }      },      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "cta" => {      "type": "cta",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      },      cards[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@,      logos[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...,      video {        asset-> {          playbackId        }      }    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
 export type PageQueryResult = {
   title: string | null;
   slug: Slug | null;
@@ -1238,7 +1234,11 @@ export type PageQueryResult = {
       crop?: SanityImageCrop;
       _type: "image";
     };
-    video?: MuxVideo;
+    video: {
+      asset: {
+        playbackId: string | null;
+      } | null;
+    } | null;
     buttons: Array<{
       _key: string;
       _type: "button";
@@ -1512,7 +1512,11 @@ export type PageQueryResult = {
     eyebrow?: string;
     title?: string;
     subtitle?: string;
-    video?: MuxVideo;
+    video: {
+      asset: {
+        playbackId: string | null;
+      } | null;
+    } | null;
     thumbnailTime?: number;
     videoCaption?: string;
     aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
@@ -1525,7 +1529,7 @@ export type PageQueryResult = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: pageBySlugQuery
-// Query: *[_type == "page" && slug.current == $slug][0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "cta" => {      "type": "cta",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      },      cards[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@,      logos[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...@    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
+// Query: *[_type == "page" && slug.current == $slug][0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...,      video {        asset-> {          playbackId        }      },      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "cta" => {      "type": "cta",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      },      cards[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@,      logos[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...,      video {        asset-> {          playbackId        }      }    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
 export type PageBySlugQueryResult = {
   title: string | null;
   slug: Slug | null;
@@ -1644,7 +1648,11 @@ export type PageBySlugQueryResult = {
       crop?: SanityImageCrop;
       _type: "image";
     };
-    video?: MuxVideo;
+    video: {
+      asset: {
+        playbackId: string | null;
+      } | null;
+    } | null;
     buttons: Array<{
       _key: string;
       _type: "button";
@@ -1918,7 +1926,11 @@ export type PageBySlugQueryResult = {
     eyebrow?: string;
     title?: string;
     subtitle?: string;
-    video?: MuxVideo;
+    video: {
+      asset: {
+        playbackId: string | null;
+      } | null;
+    } | null;
     thumbnailTime?: number;
     videoCaption?: string;
     aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
@@ -1931,7 +1943,7 @@ export type PageBySlugQueryResult = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: homePageQuery
-// Query: *[_type == "homePage"][0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "cta" => {      "type": "cta",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      },      cards[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@,      logos[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...@    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
+// Query: *[_type == "homePage"][0]{  title,  slug,  pageBuilder[]{    _type,    _key,    _type == "hero" => {      "type": "hero",      ...,      video {        asset-> {          playbackId        }      },      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "cta" => {      "type": "cta",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "featureCardsIcon" => {      "type": "featureCardsIcon",      ...@    },    _type == "productList" => {      "type": "productList",      ...@    },    _type == "imageLinkCards" => {      "type": "imageLinkCards",      ...@,      buttons[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      },      cards[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "subscribeNewsletter" => {      "type": "subscribeNewsletter",      ...@    },    _type == "statList" => {      "type": "statList",      ...@    },    _type == "logoList" => {      "type": "logoList",      ...@,      logos[]{        ...,        url{          ...,          internal->{            slug,            _type          }        }      }    },    _type == "timeline" => {      "type": "timeline",      ...@    },    _type == "textImage" => {      "type": "textImage",      ...@    },    _type == "carousel" => {      "type": "carousel",      ...@    },    _type == "jobOffers" => {      "type": "jobOffers",      ...@    },    _type == "videoSection" => {      "type": "videoSection",      ...,      video {        asset-> {          playbackId        }      }    },    _type == "histogram" => {      "type": "histogram",      ...@    }  }}
 export type HomePageQueryResult = {
   title: string | null;
   slug: Slug | null;
@@ -2050,7 +2062,11 @@ export type HomePageQueryResult = {
       crop?: SanityImageCrop;
       _type: "image";
     };
-    video?: MuxVideo;
+    video: {
+      asset: {
+        playbackId: string | null;
+      } | null;
+    } | null;
     buttons: Array<{
       _key: string;
       _type: "button";
@@ -2324,7 +2340,11 @@ export type HomePageQueryResult = {
     eyebrow?: string;
     title?: string;
     subtitle?: string;
-    video?: MuxVideo;
+    video: {
+      asset: {
+        playbackId: string | null;
+      } | null;
+    } | null;
     thumbnailTime?: number;
     videoCaption?: string;
     aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
@@ -2607,9 +2627,9 @@ export type HomePageAuthorQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"page\"] | order(_createdAt asc)[0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageQueryResult;
-    "*[_type == \"page\" && slug.current == $slug][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageBySlugQueryResult;
-    "*[_type == \"homePage\"][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...@\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": HomePageQueryResult;
+    "*[_type == \"page\"] | order(_createdAt asc)[0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...,\n      video {\n        asset-> {\n          playbackId\n        }\n      },\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...,\n      video {\n        asset-> {\n          playbackId\n        }\n      }\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageQueryResult;
+    "*[_type == \"page\" && slug.current == $slug][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...,\n      video {\n        asset-> {\n          playbackId\n        }\n      },\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...,\n      video {\n        asset-> {\n          playbackId\n        }\n      }\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageBySlugQueryResult;
+    "*[_type == \"homePage\"][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...,\n      video {\n        asset-> {\n          playbackId\n        }\n      },\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...,\n      video {\n        asset-> {\n          playbackId\n        }\n      }\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": HomePageQueryResult;
     "*[_type == \"navbar\"][0]{\n  label,\n  columns[]{\n    _type,\n    _key,\n    _type == \"navbarColumn\" => {\n      \"type\": \"navbarColumn\",\n      title,\n      links[]{\n        name,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        },\n        image\n      }\n    },\n    _type == \"navbarLink\" => {\n      \"type\": \"navbarLink\",\n      name,\n      url{\n        ...,\n        internal->{\n          slug,\n          _type\n        }\n      }\n    }\n  },\n  buttons[]{\n    ...,\n    url{\n      ...,\n      internal->{\n        slug,\n        _type\n      }\n    }\n  }\n}": NavbarQueryResult;
     "*[_type == \"footer\"][0]{\n  label,\n  subtitle,\n  download,\n  logo,\n  columns[]{\n    title,\n    links[]{\n      name,\n      url{\n        ...,\n        internal->{\n          slug,\n          _type\n        }\n      }\n    }\n  },\n  contact,\n  contactAuthor->{\n    name,\n    position,\n    email,\n    image,\n    bio\n  },\n  location\n}": FooterQueryResult;
     "*[_type == \"settings\"][0]{\n  siteTitle,\n  siteDescription,\n  logo,\n  contactEmail,\n  socialLinks,\n  floatingButton\n}": SettingsQueryResult;

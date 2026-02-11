@@ -13,22 +13,20 @@ import "@mux/mux-player"
   export let anchor: Hero['anchor'];
  
 
-console.log(video)
 </script>
 
-<section class="relative h-screen min-h-[600px] flex items-center justify-center" id={anchor}>
+<section class="relative h-screen min-h-150 flex items-center justify-center" id={anchor}>
   <!-- Background Media - Fullscreen and Absolute -->
   {#if video?.asset?.playbackId}
-    <div class="absolute inset-0 w-full h-full overflow-hidden">
+    <div class="absolute inset-0 w-full h-full overflow-hidden ">
       <mux-player
         autoplay
         muted
         loop
         playsinline
-        class="w-full h-full object-cover brightness-75"
+        class="w-full h-full object-cover brightness-50 scale-105"
         playback-id={video.asset.playbackId}
       >
-        Your browser does not support the video tag.
       </mux-player>
     </div>
   {:else if image?.asset}

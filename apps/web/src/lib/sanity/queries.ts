@@ -8,7 +8,12 @@ export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)
     _key,
     _type == "hero" => {
       "type": "hero",
-      ...@,
+      ...,
+      video {
+        asset-> {
+          playbackId
+        }
+      },
       buttons[]{
         ...,
         url{
@@ -106,7 +111,12 @@ export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)
     },
     _type == "videoSection" => {
       "type": "videoSection",
-      ...@
+      ...,
+      video {
+        asset-> {
+          playbackId
+        }
+      }
     },
     _type == "histogram" => {
       "type": "histogram",
@@ -123,7 +133,12 @@ export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current ==
     _key,
     _type == "hero" => {
       "type": "hero",
-      ...@,
+      ...,
+      video {
+        asset-> {
+          playbackId
+        }
+      },
       buttons[]{
         ...,
         url{
@@ -221,7 +236,12 @@ export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current ==
     },
     _type == "videoSection" => {
       "type": "videoSection",
-      ...@
+      ...,
+      video {
+        asset-> {
+          playbackId
+        }
+      }
     },
     _type == "histogram" => {
       "type": "histogram",
@@ -238,7 +258,12 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     _key,
     _type == "hero" => {
       "type": "hero",
-      ...@,
+      ...,
+      video {
+        asset-> {
+          playbackId
+        }
+      },
       buttons[]{
         ...,
         url{
@@ -336,7 +361,12 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     },
     _type == "videoSection" => {
       "type": "videoSection",
-      ...@
+      ...,
+      video {
+        asset-> {
+          playbackId
+        }
+      }
     },
     _type == "histogram" => {
       "type": "histogram",
