@@ -36,6 +36,8 @@ pnpm run dev --filter=web
 pnpm run dev --filter=studio
 ```
 
+!! The dev server is always running on port 5173 for Svelte and 3333 for Sanity, do not start a new dev server to test your implementations
+
 ### Build
 
 ```bash

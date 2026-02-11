@@ -27,10 +27,3 @@
 <!-- Le switching mobile sera implémenté quand NavbarMobile sera créé -->
 <NavbarDesktop navbar={props.navbar} settings={props.settings} />
 
-<style>
-  /* Styles globaux pour la navbar si nécessaire */
-  :global(body) {
-    /* Ajout d'un padding top pour permettre au sticky de fonctionner correctement */
-    padding-top: 20px;
-  }
-</style>
