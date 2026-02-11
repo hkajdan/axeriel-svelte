@@ -1,229 +1,266 @@
-# Axeriel Svelte - Guide pour Mistral Vibe
+# Axeriel Svelte - Agent Coding Guide
 
-## 📁 Structure du Projet
+## 📁 Project Structure
 
-Ce projet est un monorepo utilisant Turborepo avec deux applications principales :
+This is a Turborepo monorepo with two main applications:
 
 ```
 axeriel-svelte/
 ├── apps/
-│   ├── web/          # Application frontend SvelteKit
-│   └── studio/       # CMS Sanity (backend)
-├── packages/         # Configurations partagées
-└── AGENTS.md         # Ce fichier
+│   ├── web/          # SvelteKit frontend application
+│   └── studio/       # Sanity CMS backend
+├── packages/         # Shared configurations
+└── AGENTS.md         # This file
 ```
 
-## 🚀 Architecture Technique
+## 🚀 Technical Stack
 
-### Stack Technique
-- **Frontend**: SvelteKit 2.50.1 avec Svelte 5.48.2
+- **Frontend**: SvelteKit 2.50.1 with Svelte 5.48.2
 - **CMS**: Sanity.io 5.7.0
 - **Styling**: Tailwind CSS 4.1.18
-- **Build**: Turborepo + Vite 7.3.1
-- **Gestionnaire de paquets**: pnpm
+- **Build System**: Turborepo + Vite 7.3.1
+- **Package Manager**: pnpm
 
-### Pattern Headless CMS
-- Sanity sert de backend de contenu
-- SvelteKit consomme le contenu via l'API Sanity
-- Prévisualisation en temps réel entre CMS et frontend
-- Génération automatique de types TypeScript
+## 🔧 Build/Lint/Test Commands
 
-## 🤖 Guide pour Mistral Vibe
+### Development
 
-### Points d'Entrée Principaux
-
-#### Application Web (SvelteKit)
-- **Page principale**: `apps/web/src/routes/+page.svelte`
-- **Chargement des données**: `apps/web/src/routes/+page.server.ts`
-- **Client Sanity**: `apps/web/src/lib/sanity/client.ts`
-- **Requêtes GROQ**: `apps/web/src/lib/sanity/queries.ts`
-- **Page Builder**: `apps/web/src/lib/components/PageBuilder.svelte`
-
-#### Studio Sanity
-- **Configuration**: `apps/studio/sanity.config.ts`
-- **Schémas**: `apps/studio/schemaTypes/`
-- **Types générés**: `apps/web/src/lib/sanity/sanity.types.ts`
-
-### Architecture des Composants
-
-Le système utilise un **Page Builder** basé sur des blocs modulaires :
-
-```mermaid
-graph TD
-    PageBuilder --> Hero
-    PageBuilder --> CTA
-    PageBuilder --> FeatureCardsIcon
-    PageBuilder --> ProductList
-    PageBuilder --> ImageLinkCards
-    PageBuilder --> SubscribeNewsletter
-    PageBuilder --> StatList
-    PageBuilder --> LogoList
-    PageBuilder --> Timeline
-    PageBuilder --> TextImage
-    PageBuilder --> Carousel
-    PageBuilder --> JobOffers
-    PageBuilder --> VideoSection
-    PageBuilder --> Histogram
-```
-
-### Workflow de Développement
-
-1. **Modification des schémas Sanity**
-   - Modifier les fichiers dans `apps/studio/schemaTypes/`
-   - Exécuter `pnpm run type` dans le studio pour régénérer les types
-
-2. **Développement Frontend**
-   - Les composants Svelte sont dans `apps/web/src/lib/components/`
-   - Les blocs du Page Builder sont dans `apps/web/src/lib/components/blocks/`
-   - Utiliser les types générés depuis `apps/web/src/lib/sanity/sanity.types.ts`
-
-3. **Requêtes de Données**
-   - Ajouter/modifier les requêtes GROQ dans `apps/web/src/lib/sanity/queries.ts`
-   - Utiliser le client configuré dans `apps/web/src/lib/sanity/client.ts`
-
-## 📝 Conventions et Bonnes Pratiques
-
-### Structure des Fichiers
-
-```
-# Pour les composants Svelte
-apps/web/src/lib/components/
-├── PageBuilder.svelte          # Composant principal du page builder
-└── blocks/                    # Composants de blocs individuels
-    ├── Hero.svelte
-    ├── CTA.svelte
-    └── ...
-
-# Pour les utilitaires Sanity
-apps/web/src/lib/sanity/
-├── client.ts                  # Configuration du client
-├── queries.ts                 # Requêtes GROQ
-└── sanity.types.ts            # Types générés (NE PAS MODIFIER)
-```
-
-### Nommage
-- **Composants**: PascalCase (ex: `Hero.svelte`)
-- **Fichiers utilitaires**: kebab-case (ex: `sanity-client.ts`)
-- **Variables**: camelCase
-- **Types**: PascalCase
-
-### Gestion des Types
-- **NE JAMAIS** modifier directement `sanity.types.ts`
-- Toujours générer les types via la commande Sanity
-- Utiliser les types générés dans tous les composants
-
-## 🔧 Commandes Utiles
-
-### Développement
 ```bash
-# Démarrer les deux applications
+# Start both applications
 pnpm run dev
 
-# Démarrer seulement le frontend
+# Start only frontend
 pnpm run dev --filter=web
 
-# Démarrer seulement le studio
+# Start only studio
 pnpm run dev --filter=studio
 ```
 
 ### Build
+
 ```bash
-# Builder toutes les applications
+# Build all applications
 pnpm run build
 
-# Builder seulement le frontend
+# Build only frontend
 pnpm run build --filter=web
+
+# Build only studio
+pnpm run build --filter=studio
 ```
 
-### Génération de Types
+### Type Checking
+
 ```bash
-# Depuis le dossier studio
-cd apps/studio
-pnpm run type
+# Check types across all applications
+pnpm run check-types
+
+# Check types in web app only
+cd apps/web && pnpm run check
+
+# Check types in watch mode
+cd apps/web && pnpm run check:watch
 ```
 
-### Linting et Formatage
+### Linting
+
 ```bash
-# Linting
+# Run linting across all applications
 pnpm run lint
 
-# Formatage
-pnpm run format
+# Run linting in web app only
+cd apps/web && pnpm run lint
+
+# Fix linting issues automatically
+cd apps/web && eslint . --fix
 ```
 
-## 🎯 Bonnes Pratiques pour Mistral Vibe
+### Formatting
 
-### Quand tu modifies l'application Svelte
+```bash
+# Format all files
+pnpm run format
 
-1. **Toujours** vérifier les types générés dans `sanity.types.ts`
-2. **Utiliser** les composants existants dans `components/blocks/`
-3. **Suivre** la structure de données définie dans les schémas Sanity
-4. **Tester** avec des données mock si nécessaire
+# Format with Prettier
+prettier --write "**/*.{ts,tsx,md,json,html,svelte}"
+```
 
-### Pour les nouvelles fonctionnalités
+### Testing
 
-1. **D'abord** définir le schéma dans Sanity (si nouveau type de contenu)
-2. **Ensuite** générer les types
-3. **Puis** créer le composant Svelte correspondant
-4. **Enfin** l'intégrer dans le PageBuilder
+```bash
+# Run SvelteKit checks
+cd apps/web && pnpm run check
 
-### Gestion des Erreurs
+# No test framework configured - use SvelteKit preview for testing
+cd apps/web && pnpm run preview
+```
 
-Le PageBuilder a déjà un système de gestion d'erreurs intégré :
-- Chargement asynchrone avec états
-- Gestion des composants manquants
-- Affichage des erreurs utilisateur
+## 📝 Code Style Guidelines
 
-## 📚 Documentation Complémentaire
+### Imports
+
+```typescript
+// ✅ Correct - Grouped and ordered imports
+import { onMount } from "svelte";
+import type { PageData } from "./$types";
+import Button from "$lib/components/Button.svelte";
+import { fetchData } from "$lib/utils/api";
+
+// ❌ Incorrect - Ungrouped imports
+import Button from "$lib/components/Button.svelte";
+import { onMount } from "svelte";
+import { fetchData } from "$lib/utils/api";
+```
+
+### Formatting
+
+- **Indentation**: 2 spaces (configured in Prettier)
+- **Semicolons**: No semicolons (Prettier config)
+- **Line Length**: 100 characters max
+- **Quotes**: Single quotes for JS, double quotes for HTML attributes
+
+### Types
+
+```typescript
+// ✅ Correct - Explicit types
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// ❌ Incorrect - Any type
+let user: any;
+```
+
+### Naming Conventions
+
+```typescript
+// Components: PascalCase
+// Hero.svelte, CTA.svelte, FeatureCardsIcon.svelte
+
+// Utility files: kebab-case
+// sanity-client.ts, api-helpers.ts
+
+// Variables: camelCase
+// const userData = {}
+
+// Types/Interfaces: PascalCase
+// interface UserProfile {}
+
+// Constants: UPPER_SNAKE_CASE
+// const MAX_RETRIES = 3
+```
+
+### Error Handling
+
+```typescript
+// ✅ Correct - Proper error handling
+try {
+  const data = await fetchData();
+} catch (error) {
+  console.error("Failed to fetch data:", error);
+  // Handle error gracefully
+}
+
+// ❌ Incorrect - No error handling
+const data = await fetchData();
+```
+
+### Component Structure
+
+```svelte
+<!-- ✅ Correct component structure -->
+<script lang="ts">
+  // Imports first
+  import { onMount } from 'svelte'
+
+  // Props interface
+  export let title: string
+
+  // Reactive statements
+  $: derivedValue = count * 2
+
+  // Lifecycle functions
+  onMount(() => {
+    // Setup code
+  })
+</script>
+
+<!-- Component markup -->
+<div class="component-class">
+  <slot />
+</div>
+
+```
+
+### Tailwind CSS Usage
+
+```svelte
+<!-- ✅ Correct - Use Tailwind classes directly -->
+<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+  Click me
+</button>
+
+<!-- ❌ Incorrect - Avoid inline styles -->
+<button style="background-color: blue; color: white;">
+  Click me
+</button>
+```
+
+### Sanity Integration
+
+```typescript
+// ✅ Correct - Use generated types
+import type { SanityDocument } from "$lib/sanity/sanity.types";
+
+// ❌ Incorrect - Don't modify generated types
+// Never edit apps/web/src/lib/sanity/sanity.types.ts directly
+```
+
+## 🎯 Best Practices for Agentic Coding
+
+### When Modifying Svelte Application
+
+1. **Always** check generated types in `sanity.types.ts`
+2. **Use** existing components in `components/blocks/`
+3. **Follow** data structure defined in Sanity schemas
+4. **Test** with mock data when necessary
+
+### For New Features
+
+1. **First** define schema in Sanity (if new content type)
+2. **Then** generate types with `pnpm run type`
+3. **Next** create corresponding Svelte component
+4. **Finally** integrate into PageBuilder
+
+### Error Handling in PageBuilder
+
+The PageBuilder has built-in error handling:
+
+- Async loading with states
+- Missing component handling
+- User error display
+
+## 📚 Additional Documentation
 
 - [SvelteKit Documentation](https://kit.svelte.dev/docs)
 - [Sanity Documentation](https://www.sanity.io/docs)
 - [Turborepo Documentation](https://turborepo.dev/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 
-## 🔄 Intégration MCP Svelte
+## ⚠️ Important Notes
 
-Ce projet utilise le MCP (Mistral Coding Protocol) pour Svelte. Voici comment l'utiliser :
+1. **Never modify** auto-generated files
+2. **Always** verify version compatibility
+3. **Test** changes in isolated environment
+4. **Document** significant changes
 
-### Configuration de Base
+## 🚀 Next Steps
 
-Le fichier `apps/web/AGENTS.md` contient la configuration de base pour le MCP Svelte. Voici les points clés :
+1. Implement full content retrieval from Sanity
+2. Build pages based on existing schemas
+3. Create missing Svelte components for blocks
+4. Implement complete page builder system
 
-1. **Version de Svelte**: 5.48.2
-2. **Framework**: SvelteKit 2.50.1
-3. **Styling**: Tailwind CSS 4.1.18
-4. **Structure**: Monorepo avec Turborepo
-
-### Bonnes Pratiques MCP
-
-1. **Toujours** utiliser les types générés par Sanity
-2. **Privilégier** les composants existants avant d'en créer de nouveaux
-3. **Respecter** l'architecture du Page Builder
-4. **Utiliser** les requêtes GROQ existantes quand possible
-
-### Exemple de Workflow MCP
-
-```mermaid
-sequenceDiagram
-    Mistral Vibe->>Sanity: Vérifie les schémas
-    Sanity->>Mistral Vibe: Retourne les types
-    Mistral Vibe->>Svelte: Crée/Modifie les composants
-    Svelte->>Sanity: Utilise les données via l'API
-    Mistral Vibe->>Utilisateur: Retourne le code généré
-```
-
-## ⚠️ Points d'Attention
-
-1. **Ne pas modifier** les fichiers générés automatiquement
-2. **Toujours** vérifier la compatibilité des versions
-3. **Tester** les modifications dans un environnement isolé
-4. **Documenter** les changements significatifs
-
-## 🚀 Prochaines Étapes
-
-1. Implémenter la récupération complète de contenu depuis Sanity
-2. Construire les pages basées sur les schémas existants
-3. Créer les composants Svelte manquants pour les blocs
-4. Implémenter le système de page builder complet
-
-_Last updated: 2026-01-30_
+_Last updated: 2026-02-11_

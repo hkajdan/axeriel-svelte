@@ -10,8 +10,8 @@
 
 </script>
 
-<nav class="sticky z-50 bg-white rounded-xl mx-auto max-w-7xl  shadow-sm ">
-  <div class="relative flex items-center pl-6  justify-between">
+<nav class="sticky z-50 bg-white rounded-xl mx-auto max-w-6xl shadow-sm ">
+  <div class="relative flex items-center pl-6 justify-between">
     <!-- Logo -->
     <div class="flex z-50">
       {#if props.settings?.logo?.asset}
