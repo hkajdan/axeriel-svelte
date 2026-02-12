@@ -4,6 +4,7 @@
   import './layout.css'
   import Navbar from '$lib/components/layout/Navbar.svelte'
   import { onMount } from 'svelte'
+  import { onNavigate } from '$app/navigation'
   
   const {children, data}: LayoutProps = $props()
   const {previewEnabled, navbar, footer, settings} = data
@@ -24,6 +25,16 @@
       console.warn('Footer data is missing')
     }
   })
+  onNavigate((navigation) => {
+	if (!document.startViewTransition) return;
+
+	return new Promise((resolve) => {
+		document.startViewTransition(async () => {
+			resolve();
+			await navigation.complete;
+		});
+	});
+});
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
