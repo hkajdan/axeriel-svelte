@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { Settings, Navbar } from '$lib/sanity/sanity.types';
   import NavbarDesktop from './NavbarDesktop.svelte';
+  import NavbarMobile from './NavbarMobile.svelte';
+  import { onMount, onDestroy } from 'svelte';
   
   let props = $props<{
     settings: Settings;
@@ -8,22 +10,37 @@
     isMobile?: boolean;
   }>();
 
-  // Logique pour détecter si c'est mobile (à implémenter plus tard) On pourrait utiliser un store ou un media query
-  // Pour l'instant, on utilise une prop isMobile qui peut être passée
-  // ou on pourrait utiliser une approche plus sophistiquée avec onMount et window.innerWidth
 
-  // Component NavbarMobile à créer plus tard
-  // import NavbarMobile from './NavbarMobile.svelte';
 
-  // Logique de switching entre desktop et mobile
-  // if (props.isMobile) {
-  //   <NavbarMobile navbar={props.navbar} settings={props.settings} />
-  // } else {
-  //   <NavbarDesktop navbar={props.navbar} settings={props.settings} />
-  // }
+  // Logic to detect if it's mobile
+  let isMobile = $state(false);
+
+  onMount(() => {
+    if (typeof window !== 'undefined') {
+      // Check if mobile on initial load
+      checkIfMobile();
+      
+      // Add resize listener
+      window.addEventListener('resize', checkIfMobile);
+    }
+  });
+
+  onDestroy(() => {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('resize', checkIfMobile);
+    }
+  });
+
+  const checkIfMobile = () => {
+    if (typeof window !== 'undefined') {
+      isMobile = window.innerWidth < 1024; // Tailwind's lg breakpoint
+    }
+  };
 </script>
 
-<!-- Pour l'instant, on utilise uniquement NavbarDesktop -->
-<!-- Le switching mobile sera implémenté quand NavbarMobile sera créé -->
-<NavbarDesktop navbar={props.navbar} settings={props.settings} />
+{#if isMobile}
+  <NavbarMobile navbar={props.navbar} settings={props.settings} />
+{:else}
+  <NavbarDesktop navbar={props.navbar} settings={props.settings} />
+{/if}
 
