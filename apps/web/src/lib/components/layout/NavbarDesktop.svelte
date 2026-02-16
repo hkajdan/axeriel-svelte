@@ -92,23 +92,23 @@
             
              <!-- Submenu panel - only appears if links exist -->
              {#if column.links && column.links.length > 0}
-               <div class="absolute left-0 mt-4 w-full bg-white rounded-b-md shadow-lg opacity-0 invisible transition-all duration-200 z-40"
+               <div class="absolute left-0 -mt-2 w-full bg-white rounded-b-md shadow-lg opacity-0 invisible transition-all duration-200 -z-10"
                     class:group-hover:opacity-100={showSubmenu}
                     class:group-hover:visible={showSubmenu}
                     class:opacity-100={!showSubmenu && false}
                     class:visible={!showSubmenu && false}
                >
-                <div class="flex h-80 w-full mx-auto p-4">
+                <div class="flex h-80 space-x-4 w-full p-4 pt-6">
                    {#each column.links as link (link._key || `link-${link.name}-${link.description}`)}
                      <a 
                        href={resolveSanityUrl(link.url)}
-                       class="flex-1 p-4 flex flex-row items-center transition-colors relative rounded-md overflow-hidden h-full w-full bg-white hover:bg-gray-50"
+                       class="flex flex-row items-center transition-colors relative rounded-md overflow-hidden h-full w-full bg-white hover:bg-gray-50"
                        onclick={() => showSubmenu = false}
                      >
                       {#if link.image?.asset} <img
                           src={urlFor(link.image).width(200).height(200).url()}
                           alt={link.name || ''}
-                          class="absolute w-full h-full brightness-50 object-cover rounded-md hover:scale-105 transition-transform duration-200 ease-in-out"
+                          class="absolute w-full h-full overflow-hidden brightness-50 object-cover hover:scale-105 transition-transform duration-200 ease-in-out"
                           loading="eager"
                         />
                       {/if}
