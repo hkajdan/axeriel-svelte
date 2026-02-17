@@ -44,8 +44,8 @@ import "@mux/mux-player"
   <div class="absolute inset-0 bg-black/20"></div>
   
   <!-- Text Content - Centered and Responsive -->
-  <div class="relative z-10 container mx-auto px-4 text-center">
-    <div class="max-w-4xl mx-auto space-y-8">
+  <div class="relative z-10 container px-4 text-left pt-20">
+    <div class="max-w-4xl space-y-8">
       {#if badge}
         <span class="inline-block px-4 py-2 text-sm font-medium text-primary-500 bg-blue-100 rounded-full">
           {badge}
@@ -53,7 +53,7 @@ import "@mux/mux-player"
       {/if}
       
       {#if title}
-        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight uppercase text-white">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight uppercase text-white">
           {title}
         </h1>
       {/if}
@@ -63,30 +63,11 @@ import "@mux/mux-player"
           <!-- Rich text rendering would go here -->
           {#each richText as block (block._key)}
             {#if block._type === 'block' && block.children}
-              <p class="text-lg md:text-xl">{block.children[0].text}</p>
+              <p class="text-lg md:text-2xl">{block.children[0].text}</p>
             {/if}
           {/each}
         </div>
       {/if}
       
-      {#if buttons && buttons.length > 0}
-        <div class="flex flex-wrap gap-4 justify-center">
-        {#each buttons as button (button._key)}
-          <a 
-            href={resolveSanityUrl(button.url)}
-            target={getLinkTarget(button.url)}
-            rel={getLinkRel(button.url)}
-            class={`px-6 py-3 rounded-lg font-medium transition-colors 
-              ${button.variant === 'secondary' ? 'bg-white/20 hover:bg-white/30 text-white' : 
-              button.variant === 'outline' ? 'border border-white/50 hover:bg-white/10 text-white' : 
-              button.variant === 'link' ? 'text-white hover:underline' : 
-              'bg-primary-500 text-white hover:bg-blue-700'}`}
-          >
-            {button.text}
-          </a>
-        {/each}
-        </div>
-      {/if}
-    </div>
   </div>
 </section>
