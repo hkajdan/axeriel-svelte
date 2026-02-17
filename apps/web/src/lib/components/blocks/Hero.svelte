@@ -21,6 +21,7 @@ import "@mux/mux-player"
     <div class="absolute inset-0 w-full h-full overflow-hidden ">
       <mux-player
         autoplay
+        disable-tracking
         muted
         loop
         playsinline
