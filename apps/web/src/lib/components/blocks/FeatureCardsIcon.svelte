@@ -1,5 +1,7 @@
 <script lang="ts">
   import type { FeatureCardsIcon } from '$lib/sanity/sanity.types';
+  import { getSectionClasses, getTextColorClass } from '$lib/utils/background-colors';
+  import RichText from '$lib/components/RichText.svelte';
   
   export let eyebrow: FeatureCardsIcon['eyebrow'];
   export let title: FeatureCardsIcon['title'];
@@ -8,40 +10,25 @@
   export let backgroundColor: FeatureCardsIcon['backgroundColor'];
   export let anchor: FeatureCardsIcon['anchor'];
   
-  // Background color classes
-  const bgClasses = {
-    '': 'bg-white',
-    'white': 'bg-white',
-    'light-blue': 'bg-blue-50',
-    'blue': 'bg-blue-600 text-white',
-    'grey': 'bg-gray-100',
-    'light-grey': 'bg-gray-50'
-  };
-  
-  const bgClass = bgClasses[backgroundColor || ''] || bgClasses[''];
+  const sectionClasses = getSectionClasses(backgroundColor || 'white');
+  const textColor = getTextColorClass(backgroundColor || 'white');
 </script>
 
-<section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
+<section class={sectionClasses} id={anchor}>
   <div class="container mx-auto px-4">
     <div class="space-y-12">
       <div class="max-w-3xl mx-auto text-center space-y-4">
-        {#if eyebrow}
-          <p class="text-sm font-medium text-blue-600 uppercase tracking-wider">{eyebrow}</p>
-        {/if}
+         {#if eyebrow}
+           <p class="text-sm font-medium text-primary-500 uppercase tracking-wider">{eyebrow}</p>
+         {/if}
+          
+         {#if title}
+           <h2 class={`text-3xl lg:text-4xl font-bold tracking-tight ${textColor}`}>{title}</h2>
+         {/if}
         
-        {#if title}
-          <h2 class="text-3xl lg:text-4xl font-bold tracking-tight">{title}</h2>
-        {/if}
-        
-        {#if richText}
-          <div class="prose prose-lg max-w-none mx-auto">
-            {#each richText as block}
-              {#if block._type === 'block' && block.children}
-                <p class="text-lg text-gray-600">{block.children[0].text}</p>
-              {/if}
-            {/each}
-          </div>
-        {/if}
+         {#if richText}
+           <RichText value={richText} textClass={textColor} />
+         {/if}
       </div>
       
       {#if cards && cards.length > 0}
@@ -58,15 +45,9 @@
                 <h3 class="text-xl font-semibold mb-3">{card.title}</h3>
               {/if}
               
-              {#if card.richText}
-                <div class="prose prose-sm max-w-none">
-                  {#each card.richText as block}
-                    {#if block.children}
-                      <p class="text-gray-600">{block.children[0].text}</p>
-                    {/if}
-                  {/each}
-                </div>
-              {/if}
+               {#if card.richText}
+                 <RichText value={card.richText} textClass="text-gray-600" />
+               {/if}
             </div>
           {/each}
         </div>

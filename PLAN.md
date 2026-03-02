@@ -91,11 +91,14 @@ Add missing aliases if needed for the background-colors utility to work with exi
 
 ### Per-block specific work
 
+**✅ Completed:**
+
+- `CTA.svelte` — ✅ swap bg/richtext/buttons
+- `FeatureCardsIcon.svelte` — ✅ swap bg/richtext, card richtext too
+- `TextImage.svelte` — ✅ swap bg/richtext (main + rows) + SanityImage for images
+
 **Simple (styling swap only):**
 
-- `CTA.svelte` — swap bg/richtext/buttons
-- `FeatureCardsIcon.svelte` — swap bg/richtext, card richtext too
-- `TextImage.svelte` — swap bg/richtext for section + each row's richtext
 - `LogoList.svelte` — swap bg/richtext, use SanityImage for logos
 - `SubscribeNewsletter.svelte` — swap bg, use RichText for subTitle and helperText
 - `Timeline.svelte` — swap bg/richtext per timeline item

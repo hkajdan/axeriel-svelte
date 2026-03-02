@@ -1,6 +1,9 @@
 <script lang="ts">
   import type { TextImage } from '$lib/sanity/sanity.types';
   import { urlForImage } from '$lib/sanity/image';
+  import { getSectionClasses, getTextColorClass } from '$lib/utils/background-colors';
+  import RichText from '$lib/components/RichText.svelte';
+  import SanityImage from '$lib/components/SanityImage.svelte';
   
   export let title: TextImage['title'];
   export let richText: TextImage['richText'];
@@ -8,53 +11,45 @@
   export let backgroundColor: TextImage['backgroundColor'];
   export let anchor: TextImage['anchor'];
   
-  const bgClasses = {
-    '': 'bg-white',
-    'white': 'bg-white',
-    'light-blue': 'bg-blue-50',
-    'blue': 'bg-blue-600 text-white',
-    'grey': 'bg-gray-100',
-    'light-grey': 'bg-gray-50'
-  };
-  
-  const bgClass = bgClasses[backgroundColor || ''] || bgClasses[''];
+  const sectionClasses = getSectionClasses(backgroundColor || 'white');
+  const textColor = getTextColorClass(backgroundColor || 'white');
 </script>
 
-<section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
+<section class={sectionClasses} id={anchor}>
   <div class="container mx-auto px-4">
     <div class="space-y-12">
-      {#if title}
-        <div class="max-w-3xl mx-auto text-center">
-          <h2 class="text-3xl lg:text-4xl font-bold tracking-tight">{title}</h2>
-        </div>
-      {/if}
-      
-      {#if rows && rows.length > 0}
+        {#if title}
+          <div class="max-w-3xl mx-auto text-center">
+            <h2 class={`text-3xl lg:text-4xl font-bold tracking-tight ${textColor}`}>{title}</h2>
+          </div>
+        {/if}
+        
+        {#if richText}
+          <div class="max-w-3xl mx-auto text-center mt-6">
+            <RichText value={richText} textClass={textColor} />
+          </div>
+        {/if}
+        
+       {#if rows && rows.length > 0}
         <div class="space-y-16">
           {#each rows as row, index}
             <div class="grid lg:grid-cols-2 gap-12 items-center">
               {#if row.imagePosition === 'right'}
               <div class="order-2 lg:order-1">
-                {#if row.richText}
-                  <div class="prose prose-lg max-w-none">
-                    {#each row.richText as block}
-                      {#if block._type === 'block' && block.children}
-                        <p class="text-lg text-gray-600">{block.children[0].text}</p>
-                      {/if}
-                    {/each}
-                  </div>
-                {/if}
+               {#if row.richText}
+                 <RichText value={row.richText} textClass="text-gray-600" />
+               {/if}
               </div>
                 
-                <div class="order-1 lg:order-2">
-                  {#if row.image?.asset}
-                    <img 
-                      src={urlForImage(row.image).url()}
-                      alt={title || `Content image ${index + 1}`}
-                      class="w-full h-auto rounded-lg shadow-lg object-cover aspect-[16/9]"
-                    />
-                  {/if}
-                </div>
+                 <div class="order-1 lg:order-2">
+                   {#if row.image}
+                     <SanityImage 
+                       image={row.image}
+                       alt={title || `Content image ${index + 1}`}
+                       imgClass="w-full h-auto rounded-lg shadow-lg object-cover aspect-[16/9]"
+                     />
+                   {/if}
+                 </div>
               {:else}
                 <div>
                   {#if row.image?.asset}
@@ -67,15 +62,9 @@
                 </div>
                 
                 <div>
-                  {#if row.richText}
-                    <div class="prose prose-lg max-w-none">
-                      {#each row.richText as block}
-                        {#if block._type === 'block' && block.children}
-                          <p class="text-lg text-gray-600">{block.children[0].text}</p>
-                        {/if}
-                      {/each}
-                    </div>
-                  {/if}
+                 {#if row.richText}
+                   <RichText value={row.richText} textClass="text-gray-600" />
+                 {/if}
                 </div>
               {/if}
             </div>
