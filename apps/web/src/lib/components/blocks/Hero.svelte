@@ -1,8 +1,11 @@
 <script lang="ts">
-import "@mux/mux-player"
+  import "@mux/mux-player"
   import type { Hero } from '$lib/sanity/sanity.types';
   import { urlForImage } from '$lib/sanity/image';
   import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links';
+  import RichText from '$lib/components/RichText.svelte';
+  import SanityButtons from '$lib/components/SanityButtons.svelte';
+  import SanityImage from '$lib/components/SanityImage.svelte';
  
   export let badge: Hero['badge'];
   export let title: Hero['title'];
@@ -17,7 +20,7 @@ import "@mux/mux-player"
 
 <section class="relative h-screen min-h-150 flex items-center justify-center" id={anchor}>
   <!-- Background Media - Fullscreen and Absolute -->
-  {#if video?.asset?.playbackId}
+  {#if video?.asset && (video.asset as any)?.playbackId}
     <div class="absolute inset-0 w-full h-full overflow-hidden ">
       <mux-player
         autoplay
@@ -26,17 +29,16 @@ import "@mux/mux-player"
         loop
         playsinline
         class="w-full h-full object-cover brightness-50 scale-105"
-        playback-id={video.asset.playbackId}
+        playback-id={(video.asset as any).playbackId}
       >
       </mux-player>
     </div>
   {:else if image?.asset}
-    <div class="absolute inset-0 w-full h-full overflow-hidden">
-      <img
-        src={urlForImage(image).url()}
+    <div class="absolute inset-0 w-full h-full overflow-hidden" style="brightness(0.6)">
+      <SanityImage
+        image={image}
         alt={title || 'Hero image'}
-        class="w-full h-full object-cover brightness-75"
-        style="brightness(0.6)"
+        imgClass="w-full h-full object-cover brightness-75"
       />
     </div>
   {/if}
@@ -61,12 +63,13 @@ import "@mux/mux-player"
       
       {#if richText}
         <div class="prose prose-lg max-w-none text-white/90">
-          <!-- Rich text rendering would go here -->
-          {#each richText as block (block._key)}
-            {#if block._type === 'block' && block.children}
-              <p class="text-lg md:text-2xl">{block.children[0].text}</p>
-            {/if}
-          {/each}
+          <RichText value={richText} textClass="text-lg md:text-2xl text-white/90" />
+        </div>
+      {/if}
+      
+      {#if buttons && buttons.length > 0}
+        <div class="mt-8">
+          <SanityButtons buttons={buttons} justify="start" />
         </div>
       {/if}
       

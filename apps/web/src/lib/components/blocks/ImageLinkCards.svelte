@@ -2,7 +2,11 @@
   import type { ImageLinkCards } from '$lib/sanity/sanity.types';
   import { urlForImage } from '$lib/sanity/image';
   import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links';
- 
+  import { getSectionClasses } from '$lib/utils/background-colors';
+  import RichText from '$lib/components/RichText.svelte';
+  import SanityButtons from '$lib/components/SanityButtons.svelte';
+  import SanityImage from '$lib/components/SanityImage.svelte';
+  
   export let eyebrow: ImageLinkCards['eyebrow'];
   export let title: ImageLinkCards['title'];
   export let richText: ImageLinkCards['richText'];
@@ -10,18 +14,8 @@
   export let cards: ImageLinkCards['cards'];
   export let backgroundColor: ImageLinkCards['backgroundColor'];
   export let anchor: ImageLinkCards['anchor'];
- 
-  // Background color classes
-  const bgClasses = {
-    '': 'bg-white',
-    'white': 'bg-white',
-    'light-blue': 'bg-blue-50',
-    'blue': 'bg-blue-600 text-white',
-    'grey': 'bg-gray-100',
-    'light-grey': 'bg-gray-50'
-  };
- 
-  const bgClass = bgClasses[backgroundColor || ''] || bgClasses[''];
+  
+  const bgClass = getSectionClasses(backgroundColor || '');
 </script>
 
 <section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
@@ -38,30 +32,13 @@
         
         {#if richText}
           <div class="prose prose-lg max-w-none mx-auto">
-            {#each richText as block}
-              {#if block._type === 'block' && block.children}
-                <p class="text-lg text-gray-600">{block.children[0].text}</p>
-              {/if}
-            {/each}
+            <RichText value={richText} textClass="text-lg text-gray-600" />
           </div>
         {/if}
         
         {#if buttons && buttons.length > 0}
           <div class="flex flex-wrap justify-center gap-4">
-            {#each buttons as button}
-              <a 
-                href={resolveSanityUrl(button.url)}
-                target={getLinkTarget(button.url)}
-                rel={getLinkRel(button.url)}
-                class={`px-6 py-3 rounded-lg font-medium transition-colors 
-                  ${button.variant === 'secondary' ? 'bg-gray-100 hover:bg-gray-200' : 
-                  button.variant === 'outline' ? 'border border-blue-600 hover:bg-blue-50' : 
-                  button.variant === 'link' ? 'text-blue-600 hover:underline' : 
-                  'bg-blue-600 text-white hover:bg-blue-700'}`}
-              >
-                {button.text}
-              </a>
-            {/each}
+            <SanityButtons buttons={buttons} justify="center" />
           </div>
         {/if}
       </div>
@@ -75,15 +52,15 @@
               rel={getLinkRel(card.url)}
               class="block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden"
             >
-              {#if card.image?.asset}
-                <div class="aspect-video bg-gray-100">
-                  <img 
-                    src={urlForImage(card.image).url()}
-                    alt={card.title || 'Card image'}
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-              {/if}
+               {#if card.image?.asset}
+                 <div class="aspect-video bg-gray-100">
+                   <SanityImage 
+                     image={card.image}
+                     alt={card.title || 'Card image'}
+                     imgClass="w-full h-full object-cover"
+                   />
+                 </div>
+               {/if}
               
               <div class="p-6">
                 {#if card.title}

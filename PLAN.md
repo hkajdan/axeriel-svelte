@@ -104,10 +104,13 @@ Add missing aliases if needed for the background-colors utility to work with exi
 
 **Medium (some logic):** (already done in Hero, replicate pattern)
 
-**Medium (some logic):**
+**✅ Completed:**
 
-- `Hero.svelte` — swap richtext, add buttons back (currently missing)
-- `ImageLinkCards.svelte` — swap bg/richtext/buttons, use SanityImage for card images
+- `Hero.svelte` — ✅ swap richtext, add buttons back
+- `ImageLinkCards.svelte` — ✅ swap bg/richtext/buttons, use SanityImage for card images
+
+**Complex:**
+
 - `StatList.svelte` — swap bg/richtext, add IntersectionObserver counter animation
 
 **Complex:**
