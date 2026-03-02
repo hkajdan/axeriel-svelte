@@ -117,10 +117,7 @@ Add missing aliases if needed for the background-colors utility to work with exi
 **✅ Completed:**
 
 - `Histogram.svelte` — ✅ add IntersectionObserver for bar animation
-
-**Complex:**
-
-- `StatList.svelte` — swap bg/richtext, add IntersectionObserver counter animation
+- `StatList.svelte` — ✅ swap bg/richtext, add IntersectionObserver counter animation
 
 **Next Steps:**
 
