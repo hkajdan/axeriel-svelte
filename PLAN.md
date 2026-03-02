@@ -109,8 +109,14 @@ Add missing aliases if needed for the background-colors utility to work with exi
 - `Hero.svelte` — ✅ swap richtext, add buttons back
 - `ImageLinkCards.svelte` — ✅ swap bg/richtext/buttons, use SanityImage for card images
 
+**✅ Completed:**
+
+- `Carousel.svelte` — ✅ add slide state, controls, navigation, transition
+
 **Complex:**
 
+- `ProductList.svelte` — needs product data resolution, accordion UI
+- `Histogram.svelte` — add IntersectionObserver for bar animation
 - `StatList.svelte` — swap bg/richtext, add IntersectionObserver counter animation
 
 **Complex:**
