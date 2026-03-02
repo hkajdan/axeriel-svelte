@@ -1,24 +1,34 @@
 <script lang="ts">
   import type { ProductList } from '$lib/sanity/sanity.types';
+  import { getSectionClasses } from '$lib/utils/background-colors';
   
-  export let eyebrow: ProductList['eyebrow'];
-  export let title: ProductList['title'];
-  export let subtitle: ProductList['subtitle'];
-  export let products: ProductList['products'];
-  export let backgroundColor: ProductList['backgroundColor'];
-  export let anchor: ProductList['anchor'];
+  let { eyebrow, title, subtitle, products, backgroundColor, anchor }: {
+    eyebrow: ProductList['eyebrow'];
+    title: ProductList['title'];
+    subtitle: ProductList['subtitle'];
+    products: Array<{
+      _ref: string;
+      _key: string;
+      productData?: any; // Product data will be populated by the page query
+    }>;
+    backgroundColor: ProductList['backgroundColor'];
+    anchor: ProductList['anchor'];
+  } = $props();
   
-  // Background color classes
-  const bgClasses = {
-    '': 'bg-white',
-    'white': 'bg-white',
-    'light-blue': 'bg-blue-50',
-    'blue': 'bg-blue-600 text-white',
-    'grey': 'bg-gray-100',
-    'light-grey': 'bg-gray-50'
-  };
+  let bgClass = $derived(getSectionClasses(backgroundColor || ''));
   
-  const bgClass = bgClasses[backgroundColor || ''] || bgClasses[''];
+  // Accordion state
+  let expandedProduct: string | null = null;
+  
+
+  
+   function toggleProduct(productId: string) {
+     if (expandedProduct === productId) {
+       expandedProduct = null;
+     } else {
+       expandedProduct = productId;
+     }
+   }
 </script>
 
 <section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
@@ -38,25 +48,74 @@
         {/if}
       </div>
       
-      {#if products && products.length > 0}
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {#each products as product}
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-              <div class="space-y-4">
-                <h3 class="text-xl font-semibold">
-                  {product._ref}
-                </h3>
-                <p class="text-gray-600">Product reference: {product._ref}</p>
-                <!-- In a real implementation, you would fetch and display the actual product data -->
-              </div>
-            </div>
-          {/each}
-        </div>
-      {:else}
-        <div class="text-center py-8">
-          <p class="text-gray-500">No products available</p>
-        </div>
-      {/if}
+       {#if products && products.length > 0}
+         <div class="space-y-4">
+           {#each products as product}
+             <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+               <!-- Product Header -->
+               <button
+                 onclick={() => toggleProduct(product._ref)}
+                 class="w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 transition-colors"
+               >
+                 <div>
+                   <h3 class="text-xl font-semibold">{product._ref}</h3>
+                   <p class="text-gray-600 text-sm">Product reference: {product._ref}</p>
+                 </div>
+                 <svg 
+                   class={`w-5 h-5 text-gray-500 transition-transform ${expandedProduct === product._ref ? 'rotate-180' : ''}`}
+                   fill="none" 
+                   stroke="currentColor" 
+                   viewBox="0 0 24 24"
+                 >
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                 </svg>
+               </button>
+               
+               <!-- Product Details Accordion -->
+               {#if expandedProduct === product._ref}
+                 <div class="p-6 border-t border-gray-100">
+                   {#if product.productData}
+                     <div class="space-y-4">
+                       {#if product.productData.title}
+                         <h4 class="text-lg font-medium">{product.productData.title}</h4>
+                       {/if}
+                       
+                       {#if product.productData.description}
+                         <p class="text-gray-600">{product.productData.description}</p>
+                       {/if}
+                       
+                       {#if product.productData.price}
+                         <div class="font-semibold text-blue-600">
+                           Price: ${product.productData.price}
+                         </div>
+                       {/if}
+                       
+                       {#if product.productData.features && product.productData.features.length > 0}
+                         <div class="space-y-2">
+                           <h5 class="font-medium">Features:</h5>
+                           <ul class="list-disc list-inside text-gray-600">
+                             {#each product.productData.features as feature}
+                               <li>{feature}</li>
+                             {/each}
+                           </ul>
+                         </div>
+                       {/if}
+                     </div>
+                   {:else}
+                     <div class="text-center py-4">
+                       <p class="text-gray-500">No product details available</p>
+                     </div>
+                   {/if}
+                 </div>
+               {/if}
+             </div>
+           {/each}
+         </div>
+       {:else}
+         <div class="text-center py-8">
+           <p class="text-gray-500">No products available</p>
+         </div>
+       {/if}
     </div>
   </div>
 </section>

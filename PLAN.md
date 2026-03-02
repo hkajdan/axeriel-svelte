@@ -112,12 +112,19 @@ Add missing aliases if needed for the background-colors utility to work with exi
 **✅ Completed:**
 
 - `Carousel.svelte` — ✅ add slide state, controls, navigation, transition
+- `ProductList.svelte` — ✅ needs product data resolution, accordion UI
+
+**✅ Completed:**
+
+- `Histogram.svelte` — ✅ add IntersectionObserver for bar animation
 
 **Complex:**
 
-- `ProductList.svelte` — needs product data resolution, accordion UI
-- `Histogram.svelte` — add IntersectionObserver for bar animation
 - `StatList.svelte` — swap bg/richtext, add IntersectionObserver counter animation
+
+**Next Steps:**
+
+- Run `pnpm run type` to regenerate Sanity types with the updated product list query
 
 **Complex:**
 

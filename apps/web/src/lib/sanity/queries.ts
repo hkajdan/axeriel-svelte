@@ -43,10 +43,22 @@ export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)
       "type": "featureCardsIcon",
       ...@
     },
-    _type == "productList" => {
-      "type": "productList",
-      ...@
-    },
+     _type == "productList" => {
+       "type": "productList",
+       ...@,
+       products[]{
+         _ref,
+         _key,
+         "productData": *[_type == "product" && _id == ^._ref][0]{
+           _id,
+           title,
+           description,
+           price,
+           features,
+           images
+         }
+       }
+     },
     _type == "imageLinkCards" => {
       "type": "imageLinkCards",
       ...@,
@@ -168,10 +180,22 @@ export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current ==
       "type": "featureCardsIcon",
       ...@
     },
-    _type == "productList" => {
-      "type": "productList",
-      ...@
-    },
+     _type == "productList" => {
+       "type": "productList",
+       ...@,
+       products[]{
+         _ref,
+         _key,
+         "productData": *[_type == "product" && _id == ^._ref][0]{
+           _id,
+           title,
+           description,
+           price,
+           features,
+           images
+         }
+       }
+     },
     _type == "imageLinkCards" => {
       "type": "imageLinkCards",
       ...@,
@@ -293,10 +317,22 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
       "type": "featureCardsIcon",
       ...@
     },
-    _type == "productList" => {
-      "type": "productList",
-      ...@
-    },
+     _type == "productList" => {
+       "type": "productList",
+       ...@,
+       products[]{
+         _ref,
+         _key,
+         "productData": *[_type == "product" && _id == ^._ref][0]{
+           _id,
+           title,
+           description,
+           price,
+           features,
+           images
+         }
+       }
+     },
     _type == "imageLinkCards" => {
       "type": "imageLinkCards",
       ...@,
