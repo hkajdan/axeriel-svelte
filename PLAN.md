@@ -99,11 +99,10 @@ Add missing aliases if needed for the background-colors utility to work with exi
 - `LogoList.svelte` — ✅ swap bg/richtext + SanityImage for logos
 - `SubscribeNewsletter.svelte` — ✅ swap bg, use RichText for subTitle and helperText
 - `Timeline.svelte` — ✅ swap bg/richtext per timeline item
+- `JobOffers.svelte` — ✅ swap bg/richtext
+- `VideoSection.svelte` — ✅ swap bg, add actual `<mux-player>`
 
-**Simple (styling swap only):**
-
-- `JobOffers.svelte` — swap bg/richtext
-- `VideoSection.svelte` — swap bg, add actual `<mux-player>` (already done in Hero, replicate pattern)
+**Medium (some logic):** (already done in Hero, replicate pattern)
 
 **Medium (some logic):**
 

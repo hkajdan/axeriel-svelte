@@ -1,5 +1,7 @@
 <script lang="ts">
+  import "@mux/mux-player"
   import type { VideoSection } from '$lib/sanity/sanity.types';
+  import { getSectionClasses } from '$lib/utils/background-colors';
   
   export let eyebrow: VideoSection['eyebrow'];
   export let title: VideoSection['title'];
@@ -13,16 +15,7 @@
   export let backgroundColor: VideoSection['backgroundColor'];
   export let anchor: VideoSection['anchor'];
   
-  const bgClasses = {
-    '': 'bg-white',
-    'white': 'bg-white',
-    'light-blue': 'bg-blue-50',
-    'blue': 'bg-blue-600 text-white',
-    'grey': 'bg-gray-100',
-    'light-grey': 'bg-gray-50'
-  };
-  
-  const bgClass = bgClasses[backgroundColor || ''] || bgClasses[''];
+  const bgClass = getSectionClasses(backgroundColor || '');
   
   const aspectClasses = {
     '16/9': 'aspect-video',
@@ -51,21 +44,26 @@
         {/if}
       </div>
       
-      {#if video}
-        <div class="max-w-4xl mx-auto">
-          <div class={`${aspectClass} bg-gray-200 rounded-lg flex items-center justify-center`}>
-            <div class="text-center">
-              <p class="text-gray-500">Video Player</p>
-              <p class="text-sm text-gray-400">Playback ID: {(video.asset as any)?.playbackId}</p>
-              <p class="text-sm text-gray-400">Autoplay: {autoplay ? 'Yes' : 'No'}, Loop: {loop ? 'Yes' : 'No'}</p>
-            </div>
-          </div>
-          
-          {#if videoCaption}
-            <p class="text-center text-gray-600 mt-4">{videoCaption}</p>
-          {/if}
-        </div>
-      {/if}
+       {#if video?.asset && (video.asset as any)?.playbackId}
+         <div class="max-w-4xl mx-auto">
+           <div class={aspectClass}>
+             <mux-player
+               playback-id={(video.asset as any).playbackId}
+               autoplay={autoplay}
+               loop={loop}
+               muted
+               playsinline
+               class="w-full h-full rounded-lg"
+               {thumbnailTime}
+             >
+             </mux-player>
+           </div>
+           
+           {#if videoCaption}
+             <p class="text-center text-gray-600 mt-4">{videoCaption}</p>
+           {/if}
+         </div>
+       {/if}
     </div>
   </div>
 </section>
