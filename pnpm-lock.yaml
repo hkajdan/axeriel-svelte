@@ -90,6 +90,12 @@ importers:
       '@mux/mux-player':
         specifier: ^3.10.2
         version: 3.10.2(react@19.2.4)
+      '@portabletext/svelte':
+        specifier: ^3.0.1
+        version: 3.0.1(svelte@5.49.1)
+      '@portabletext/types':
+        specifier: ^4.0.1
+        version: 4.0.1
       '@sanity/client':
         specifier: ^7.14.1
         version: 7.14.1(debug@4.4.3)
@@ -1844,13 +1850,26 @@ packages:
     resolution: {integrity: sha512-cH5ZleN0nw3W7xYBvOfMoAhGdkz6XFGhk0yuXcAZX9rwrtWb6qfQVLcieGC5tmIsrDFjQeVMro64vIFg5tz6vA==}
     engines: {node: '>=20.19 <22 || >=22.12'}
 
+  '@portabletext/svelte@3.0.1':
+    resolution: {integrity: sha512-zti69Y0kTSOijZmdQQp8emuDM5IYn2zZFPoRH37sCN7bu3QRCQgFqiMouGw+m7x3z7BgaaBLKsyvkDHrA8QnzA==}
+    peerDependencies:
+      svelte: ^5.0.0
+
   '@portabletext/to-html@5.0.1':
     resolution: {integrity: sha512-cLaxxEoe3e8Py/t+hZEw2+sOIWPCpO9fyruUlRdZMQ65IkdyFaJEJlXkpNDqwV0+BO2GVJqaQVM5T6MeGdt8Xg==}
     engines: {node: '>=20.19 <22 || >=22.12'}
 
+  '@portabletext/toolkit@2.0.18':
+    resolution: {integrity: sha512-m3v2WwKQTNNk5BFZlUuPuCW0Zi6iDSpwrium4Ej5L2FHDXhFuwAyEMPXDrvwPvqjES/oJzcwmdKLMhYa44T9BQ==}
+    engines: {node: ^14.13.1 || >=16.0.0}
+
   '@portabletext/toolkit@5.0.1':
     resolution: {integrity: sha512-qcwnWd15J2Ziwi0YfWHRx+DRqp87cPb+EBcYuEbDW0ChZwwxCdfIjDazzFpQeXnqhJn8own1c8UB3iHB61DiWg==}
     engines: {node: '>=20.19 <22 || >=22.12'}
+
+  '@portabletext/types@2.0.15':
+    resolution: {integrity: sha512-2e6i2gSQsrA/5OL5Gm4/9bxB9MNO73Fa47zj+0mT93xkoQUCGCWX5fZh1YBJ86hszaRYlqvqG08oULxvvPPp/Q==}
+    engines: {node: ^14.13.1 || >=16.0.0 || >=18.0.0}
 
   '@portabletext/types@4.0.1':
     resolution: {integrity: sha512-L8PZjVjmdKpW+82c1oNqGMqCOtQD2xORqJfr6Is7X5XXbz38eLYY79IM/1ok+Esf/iGOPtEYORdcf0ETmsWYew==}
@@ -8962,14 +8981,25 @@ snapshots:
 
   '@portabletext/schema@2.1.1': {}
 
+  '@portabletext/svelte@3.0.1(svelte@5.49.1)':
+    dependencies:
+      '@portabletext/toolkit': 2.0.18
+      svelte: 5.49.1
+
   '@portabletext/to-html@5.0.1':
     dependencies:
       '@portabletext/toolkit': 5.0.1
       '@portabletext/types': 4.0.1
 
+  '@portabletext/toolkit@2.0.18':
+    dependencies:
+      '@portabletext/types': 2.0.15
+
   '@portabletext/toolkit@5.0.1':
     dependencies:
       '@portabletext/types': 4.0.1
+
+  '@portabletext/types@2.0.15': {}
 
   '@portabletext/types@4.0.1': {}
 
