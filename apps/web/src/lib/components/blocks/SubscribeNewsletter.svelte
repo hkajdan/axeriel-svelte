@@ -1,5 +1,7 @@
 <script lang="ts">
   import type { SubscribeNewsletter } from '$lib/sanity/sanity.types';
+  import { getSectionClasses } from '$lib/utils/background-colors';
+  import RichText from '$lib/components/RichText.svelte';
   
   export let title: SubscribeNewsletter['title'];
   export let subTitle: SubscribeNewsletter['subTitle'];
@@ -7,17 +9,7 @@
   export let backgroundColor: SubscribeNewsletter['backgroundColor'];
   export let anchor: SubscribeNewsletter['anchor'];
   
-  // Background color classes
-  const bgClasses = {
-    '': 'bg-white',
-    'white': 'bg-white',
-    'light-blue': 'bg-blue-50',
-    'blue': 'bg-blue-600 text-white',
-    'grey': 'bg-gray-100',
-    'light-grey': 'bg-gray-50'
-  };
-  
-  const bgClass = bgClasses[backgroundColor || ''] || bgClasses[''];
+  const bgClass = getSectionClasses(backgroundColor || '');
 </script>
 
 <section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
@@ -29,11 +21,7 @@
       
       {#if subTitle}
         <div class="prose prose-lg max-w-none mx-auto">
-          {#each subTitle as block}
-            {#if block._type === 'block' && block.children}
-              <p class="text-lg text-gray-600">{block.children[0].text}</p>
-            {/if}
-          {/each}
+          <RichText value={subTitle} textClass="text-lg text-gray-600" />
         </div>
       {/if}
       
@@ -54,13 +42,9 @@
         </div>
         
         {#if helperText}
-          <p class="text-sm text-gray-500">
-            {#each helperText as block}
-              {#if block._type === 'block' && block.children}
-                {block.children[0].text}
-              {/if}
-            {/each}
-          </p>
+          <div class="text-sm text-gray-500">
+            <RichText value={helperText} textClass="text-sm text-gray-500" />
+          </div>
         {/if}
       </form>
     </div>

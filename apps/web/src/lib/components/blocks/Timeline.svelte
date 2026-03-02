@@ -1,6 +1,9 @@
 <script lang="ts">
   import type { Timeline } from '$lib/sanity/sanity.types';
   import { urlForImage } from '$lib/sanity/image';
+  import { getSectionClasses } from '$lib/utils/background-colors';
+  import RichText from '$lib/components/RichText.svelte';
+  import SanityImage from '$lib/components/SanityImage.svelte';
   
   export let badge: Timeline['badge'];
   export let title: Timeline['title'];
@@ -8,16 +11,7 @@
   export let backgroundColor: Timeline['backgroundColor'];
   export let anchor: Timeline['anchor'];
   
-  const bgClasses = {
-    '': 'bg-white',
-    'white': 'bg-white',
-    'light-blue': 'bg-blue-50',
-    'blue': 'bg-blue-600 text-white',
-    'grey': 'bg-gray-100',
-    'light-grey': 'bg-gray-50'
-  };
-  
-  const bgClass = bgClasses[backgroundColor || ''] || bgClasses[''];
+  const bgClass = getSectionClasses(backgroundColor || '');
 </script>
 
 <section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
@@ -52,23 +46,19 @@
                   <h3 class="text-xl font-semibold">{item.title}</h3>
                 {/if}
                 
-                {#if item.richText}
-                  <div class="prose prose-sm max-w-none">
-                    {#each item.richText as block}
-                      {#if block._type === 'block' && block.children}
-                        <p class="text-gray-600">{block.children[0].text}</p>
-                      {/if}
-                    {/each}
-                  </div>
-                {/if}
-                
-                {#if item.image?.asset}
-                  <img 
-                    src={urlForImage(item.image).url()}
-                    alt={item.title || 'Timeline image'}
-                    class="w-full h-48 object-cover rounded-lg"
-                  />
-                {/if}
+                 {#if item.richText}
+                   <div class="prose prose-sm max-w-none">
+                     <RichText value={item.richText} textClass="text-gray-600" />
+                   </div>
+                 {/if}
+                 
+                 {#if item.image?.asset}
+                   <SanityImage 
+                     image={item.image}
+                     alt={item.title || 'Timeline image'}
+                     imgClass="w-full h-48 object-cover rounded-lg"
+                   />
+                 {/if}
               </div>
             </div>
           {/each}
