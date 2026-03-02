@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { SubscribeNewsletter } from '$lib/sanity/sanity.types';
   import { getSectionClasses } from '$lib/utils/background-colors';
-  import RichText from '$lib/components/RichText.svelte';
+  import RichText from '$lib/components/PortableText.svelte';
   
   export let title: SubscribeNewsletter['title'];
   export let subTitle: SubscribeNewsletter['subTitle'];

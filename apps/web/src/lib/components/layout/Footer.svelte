@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { FooterQueryResult as Footer, Author, Settings } from '$lib/sanity/sanity.types'
   import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links'
-  import RichText from '$lib/components/RichText.svelte'
+  import RichText from '$lib/components/PortableText.svelte'
   import SanityButtons from '$lib/components/SanityButtons.svelte'
   import SanityImage from '$lib/components/SanityImage.svelte'
 

@@ -2,7 +2,7 @@
   import type { Carousel } from '$lib/sanity/sanity.types';
   import { urlForImage } from '$lib/sanity/image';
   import { getSectionClasses } from '$lib/utils/background-colors';
-  import RichText from '$lib/components/RichText.svelte';
+  import RichText from '$lib/components/PortableText.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
   
   let { title, richText, images, backgroundColor, anchor }: {

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { FeatureCardsIcon } from '$lib/sanity/sanity.types';
   import { getSectionClasses, getTextColorClass } from '$lib/utils/background-colors';
-  import RichText from '$lib/components/RichText.svelte';
+  import RichText from '$lib/components/PortableText.svelte';
   
   export let eyebrow: FeatureCardsIcon['eyebrow'];
   export let title: FeatureCardsIcon['title'];

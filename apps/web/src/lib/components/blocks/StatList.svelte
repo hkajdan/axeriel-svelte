@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { StatList } from '$lib/sanity/sanity.types';
   import { getSectionClasses } from '$lib/utils/background-colors';
-  import RichText from '$lib/components/RichText.svelte';
+  import RichText from '$lib/components/PortableText.svelte';
   import { onMount } from 'svelte';
   
   let { title, richText, stats, textAlign, animateNumbers, animationDuration, backgroundColor, anchor }: {

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { JobOffers } from '$lib/sanity/sanity.types';
   import { getSectionClasses } from '$lib/utils/background-colors';
-  import RichText from '$lib/components/RichText.svelte';
+  import RichText from '$lib/components/PortableText.svelte';
   
   export let eyebrow: JobOffers['eyebrow'];
   export let title: JobOffers['title'];
