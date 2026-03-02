@@ -54,7 +54,6 @@
     return componentLoader;
   }
 </script>
-<div class="absolute inset-0">
 {#if pageBuilder && pageBuilder.length > 0}
   {#each pageBuilder as block, index}
     {#if getComponentLoader(block)}
@@ -83,5 +82,4 @@
     <strong class="font-bold">Warning:</strong>
     <span class="block sm:inline">No page builder content available</span>
   </div>
-{/if}
-</div>
+  {/if}

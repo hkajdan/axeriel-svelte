@@ -212,10 +212,6 @@
     transform: translateX(0);
   }
   
-  /* Add some spacing for content below navbar */
-  :global(body) {
-    padding-top: 5rem; /* Adjust based on your navbar height */
-  }
   
   /* Enhanced accordion animation */
   .accordion-content {
