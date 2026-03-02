@@ -1,0 +1,1 @@
+export const SECTION_HEADER_SPACING = 'mb-10 md:mb-16'
