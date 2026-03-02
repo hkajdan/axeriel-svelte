@@ -1,69 +1,64 @@
 <script lang="ts">
   import type { Timeline } from '$lib/sanity/sanity.types';
-  import { urlForImage } from '$lib/sanity/image';
-  import { getSectionClasses } from '$lib/utils/background-colors';
+  import { getSectionClasses, getTextColorClass } from '$lib/utils/background-colors';
+  import { SECTION_HEADER_SPACING } from '$lib/utils/section-spacing';
   import RichText from '$lib/components/PortableText.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
-  
-  export let badge: Timeline['badge'];
+
   export let title: Timeline['title'];
   export let timeline: Timeline['timeline'];
   export let backgroundColor: Timeline['backgroundColor'];
   export let anchor: Timeline['anchor'];
-  
-  const bgClass = getSectionClasses(backgroundColor || '');
+
+  const sectionClasses = getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) });
+  const textColorClass = getTextColorClass(backgroundColor || '');
 </script>
 
-<section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
-  <div class="container mx-auto px-4">
-    <div class="space-y-12">
-      <div class="max-w-3xl mx-auto text-center space-y-4">
-        {#if badge}
-          <span class="inline-block px-3 py-1 text-sm font-medium text-blue-600 bg-blue-100 rounded-full">
-            {badge}
-          </span>
-        {/if}
-        
-        {#if title}
-          <h2 class="text-3xl lg:text-4xl font-bold tracking-tight">{title}</h2>
-        {/if}
+<section id={anchor || 'timeline'} class={sectionClasses}>
+  <div class="container mx-auto">
+    {#if title}
+      <div class="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center {textColorClass} {SECTION_HEADER_SPACING}">
+        <h2 class="text-3xl font-semibold md:text-5xl">{title}</h2>
       </div>
-      
-      {#if timeline && timeline.length > 0}
-        <div class="space-y-8">
-          {#each timeline as item, index}
-            <div class="grid md:grid-cols-2 gap-8 items-start">
-              <div class="text-right md:text-left">
-                {#if item.date}
-                  <div class="text-sm font-medium text-gray-500 mb-2">
-                    {new Date(item.date).toLocaleDateString()}
-                  </div>
+    {/if}
+
+    {#if timeline && timeline.length > 0}
+      <div class="relative mx-auto flex w-full flex-col gap-8 md:gap-36">
+        <!-- Central vertical line -->
+        <div class="absolute left-1/2 top-0 h-full w-[2px] bg-gray-300 hidden md:block"></div>
+
+        {#each timeline as event, index (event._key)}
+          <div class="relative flex w-full flex-col md:items-center md:justify-between md:flex-row gap-4 md:gap-0">
+            <!-- Image side -->
+            <div class="flex w-full md:w-[53%] {index % 2 === 0 ? 'md:order-1 md:justify-end md:mr-40' : 'md:order-2 md:ml-40'}">
+              {#if event.image}
+                <div class="w-full max-w-[400px] mx-auto md:mx-0 aspect-video overflow-hidden rounded-3xl bg-gray-200">
+                  <SanityImage
+                    image={event.image}
+                    alt={event.title || 'Timeline image'}
+                    imgClass="object-cover brightness-75 w-full h-full"
+                  />
+                </div>
+              {/if}
+            </div>
+
+            <!-- Blue dot on center line -->
+            <div class="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-500 hidden md:block"></div>
+
+            <!-- Text side -->
+            <div class="w-full md:w-[47%] {index % 2 === 0 ? 'md:order-2 md:text-left' : 'md:order-1 md:text-right'}">
+              <div class="bg-white p-4">
+                {#if event.date}
+                  <div class="mb-2 text-4xl font-bold">{event.date}</div>
                 {/if}
-              </div>
-              
-              <div class="space-y-4">
-                {#if item.title}
-                  <h3 class="text-xl font-semibold">{item.title}</h3>
+                {#if event.richText}
+                  <RichText value={event.richText} />
                 {/if}
-                
-                 {#if item.richText}
-                   <div class="prose prose-sm max-w-none">
-                     <RichText value={item.richText} textClass="text-gray-600" />
-                   </div>
-                 {/if}
-                 
-                 {#if item.image?.asset}
-                   <SanityImage 
-                     image={item.image}
-                     alt={item.title || 'Timeline image'}
-                     imgClass="w-full h-48 object-cover rounded-lg"
-                   />
-                 {/if}
               </div>
             </div>
-          {/each}
-        </div>
-      {/if}
-    </div>
+          </div>
+        {/each}
+      </div>
+    {/if}
   </div>
 </section>

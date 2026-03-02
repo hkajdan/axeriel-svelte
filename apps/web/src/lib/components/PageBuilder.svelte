@@ -54,32 +54,34 @@
     return componentLoader;
   }
 </script>
-{#if pageBuilder && pageBuilder.length > 0}
-  {#each pageBuilder as block, index}
-    {#if getComponentLoader(block)}
-      {#await getComponentLoader(block)()}
-        <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
-          <strong class="font-bold">Loading:</strong>
-          <span class="block sm:inline">Loading {(block as any).type || block._type} component...</span>
-        </div>
-      {:then module}
-        <svelte:component this={module.default} {...block} />
-      {:catch error}
+<main class="flex flex-col gap-10 md:gap-16 max-w-8xl mx-auto relative">
+  {#if pageBuilder && pageBuilder.length > 0}
+    {#each pageBuilder as block, index}
+      {#if getComponentLoader(block)}
+        {#await getComponentLoader(block)()}
+          <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Loading:</strong>
+            <span class="block sm:inline">Loading {(block as any).type || block._type} component...</span>
+          </div>
+        {:then module}
+          <svelte:component this={module.default} {...block} />
+        {:catch error}
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Error loading component:</strong>
+            <span class="block sm:inline">Failed to load {(block as any).type || block._type}: {error.message}</span>
+          </div>
+        {/await}
+      {:else}
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-          <strong class="font-bold">Error loading component:</strong>
-          <span class="block sm:inline">Failed to load {(block as any).type || block._type}: {error.message}</span>
+          <strong class="font-bold">Error:</strong>
+          <span class="block sm:inline">Component not found for block type: {(block as any).type || block._type}</span>
         </div>
-      {/await}
-    {:else}
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-        <strong class="font-bold">Error:</strong>
-        <span class="block sm:inline">Component not found for block type: {(block as any).type || block._type}</span>
-      </div>
-    {/if}
-  {/each}
-{:else}
-  <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
-    <strong class="font-bold">Warning:</strong>
-    <span class="block sm:inline">No page builder content available</span>
-  </div>
+      {/if}
+    {/each}
+  {:else}
+    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Warning:</strong>
+      <span class="block sm:inline">No page builder content available</span>
+    </div>
   {/if}
+</main>

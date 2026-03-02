@@ -1,76 +1,62 @@
 <script lang="ts">
   import type { TextImage } from '$lib/sanity/sanity.types';
-  import { urlForImage } from '$lib/sanity/image';
   import { getSectionClasses, getTextColorClass } from '$lib/utils/background-colors';
+  import { SECTION_HEADER_SPACING } from '$lib/utils/section-spacing';
   import RichText from '$lib/components/PortableText.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
-  
+
   export let title: TextImage['title'];
   export let richText: TextImage['richText'];
   export let rows: TextImage['rows'];
   export let backgroundColor: TextImage['backgroundColor'];
   export let anchor: TextImage['anchor'];
-  
-  const sectionClasses = getSectionClasses(backgroundColor || 'white');
-  const textColor = getTextColorClass(backgroundColor || 'white');
+
+  const sectionClasses = getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) });
+  const textColorClass = getTextColorClass(backgroundColor || 'white');
+
+  function isImageRight(position: string | null | undefined): boolean {
+    return (position || '').replace(/[^\x20-\x7E]/g, '') === 'right'
+  }
 </script>
 
-<section class={sectionClasses} id={anchor}>
-  <div class="container mx-auto px-4">
-    <div class="space-y-12">
-        {#if title}
-          <div class="max-w-3xl mx-auto text-center">
-            <h2 class={`text-3xl lg:text-4xl font-bold tracking-tight ${textColor}`}>{title}</h2>
-          </div>
-        {/if}
-        
-        {#if richText}
-          <div class="max-w-3xl mx-auto text-center mt-6">
-            <RichText value={richText} textClass={textColor} />
-          </div>
-        {/if}
-        
-       {#if rows && rows.length > 0}
-        <div class="space-y-16">
-          {#each rows as row, index}
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-              {#if row.imagePosition === 'right'}
-              <div class="order-2 lg:order-1">
-               {#if row.richText}
-                 <RichText value={row.richText} textClass="text-gray-600" />
-               {/if}
-              </div>
-                
-                 <div class="order-1 lg:order-2">
-                   {#if row.image}
-                     <SanityImage 
-                       image={row.image}
-                       alt={title || `Content image ${index + 1}`}
-                       imgClass="w-full h-auto rounded-lg shadow-lg object-cover aspect-[16/9]"
-                     />
-                   {/if}
-                 </div>
-              {:else}
-                <div>
-                  {#if row.image?.asset}
-                    <img 
-                      src={urlForImage(row.image).url()}
-                      alt={title || `Content image ${index + 1}`}
-                      class="w-full h-auto rounded-lg shadow-lg object-cover aspect-[16/9]"
-                    />
-                  {/if}
-                </div>
-                
-                <div>
-                 {#if row.richText}
-                   <RichText value={row.richText} textClass="text-gray-600" />
-                 {/if}
-                </div>
-              {/if}
-            </div>
-          {/each}
+<section id={anchor || 'textImage'} class={sectionClasses}>
+  <div class="container mx-auto">
+    <div class="flex w-full flex-col items-center {textColorClass}">
+      {#if title || richText}
+        <div class="flex flex-col items-center space-y-4 text-center sm:space-y-6 {SECTION_HEADER_SPACING}">
+          {#if title}
+            <h2 class="text-3xl font-semibold md:text-5xl">{title}</h2>
+          {/if}
+          {#if richText}
+            <RichText value={richText} textClass="text-base md:text-lg text-balance max-w-3xl" />
+          {/if}
         </div>
       {/if}
     </div>
+
+    {#if rows && rows.length > 0}
+      <div class="mx-auto flex flex-col gap-8 md:gap-16">
+        {#each rows as row, index}
+          <div class="w-full flex flex-col gap-6 md:gap-16 {isImageRight(row.imagePosition) ? 'md:flex-row-reverse' : 'md:flex-row'} md:items-center">
+            <div class="w-full md:w-1/2">
+              {#if row.richText}
+                <RichText value={row.richText} />
+              {/if}
+            </div>
+            {#if row.image}
+              <div class="w-full md:w-1/2">
+                <div class="aspect-video w-full overflow-hidden rounded-lg">
+                  <SanityImage
+                    image={row.image}
+                    alt={title || `Content image ${index + 1}`}
+                    imgClass="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            {/if}
+          </div>
+        {/each}
+      </div>
+    {/if}
   </div>
 </section>

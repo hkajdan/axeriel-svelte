@@ -1,74 +1,77 @@
 <script lang="ts">
   import type { ImageLinkCards } from '$lib/sanity/sanity.types';
-  import { urlForImage } from '$lib/sanity/image';
   import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links';
-  import { getSectionClasses } from '$lib/utils/background-colors';
+  import { getSectionClasses, getTextColorClass } from '$lib/utils/background-colors';
+  import { SECTION_HEADER_SPACING } from '$lib/utils/section-spacing';
   import RichText from '$lib/components/PortableText.svelte';
-  import SanityButtons from '$lib/components/SanityButtons.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
-  
+
   export let eyebrow: ImageLinkCards['eyebrow'];
   export let title: ImageLinkCards['title'];
   export let richText: ImageLinkCards['richText'];
-  export let buttons: ImageLinkCards['buttons'];
   export let cards: ImageLinkCards['cards'];
   export let backgroundColor: ImageLinkCards['backgroundColor'];
   export let anchor: ImageLinkCards['anchor'];
-  
-  const bgClass = getSectionClasses(backgroundColor || '');
+
+  const sectionClasses = getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) });
+  const textColorClass = getTextColorClass(backgroundColor || '');
+
+  function getGridCols(count: number): string {
+    if (count >= 4) return 'lg:grid-cols-4'
+    if (count === 3) return 'lg:grid-cols-3'
+    if (count === 2) return 'lg:grid-cols-2'
+    return 'lg:grid-cols-1'
+  }
+
+  function getCardRounding(idx: number, total: number): string {
+    if (idx === 0) return 'lg:rounded-l-3xl lg:rounded-r-none'
+    if (idx === total - 1) return 'lg:rounded-r-3xl lg:rounded-l-none'
+    return 'lg:rounded-none'
+  }
 </script>
 
-<section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
-  <div class="container mx-auto px-4">
-    <div class="space-y-12">
-      <div class="max-w-3xl mx-auto text-center space-y-4">
-        {#if eyebrow}
-          <p class="text-sm font-medium text-blue-600 uppercase tracking-wider">{eyebrow}</p>
-        {/if}
-        
-        {#if title}
-          <h2 class="text-3xl lg:text-4xl font-bold tracking-tight">{title}</h2>
-        {/if}
-        
-        {#if richText}
-          <div class="prose prose-lg max-w-none mx-auto">
-            <RichText value={richText} textClass="text-lg text-gray-600" />
-          </div>
-        {/if}
-        
-        {#if buttons && buttons.length > 0}
-          <div class="flex flex-wrap justify-center gap-4">
-            <SanityButtons buttons={buttons} justify="center" />
-          </div>
-        {/if}
-      </div>
-      
-       {#if cards && cards.length > 0}
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {#each cards as card}
-            <a 
+<section id={anchor || 'image-link-cards'} class={sectionClasses}>
+  <div class="container mx-auto">
+    <div class="flex w-full flex-col items-center {textColorClass}">
+      {#if eyebrow || title || richText}
+        <div class="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center {SECTION_HEADER_SPACING}">
+          {#if eyebrow}
+            <span class="inline-block px-3 py-1.5 text-sm font-medium bg-neutral-200 rounded-full">{eyebrow}</span>
+          {/if}
+          {#if title}
+            <h2 class="text-3xl font-semibold md:text-5xl text-balance">{title}</h2>
+          {/if}
+          {#if richText}
+            <RichText value={richText} textClass="text-balance" />
+          {/if}
+        </div>
+      {/if}
+
+      {#if cards && cards.length > 0}
+        <div class="grid w-full grid-cols-1 gap-4 lg:gap-1 sm:grid-cols-2 {getGridCols(cards.length)}">
+          {#each cards as card, idx}
+            <a
               href={resolveSanityUrl(card.url)}
               target={getLinkTarget(card.url)}
               rel={getLinkRel(card.url)}
-              class="block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden"
+              class="rounded-3xl p-4 md:p-8 transition-all duration-300 relative overflow-hidden group flex flex-col justify-end h-[300px] sm:h-[350px] xl:h-[400px] hover:shadow-lg bg-neutral-200 {getCardRounding(idx, cards.length)}"
             >
-               {#if card.image?.asset}
-                 <div class="aspect-video bg-gray-100">
-                   <SanityImage 
-                     image={card.image}
-                     alt={card.title || 'Card image'}
-                     imgClass="w-full h-full object-cover"
-                   />
-                 </div>
-               {/if}
-              
-              <div class="p-6">
+              {#if card.image?.asset}
+                <div class="absolute inset-0 z-[1]">
+                  <SanityImage
+                    image={card.image}
+                    alt={card.title || 'Card image'}
+                    imgClass="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700 opacity-60"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                </div>
+              {/if}
+              <div class="relative z-[2] mt-auto space-y-2 text-white">
                 {#if card.title}
-                  <h3 class="text-xl font-semibold mb-2">{card.title}</h3>
+                  <h3 class="text-2xl md:text-3xl font-semibold leading-tight">{card.title}</h3>
                 {/if}
-                
                 {#if card.description}
-                  <p class="text-gray-600">{card.description}</p>
+                  <p class="text-base md:text-lg text-white/90 line-clamp-2 group-hover:text-white transition-colors duration-300">{card.description}</p>
                 {/if}
               </div>
             </a>

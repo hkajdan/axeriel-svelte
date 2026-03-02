@@ -1,40 +1,88 @@
 <script lang="ts">
   import type { JobOffers } from '$lib/sanity/sanity.types';
-  import { getSectionClasses } from '$lib/utils/background-colors';
+  import { getSectionClasses, getTextColorClass } from '$lib/utils/background-colors';
+  import { SECTION_HEADER_SPACING } from '$lib/utils/section-spacing';
   import RichText from '$lib/components/PortableText.svelte';
-  
+  import SanityImage from '$lib/components/SanityImage.svelte';
+
   export let eyebrow: JobOffers['eyebrow'];
   export let title: JobOffers['title'];
   export let richText: JobOffers['richText'];
+  export let offers: any[];
   export let backgroundColor: JobOffers['backgroundColor'];
   export let anchor: JobOffers['anchor'];
-  
-  const bgClass = getSectionClasses(backgroundColor || '');
+
+  const sectionClasses = getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) });
+  const textColorClass = getTextColorClass(backgroundColor || '');
 </script>
 
-<section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
-  <div class="container mx-auto px-4">
-    <div class="space-y-12">
-      <div class="max-w-3xl mx-auto text-center space-y-4">
-        {#if eyebrow}
-          <p class="text-sm font-medium text-blue-600 uppercase tracking-wider">{eyebrow}</p>
-        {/if}
-        
-        {#if title}
-          <h2 class="text-3xl lg:text-4xl font-bold tracking-tight">{title}</h2>
-        {/if}
-        
-        {#if richText}
-          <div class="prose prose-lg max-w-none mx-auto">
-            <RichText value={richText} textClass="text-lg text-gray-600" />
+<section id={anchor || 'job-offers'} class={sectionClasses}>
+  <div class="container mx-auto">
+    <div class="flex w-full flex-col items-center {textColorClass}">
+      {#if eyebrow || title || richText}
+        <div class="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center {SECTION_HEADER_SPACING}">
+          {#if eyebrow}
+            <span class="inline-block px-3 py-1.5 text-sm font-medium bg-neutral-200 rounded-full">{eyebrow}</span>
+          {/if}
+          {#if title}
+            <h2 class="text-3xl font-semibold md:text-5xl text-balance">{title}</h2>
+          {/if}
+          {#if richText}
+            <RichText value={richText} textClass="text-balance max-w-3xl" />
+          {/if}
+        </div>
+      {/if}
+
+      {#if Array.isArray(offers) && offers.length > 0}
+        <div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {#each offers as offer}
+            <a
+              href={offer.slug ? `/career/${offer.slug.split('/').pop()}` : `/career/${offer._id}`}
+              class="group block rounded-2xl border border-neutral-200/50 bg-white p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+            >
+              {#if offer.image?.asset}
+                <div class="relative mb-6 h-48 w-full overflow-hidden rounded-xl">
+                  <SanityImage
+                    image={offer.image}
+                    alt={offer.title || 'Job offer'}
+                    imgClass="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+              {/if}
+
+              <div class="space-y-4">
+                {#if offer.type}
+                  <span class="inline-block px-2 py-1 text-xs font-medium bg-neutral-200 rounded-full">{offer.type}</span>
+                {/if}
+
+                <div>
+                  {#if offer.title}
+                    <h3 class="text-xl font-semibold group-hover:text-primary-500 transition-colors">{offer.title}</h3>
+                  {/if}
+                  {#if offer.profile}
+                    <p class="mt-1 text-sm text-neutral-500">{offer.profile}</p>
+                  {/if}
+                </div>
+
+                {#if offer.summary}
+                  <p class="text-neutral-500 line-clamp-3">{offer.summary}</p>
+                {/if}
+
+                <div class="pt-2">
+                  <span class="text-sm font-medium text-primary-500 group-hover:underline">Learn more →</span>
+                </div>
+              </div>
+            </a>
+          {/each}
+        </div>
+      {:else}
+        <div class="text-center w-full">
+          <div class="rounded-2xl border border-dashed border-neutral-200/50 p-12">
+            <h3 class="text-lg font-medium text-neutral-500">No job offers available</h3>
+            <p class="mt-2 text-sm text-neutral-500">We're always looking for talented people. Check back soon for new opportunities!</p>
           </div>
-        {/if}
-      </div>
-      
-      <div class="text-center">
-        <p class="text-gray-500">Job offers content would be displayed here</p>
-        <!-- In a real implementation, this would fetch and display job offers -->
-      </div>
+        </div>
+      {/if}
     </div>
   </div>
 </section>

@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { Carousel } from '$lib/sanity/sanity.types';
-  import { urlForImage } from '$lib/sanity/image';
-  import { getSectionClasses } from '$lib/utils/background-colors';
+  import { getSectionClasses, getTextColorClass } from '$lib/utils/background-colors';
+  import { SECTION_HEADER_SPACING } from '$lib/utils/section-spacing';
   import RichText from '$lib/components/PortableText.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
-  
+
   let { title, richText, images, backgroundColor, anchor }: {
     title: Carousel['title'];
     richText: Carousel['richText'];
@@ -12,8 +12,9 @@
     backgroundColor: Carousel['backgroundColor'];
     anchor: Carousel['anchor'];
   } = $props();
-  
-  const bgClass = getSectionClasses(backgroundColor || '');
+
+  const sectionClasses = getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) });
+  const textColorClass = getTextColorClass(backgroundColor || 'white');
   
   // Carousel state
   let currentSlide = 0;
@@ -64,18 +65,16 @@
   });
 </script>
 
-<section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
+<section class={sectionClasses} id={anchor}>
   <div class="container mx-auto px-4">
     <div class="space-y-12">
-      <div class="max-w-3xl mx-auto text-center space-y-4">
+      <div class="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center {textColorClass} {SECTION_HEADER_SPACING}">
         {#if title}
-          <h2 class="text-3xl lg:text-4xl font-bold tracking-tight">{title}</h2>
+          <h2 class="text-3xl font-semibold md:text-5xl">{title}</h2>
         {/if}
         
         {#if richText}
-          <div class="prose prose-lg max-w-none mx-auto">
-            <RichText value={richText} textClass="text-lg text-gray-600" />
-          </div>
+          <RichText value={richText} textClass="text-base md:text-lg text-balance max-w-3xl" />
         {/if}
       </div>
       
@@ -83,10 +82,10 @@
         <div class="relative">
           <!-- Navigation Controls -->
           <button 
-            on:click|preventDefault={prevSlide}
-            on:mouseenter={() => isAutoPlaying = false}
-            on:mouseleave={() => isAutoPlaying = true}
-            class="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+            onclick={prevSlide}
+            onmouseenter={() => isAutoPlaying = false}
+            onmouseleave={() => isAutoPlaying = true}
+            class="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all hidden md:block"
             aria-label="Previous slide"
           >
             <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,10 +94,10 @@
           </button>
           
           <button 
-            on:click|preventDefault={nextSlide}
-            on:mouseenter={() => isAutoPlaying = false}
-            on:mouseleave={() => isAutoPlaying = true}
-            class="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+            onclick={nextSlide}
+            onmouseenter={() => isAutoPlaying = false}
+            onmouseleave={() => isAutoPlaying = true}
+            class="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all hidden md:block"
             aria-label="Next slide"
           >
             <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,21 +111,33 @@
               {#each images as image, index}
                 <div class="w-full flex-shrink-0">
                   {#if image.image?.asset}
-                    <div class="relative h-96">
-                      <SanityImage 
-                        image={image.image}
-                        alt={(image.richText?.[0] as any)?._type === 'block' && (image.richText?.[0] as any)?.children?.[0]?.text || `Slide ${index + 1}`}
-                        imgClass="w-full h-full object-cover"
-                      />
-                      
+                    <div class="relative">
+                      <div class="aspect-video w-full overflow-hidden rounded-xl">
+                        <SanityImage 
+                          image={image.image}
+                          alt={`Slide ${index + 1}`}
+                          imgClass="w-full h-full object-cover"
+                        />
+                      </div>
+
                       {#if image.richText}
-                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
-                          <div class="prose prose-invert max-w-none">
-                            <RichText value={image.richText} textClass="text-white" />
+                        <!-- Desktop overlay -->
+                        <div class="hidden md:block absolute bottom-4 right-4 md:bottom-8 md:right-8 max-w-sm">
+                          <div class="bg-black/30 backdrop-blur-md p-4 md:p-6 rounded-xl border border-white/20 shadow-xl">
+                            <RichText value={image.richText} textClass="text-white text-sm md:text-base leading-relaxed" />
                           </div>
                         </div>
                       {/if}
                     </div>
+
+                    {#if image.richText}
+                      <!-- Mobile text below image -->
+                      <div class="md:hidden mt-4 px-2">
+                        <div class="bg-primary-500/10 backdrop-blur-sm p-4 rounded-xl border border-primary-500/20">
+                          <RichText value={image.richText} textClass="text-sm leading-relaxed" />
+                        </div>
+                      </div>
+                    {/if}
                   {/if}
                 </div>
               {/each}
@@ -137,10 +148,10 @@
           <div class="flex justify-center mt-6 gap-2">
             {#each images as _, index}
               <button 
-                on:click|preventDefault={() => goToSlide(index)}
-                on:mouseenter={() => isAutoPlaying = false}
-                on:mouseleave={() => isAutoPlaying = true}
-                class="w-3 h-3 rounded-full transition-colors {currentSlide === index ? 'bg-blue-600' : 'bg-gray-300 hover:bg-blue-400'}"
+                onclick={() => goToSlide(index)}
+                onmouseenter={() => isAutoPlaying = false}
+                onmouseleave={() => isAutoPlaying = true}
+                class="w-3 h-3 rounded-full transition-colors {currentSlide === index ? 'bg-primary-500 shadow-lg scale-110' : 'bg-gray-300 hover:bg-gray-400'}"
                 aria-label={`Go to slide ${index + 1}`}
               ></button>
             {/each}

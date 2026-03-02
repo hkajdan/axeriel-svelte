@@ -1,52 +1,59 @@
 <script lang="ts">
   import type { SubscribeNewsletter } from '$lib/sanity/sanity.types';
-  import { getSectionClasses } from '$lib/utils/background-colors';
+  import { getSectionClasses, getTextColorClass } from '$lib/utils/background-colors';
+  import { SECTION_HEADER_SPACING } from '$lib/utils/section-spacing';
   import RichText from '$lib/components/PortableText.svelte';
-  
+
   export let title: SubscribeNewsletter['title'];
   export let subTitle: SubscribeNewsletter['subTitle'];
   export let helperText: SubscribeNewsletter['helperText'];
   export let backgroundColor: SubscribeNewsletter['backgroundColor'];
   export let anchor: SubscribeNewsletter['anchor'];
-  
-  const bgClass = getSectionClasses(backgroundColor || '');
+
+  const sectionClasses = getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) });
+  const textColorClass = getTextColorClass(backgroundColor || '');
 </script>
 
-<section class={`py-16 lg:py-20 ${bgClass}`} id={anchor}>
-  <div class="container mx-auto px-4">
-    <div class="max-w-2xl mx-auto text-center space-y-6">
-      {#if title}
-        <h2 class="text-3xl lg:text-4xl font-bold tracking-tight">{title}</h2>
-      {/if}
-      
-      {#if subTitle}
-        <div class="prose prose-lg max-w-none mx-auto">
-          <RichText value={subTitle} textClass="text-lg text-gray-600" />
-        </div>
-      {/if}
-      
-      <form class="space-y-4">
-        <div class="flex flex-col sm:flex-row gap-4">
-          <input 
-            type="email"
-            placeholder="Enter your email"
-            class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            required
-          />
-          <button 
-            type="submit"
-            class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-          >
-            Subscribe
-          </button>
-        </div>
-        
-        {#if helperText}
-          <div class="text-sm text-gray-500">
-            <RichText value={helperText} textClass="text-sm text-gray-500" />
+<section id={anchor || 'subscribe'} class={sectionClasses}>
+  <div class="container mx-auto">
+    <div class="relative rounded-3xl overflow-hidden {textColorClass} px-6 md:px-8 py-12 md:py-16 bg-neutral-50">
+      <div class="relative z-10 mx-auto text-center">
+        {#if title || subTitle}
+          <div class={SECTION_HEADER_SPACING}>
+            {#if title}
+              <h2 class="mb-4 text-xl font-semibold text-neutral-900 sm:text-3xl md:text-5xl text-balance">{title}</h2>
+            {/if}
+            {#if subTitle}
+              <RichText value={subTitle} textClass="text-sm text-neutral-600 sm:text-base text-balance" />
+            {/if}
           </div>
         {/if}
-      </form>
+
+        <form class="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-2">
+          <div class="flex bg-white items-center border rounded-xl p-2 drop-shadow-lg md:w-96 justify-between pl-4">
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="Enter your email address"
+              class="rounded-e-none border-e-0 focus-visible:ring-0 outline-none bg-transparent w-full"
+            />
+            <button
+              type="submit"
+              class="size-8 aspect-square bg-neutral-200 hover:bg-neutral-300 rounded-md flex items-center justify-center flex-shrink-0"
+              aria-label="Subscribe to newsletter"
+            >
+              <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+        </form>
+
+        {#if helperText}
+          <RichText value={helperText} textClass="mt-3 text-sm text-neutral-800 opacity-80 sm:mt-4" />
+        {/if}
+      </div>
     </div>
   </div>
 </section>
