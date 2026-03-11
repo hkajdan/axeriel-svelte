@@ -194,6 +194,18 @@ export const footer = defineType({
           title: "Phone",
           description: "Phone number for the footer",
         }),
+        defineField({
+          name: "lat",
+          type: "number",
+          title: "Latitude",
+          description: "Latitude for the map marker (ex: 45.18571)",
+        }),
+        defineField({
+          name: "lng",
+          type: "number",
+          title: "Longitude",
+          description: "Longitude for the map marker (ex: 5.80134)",
+        }),
       ],
     }),
   ],

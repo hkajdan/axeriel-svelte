@@ -482,7 +482,14 @@ export const footerQuery = defineQuery(`*[_type == "footer"][0]{
     image,
     bio
   },
-  location
+  location{
+    title,
+    address,
+    city,
+    phone,
+    lat,
+    lng
+  }
 }`)
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]{

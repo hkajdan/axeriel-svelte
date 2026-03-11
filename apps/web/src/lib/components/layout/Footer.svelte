@@ -4,6 +4,7 @@
   import RichText from '$lib/components/PortableText.svelte'
   import SanityButtons from '$lib/components/SanityButtons.svelte'
   import SanityImage from '$lib/components/SanityImage.svelte'
+  import FooterMap from '$lib/components/layout/FooterMap.svelte'
 
   let { footer = null, pageAuthor = null, settings = null }: {
     footer: Footer | null,
@@ -113,13 +114,15 @@
 
   </div>
 
-  <iframe
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2812.068314343158!2d5.801346076206103!3d45.18571335197695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478a5f839ad0ed77%3A0xba8ae9e4d35aff49!2sAxeriel!5e0!3m2!1sfr!2sfr!4v1750261109837!5m2!1sfr!2sfr"
-    height="300"
-    loading="lazy"
-    class="rounded-md w-full mt-8"
-    title="Google Maps - Axeriel location"
-  ></iframe>
+  {#if footer?.location?.lat && footer?.location?.lng}
+    <FooterMap
+      lat={footer.location.lat}
+      lng={footer.location.lng}
+      address={footer.location.address ?? ''}
+      city={footer.location.city ?? ''}
+      label={settings?.siteTitle ?? 'Axeriel'}
+    />
+  {/if}
 </section>
 
 <!-- Footer Section -->

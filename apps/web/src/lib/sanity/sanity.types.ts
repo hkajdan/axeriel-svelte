@@ -568,6 +568,8 @@ export type Footer = {
     address?: string;
     city?: string;
     phone?: string;
+    lat?: number;
+    lng?: number;
   };
 };
 
@@ -2524,7 +2526,7 @@ export type NavbarQueryResult = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: footerQuery
-// Query: *[_type == "footer"][0]{  label,  subtitle,  download,  logo,  columns[]{    title,    links[]{      name,      url{        ...,        internal->{          slug,          _type        }      }    }  },  contact,  contactAuthor->{    name,    position,    email,    phone,    image,    bio  },  location}
+// Query: *[_type == "footer"][0]{  label,  subtitle,  download,  logo,  columns[]{    title,    links[]{      name,      url{        ...,        internal->{          slug,          _type        }      }    }  },  contact,  contactAuthor->{    name,    position,    email,    phone,    image,    bio  },  location{    title,    address,    city,    phone,    lat,    lng  }}
 export type FooterQueryResult = {
   label: string | null;
   subtitle: string | null;
@@ -2594,10 +2596,12 @@ export type FooterQueryResult = {
     bio: string | null;
   } | null;
   location: {
-    title?: string;
-    address?: string;
-    city?: string;
-    phone?: string;
+    title: string | null;
+    address: string | null;
+    city: string | null;
+    phone: string | null;
+    lat: number | null;
+    lng: number | null;
   } | null;
 } | null;
 
@@ -2699,7 +2703,7 @@ declare module "@sanity/client" {
     "*[_type == \"page\" && slug.current == $slug][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...,\n      video {\n        asset-> {\n          playbackId\n        }\n      },\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n     _type == \"productList\" => {\n       \"type\": \"productList\",\n       ...@,\n       products[]{\n         _ref,\n         _key,\n         \"productData\": *[_type == \"product\" && _id == ^._ref][0]{\n           _id,\n           title,\n           description,\n           price,\n           features,\n           images\n         }\n       }\n     },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...,\n      video {\n        asset-> {\n          playbackId\n        }\n      }\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": PageBySlugQueryResult;
     "*[_type == \"homePage\"][0]{\n  title,\n  slug,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...,\n      video {\n        asset-> {\n          playbackId\n        }\n      },\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@\n    },\n     _type == \"productList\" => {\n       \"type\": \"productList\",\n       ...@,\n       products[]{\n         _ref,\n         _key,\n         \"productData\": *[_type == \"product\" && _id == ^._ref][0]{\n           _id,\n           title,\n           description,\n           price,\n           features,\n           images\n         }\n       }\n     },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      buttons[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...@\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...,\n      video {\n        asset-> {\n          playbackId\n        }\n      }\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@\n    }\n  }\n}": HomePageQueryResult;
     "*[_type == \"navbar\"][0]{\n  label,\n  columns[]{\n    _type,\n    _key,\n    _type == \"navbarColumn\" => {\n      \"type\": \"navbarColumn\",\n      title,\n      links[]{\n        name,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        },\n        image\n      }\n    },\n    _type == \"navbarLink\" => {\n      \"type\": \"navbarLink\",\n      name,\n      url{\n        ...,\n        internal->{\n          slug,\n          _type\n        }\n      }\n    }\n  },\n  buttons[]{\n    ...,\n    url{\n      ...,\n      internal->{\n        slug,\n        _type\n      }\n    }\n  }\n}": NavbarQueryResult;
-    "*[_type == \"footer\"][0]{\n  label,\n  subtitle,\n  download,\n  logo,\n  columns[]{\n    title,\n    links[]{\n      name,\n      url{\n        ...,\n        internal->{\n          slug,\n          _type\n        }\n      }\n    }\n  },\n  contact,\n  contactAuthor->{\n    name,\n    position,\n    email,\n    phone,\n    image,\n    bio\n  },\n  location\n}": FooterQueryResult;
+    "*[_type == \"footer\"][0]{\n  label,\n  subtitle,\n  download,\n  logo,\n  columns[]{\n    title,\n    links[]{\n      name,\n      url{\n        ...,\n        internal->{\n          slug,\n          _type\n        }\n      }\n    }\n  },\n  contact,\n  contactAuthor->{\n    name,\n    position,\n    email,\n    phone,\n    image,\n    bio\n  },\n  location{\n    title,\n    address,\n    city,\n    phone,\n    lat,\n    lng\n  }\n}": FooterQueryResult;
     "*[_type == \"settings\"][0]{\n  siteTitle,\n  siteDescription,\n  logo,\n  contactEmail,\n  socialLinks,\n  floatingButton\n}": SettingsQueryResult;
     "*[_type == \"author\" && _id == $authorId][0]{\n  name,\n  position,\n  email,\n  phone,\n  image,\n  bio\n}": AuthorQueryResult;
     "*[_type == \"page\" && slug.current == $slug][0].author->{\n  name,\n  position,\n  email,\n  phone,\n  image,\n  bio\n}": PageAuthorBySlugQueryResult;
