@@ -28,7 +28,8 @@
         muted
         loop
         playsinline
-        class="w-full h-full object-cover brightness-50 scale-105"
+        class="w-full h-full brightness-50"
+        style="--media-object-fit: cover; --media-object-position: center;"
         playback-id={(video.asset as any).playbackId}
       >
       </mux-player>
