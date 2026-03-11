@@ -51,6 +51,7 @@
                playback-id={(video.asset as any).playbackId}
                autoplay={autoplay}
                loop={loop}
+               disable-tracking
                muted
                playsinline
                class="w-full h-full rounded-lg"

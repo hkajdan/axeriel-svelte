@@ -4,27 +4,13 @@
   import './layout.css'
   import NavbarComponent from '$lib/components/layout/Navbar.svelte'
   import FooterComponent from '$lib/components/layout/Footer.svelte'
-  import type { NavbarQueryResult as NavbarType, FooterQueryResult as FooterType, SettingsQueryResult as SettingsType, Author } from '$lib/sanity/sanity.types'
-  import { onMount } from 'svelte'
+  import type { Author } from '$lib/sanity/sanity.types'
   import { onNavigate } from '$app/navigation'
-  
+
   const {data, children}: LayoutProps = $props()
   const {previewEnabled, navbar, footer, settings} = data
   const pageAuthor = $derived((data as any).pageAuthor as Author | null)
-  
-  
-  // Vérification que les données nécessaires sont présentes
-  onMount(() => {
-    if (!navbar) {
-      console.warn('Navbar data is missing')
-    }
-    if (!settings) {
-      console.warn('Settings data is missing')
-    }
-    if (!footer) {
-      console.warn('Footer data is missing')
-    }
-  })
+
   onNavigate((navigation) => {
 	if (!document.startViewTransition) return;
 
@@ -49,10 +35,6 @@
       <header>
         {#if navbar && settings}
           <NavbarComponent navbar={navbar as any} settings={settings as any} />
-        {:else}
-          <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3">
-            <p>No navbar data available</p>
-          </div>
         {/if}
       </header>
       

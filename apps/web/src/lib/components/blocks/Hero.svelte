@@ -1,12 +1,10 @@
 <script lang="ts">
   import "@mux/mux-player"
   import type { Hero } from '$lib/sanity/sanity.types';
-  import { urlForImage } from '$lib/sanity/image';
-  import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links';
   import RichText from '$lib/components/PortableText.svelte';
   import SanityButtons from '$lib/components/SanityButtons.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
- 
+
   export let badge: Hero['badge'];
   export let title: Hero['title'];
   export let richText: Hero['richText'];
@@ -14,8 +12,6 @@
   export let video: Hero['video'];
   export let buttons: Hero['buttons'];
   export let anchor: Hero['anchor'];
- 
-
 </script>
 
 <section class="relative h-screen min-h-150 flex items-center justify-center" id={anchor}>
@@ -28,18 +24,21 @@
         muted
         loop
         playsinline
+        preload="auto"
         class="w-full h-full brightness-50"
         style="--media-object-fit: cover; --media-object-position: center;"
         playback-id={(video.asset as any).playbackId}
-      >
-      </mux-player>
+      ></mux-player>
     </div>
   {:else if image?.asset}
-    <div class="absolute inset-0 w-full h-full overflow-hidden" style="brightness(0.6)">
+    <div class="absolute inset-0 w-full h-full overflow-hidden">
       <SanityImage
         image={image}
         alt={title || 'Hero image'}
         imgClass="w-full h-full object-cover brightness-75"
+        loading="eager"
+        fetchpriority="high"
+        sizes="100vw"
       />
     </div>
   {/if}
@@ -73,6 +72,6 @@
           <SanityButtons buttons={buttons} justify="start" />
         </div>
       {/if}
-      
+    </div>
   </div>
 </section>

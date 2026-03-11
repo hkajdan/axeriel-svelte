@@ -2,7 +2,6 @@
   import type { Settings, Navbar } from '$lib/sanity/sanity.types';
   import { urlForImage as urlFor } from '$lib/sanity/image';
   import { resolveSanityUrl } from '$lib/sanity/links';
-  import { onMount, onDestroy } from 'svelte';
   import { slide } from 'svelte/transition';
 
   let props = $props<{
@@ -62,19 +61,14 @@
     }
   };
 
-  onMount(() => {
-    if (typeof window !== 'undefined') {
-      document.addEventListener('click', handleClickOutside);
-      window.addEventListener('scroll', handleScroll, { passive: true });
-    }
-  });
-
-  onDestroy(() => {
-    if (typeof window !== 'undefined') {
+  $effect(() => {
+    document.addEventListener('click', handleClickOutside);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
       document.removeEventListener('click', handleClickOutside);
       window.removeEventListener('scroll', handleScroll);
       document.body.style.overflow = '';
-    }
+    };
   });
 </script>
 
@@ -92,6 +86,8 @@
             src={urlFor(props.settings.logo).width(150).height(50).url()}
             alt={props.settings.siteTitle || 'Company Logo'}
             class="h-12 w-auto transition-all duration-300"
+            loading="eager"
+            fetchpriority="high"
           />
         </a>
       {:else}

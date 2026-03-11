@@ -1,9 +1,6 @@
 <script lang="ts">
   import type { PageBuilder } from '$lib/sanity/sanity.types';
-  
 
-  
-  // Import all block components dynamically
   const componentMap: Record<string, any> = {
     hero: () => import('./blocks/Hero.svelte'),
     cta: () => import('./blocks/CTA.svelte'),
@@ -22,39 +19,18 @@
   };
 
   export let pageBuilder: PageBuilder;
-  
-  
-  // Get the component loader function for a block type
+
   function getComponentLoader(block: any) {
-    if (!block) {
-      console.error('Block is undefined or null');
-      return null;
-    }
-    
-    const blockType = (block as any).type || block._type;
-    if (!blockType) {
-      console.error('Block type is missing:', block);
-      return null;
-    }
-    
-    const componentLoader = componentMap[blockType];
-    if (!componentLoader) {
-      console.error(`Component not found for block type: ${blockType}. Available types:`, Object.keys(componentMap));
-      return null;
-    }
-    
-    return componentLoader;
+    const blockType = block?._type || block?.type;
+    return blockType ? componentMap[blockType] ?? null : null;
   }
 </script>
 <main class="flex flex-col gap-10 md:gap-16 max-w-8xl mx-auto relative">
   {#if pageBuilder && pageBuilder.length > 0}
-    {#each pageBuilder as block, index}
+    {#each pageBuilder as block}
       {#if getComponentLoader(block)}
         {#await getComponentLoader(block)()}
-          <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Loading:</strong>
-            <span class="block sm:inline">Loading {(block as any).type || block._type} component...</span>
-          </div>
+          <!-- loading -->
         {:then module}
           <svelte:component this={module.default} {...block} />
         {:catch error}
@@ -63,17 +39,7 @@
             <span class="block sm:inline">Failed to load {(block as any).type || block._type}: {error.message}</span>
           </div>
         {/await}
-      {:else}
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-          <strong class="font-bold">Error:</strong>
-          <span class="block sm:inline">Component not found for block type: {(block as any).type || block._type}</span>
-        </div>
       {/if}
     {/each}
-  {:else}
-    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
-      <strong class="font-bold">Warning:</strong>
-      <span class="block sm:inline">No page builder content available</span>
-    </div>
   {/if}
 </main>

@@ -2,64 +2,38 @@
   import type { Settings, Navbar } from '$lib/sanity/sanity.types';
   import { urlForImage as urlFor } from '$lib/sanity/image';
   import { resolveSanityUrl } from '$lib/sanity/links';
-  import { onMount, onDestroy } from 'svelte';
 
   let props = $props<{
     settings: Settings;
     navbar: Navbar;
   }>();
 
-   // State for navbar visibility
   let isVisible = $state(true);
   let lastScrollPosition = $state(0);
   let navbarHeight = $state(0);
   let showSubmenu = $state(true);
 
-  // Handle scroll events for hide/show behavior
-  const handleScroll = () => {
-    const currentScrollPosition = window.scrollY;
-    
-    // Only hide navbar if scrolling down past the navbar height
-    if (currentScrollPosition > navbarHeight) {
-      if (currentScrollPosition > lastScrollPosition) {
-        // Scrolling down - hide navbar
-        isVisible = false;
+  $effect(() => {
+    const navbarElement = document.querySelector('nav');
+    if (navbarElement) navbarHeight = navbarElement.offsetHeight;
+
+    const handleScroll = () => {
+      const current = window.scrollY;
+      if (current > navbarHeight) {
+        isVisible = current <= lastScrollPosition;
       } else {
-        // Scrolling up - show navbar
         isVisible = true;
       }
-    } else {
-      // Near top of page - always show navbar
-      isVisible = true;
-    }
-    
-    lastScrollPosition = currentScrollPosition;
-  };
+      lastScrollPosition = current;
+    };
 
-  onMount(() => {
-    // Only run this code on the client side
-    if (typeof window !== 'undefined') {
-      // Set initial navbar height
-      const navbarElement = document.querySelector('nav');
-      if (navbarElement) {
-        navbarHeight = navbarElement.offsetHeight;
-      }
-      
-      // Add scroll event listener
-      window.addEventListener('scroll', handleScroll, { passive: true });
-    }
-  });
-
-  onDestroy(() => {
-    // Only clean up if we're on the client side
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('scroll', handleScroll);
-    }
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   });
 </script>
 
 <nav class="fixed z-50 bg-white rounded-xl mx-auto max-w-7xl shadow-sm transition-transform duration-300 ease-in-out left-0 right-0 top-10" 
-     style="transform: {typeof window !== 'undefined' && !isVisible ? 'translateY(-250%)' : 'translateY(0)'}">
+     style="transform: {isVisible ? 'translateY(0)' : 'translateY(-250%)'}">
   <div class="relative flex items-center pl-6 justify-between">
     <!-- Logo -->
     <div class="flex z-50">
@@ -69,6 +43,8 @@
             src={urlFor(props.settings.logo).width(120).height(40).url()}
             alt={props.settings.siteTitle || 'Company Logo'}
             class="h-12 w-auto"
+            loading="eager"
+            fetchpriority="high"
           />
   </a>
       {:else}

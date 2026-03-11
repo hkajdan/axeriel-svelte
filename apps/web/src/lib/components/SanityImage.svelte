@@ -12,16 +12,13 @@
   export let alt: string = ''
   export let imgClass: string = ''
   export let sizes: string = '(max-width: 768px) 100vw, 50vw'
-  
-  /**
-   * Generate responsive image srcset
-   */
+  export let loading: 'lazy' | 'eager' = 'lazy'
+  export let fetchpriority: 'high' | 'low' | 'auto' = 'auto'
+
   function getSrcSet() {
     if (!image?.asset?._ref) return ''
-    
-    const widths = [400, 800, 1200, 1600, 2000]
-    return widths
-      .map(width => `${urlForImage(image).width(width).url()} ${width}w`)
+    return [400, 800, 1200, 1600, 2000]
+      .map(w => `${urlForImage(image).width(w).url()} ${w}w`)
       .join(', ')
   }
 </script>
@@ -33,6 +30,7 @@
     alt={alt}
     class={imgClass}
     sizes={sizes}
-    loading="lazy"
+    {loading}
+    {fetchpriority}
   />
 {/if}

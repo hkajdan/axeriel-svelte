@@ -113,6 +113,11 @@
   :root {
     font-family: var(--font-sans);
   }
+
+  html, body {
+    overflow-x: clip;
+    max-width: 100vw;
+  }
 }
 
 @layer components {
