@@ -17,15 +17,28 @@
   let isVisible = $state(true);
   let isScrolledPastHero = $state(false);
   let lastScrollPosition = $state(0);
+  let scrollUpAccumulator = $state(0);
+
+  const SCROLL_UP_THRESHOLD = 60; // px to scroll up before navbar re-appears
 
   const handleScroll = () => {
     const currentScrollPosition = window.scrollY;
     isScrolledPastHero = currentScrollPosition > window.innerHeight;
 
     if (currentScrollPosition > 80) {
-      isVisible = currentScrollPosition <= lastScrollPosition;
+      const delta = lastScrollPosition - currentScrollPosition; // positive = scrolling up
+      if (delta > 0) {
+        scrollUpAccumulator += delta;
+        if (scrollUpAccumulator >= SCROLL_UP_THRESHOLD) {
+          isVisible = true;
+        }
+      } else {
+        scrollUpAccumulator = 0;
+        isVisible = false;
+      }
     } else {
       isVisible = true;
+      scrollUpAccumulator = 0;
     }
 
     lastScrollPosition = currentScrollPosition;
