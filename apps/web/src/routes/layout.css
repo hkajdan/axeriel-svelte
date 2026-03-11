@@ -120,6 +120,28 @@
   }
 }
 
+/* ============================================================
+   Page transitions (View Transitions API)
+   ============================================================ */
+
+@keyframes page-out {
+  to { opacity: 0; }
+}
+
+@keyframes page-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: 700ms ease both page-out;
+  }
+
+  ::view-transition-new(root) {
+    animation: 900ms ease both page-in;
+  }
+}
+
 @layer components {
   .btn-primary {
     @apply bg-primary-500 text-white px-6 py-3 rounded-md font-medium hover:bg-primary-600 transition-colors duration-200 ease-in-out transform hover:-translate-y-0.5;

@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { PageBuilder } from '$lib/sanity/sanity.types';
+  import { reveal } from '$lib/actions/reveal';
 
   const componentMap: Record<string, any> = {
     hero: () => import('./blocks/Hero.svelte'),
@@ -29,16 +30,18 @@
   {#if pageBuilder && pageBuilder.length > 0}
     {#each pageBuilder as block}
       {#if getComponentLoader(block)}
-        {#await getComponentLoader(block)()}
-          <!-- loading -->
-        {:then module}
-          <svelte:component this={module.default} {...block} />
-        {:catch error}
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Error loading component:</strong>
-            <span class="block sm:inline">Failed to load {(block as any).type || block._type}: {error.message}</span>
-          </div>
-        {/await}
+        <div use:reveal>
+          {#await getComponentLoader(block)()}
+            <!-- loading -->
+          {:then module}
+            <svelte:component this={module.default} {...block} />
+          {:catch error}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong class="font-bold">Error loading component:</strong>
+              <span class="block sm:inline">Failed to load {(block as any).type || block._type}: {error.message}</span>
+            </div>
+          {/await}
+        </div>
       {/if}
     {/each}
   {/if}

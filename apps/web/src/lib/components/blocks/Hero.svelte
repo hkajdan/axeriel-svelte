@@ -17,7 +17,12 @@
 <section class="relative h-screen min-h-150 flex items-center justify-center" id={anchor}>
   <!-- Background Media - Fullscreen and Absolute -->
   {#if video?.asset && (video.asset as any)?.playbackId}
-    <div class="absolute inset-0 w-full h-full overflow-hidden ">
+    {@const playbackId = (video.asset as any).playbackId}
+    {@const posterUrl = `https://image.mux.com/${playbackId}/thumbnail.jpg`}
+    <div
+      class="absolute inset-0 w-full h-full overflow-hidden"
+      style="background: url('{posterUrl}') center/cover no-repeat"
+    >
       <mux-player
         autoplay
         disable-tracking
@@ -27,7 +32,8 @@
         preload="auto"
         class="w-full h-full brightness-50"
         style="--media-object-fit: cover; --media-object-position: center;"
-        playback-id={(video.asset as any).playbackId}
+        playback-id={playbackId}
+        poster={posterUrl}
       ></mux-player>
     </div>
   {:else if image?.asset}
