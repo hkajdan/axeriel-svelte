@@ -496,6 +496,7 @@ export const settingsQuery = defineQuery(`*[_type == "settings"][0]{
   siteTitle,
   siteDescription,
   logo,
+  logoWhite,
   contactEmail,
   socialLinks,
   floatingButton

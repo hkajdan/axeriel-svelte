@@ -40,8 +40,8 @@
     <div class="flex flex-col items-center gap-6 text-white text-center">
       <!-- Logo (même hauteur que la photo de la col 2) -->
       <div class="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
-        {#if settings?.logo}
-          <SanityImage image={settings.logo} alt="logo" imgClass="max-w-full max-h-full object-contain" />
+        {#if settings?.logoWhite || settings?.logo}
+          <SanityImage image={settings.logoWhite ?? settings.logo} alt="logo" imgClass="max-w-full max-h-full object-contain" />
         {/if}
       </div>
       <!-- Adresse (même style que nom/titre) -->
@@ -134,10 +134,10 @@
         <!-- Logo + subtitle -->
         <div class="flex w-full lg:max-w-96 shrink flex-col items-center gap-6 lg:items-start">
           <div class="w-full">
-            {#if settings?.logo}
+            {#if settings?.logoWhite || settings?.logo}
               <span class="flex items-center justify-center gap-4 lg:justify-start">
                 <SanityImage
-                  image={settings.logo}
+                  image={settings.logoWhite ?? settings.logo}
                   alt="logo"
                   imgClass="w-20 md:w-24 lg:w-32"
                 />

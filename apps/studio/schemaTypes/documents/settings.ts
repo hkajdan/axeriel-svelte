@@ -81,6 +81,15 @@ export const settings = defineType({
       },
     }),
     defineField({
+      name: "logoWhite",
+      type: "image",
+      title: "Site Logo (White)",
+      description: "White version of the logo, used on dark backgrounds (e.g. footer)",
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: "contactEmail",
       type: "string",
       title: "Contact Email",
