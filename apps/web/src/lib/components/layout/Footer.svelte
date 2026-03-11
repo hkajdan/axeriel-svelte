@@ -5,16 +5,22 @@
   import SanityButtons from '$lib/components/SanityButtons.svelte'
   import SanityImage from '$lib/components/SanityImage.svelte'
 
-  export let footer: Footer | null = null
-  export let pageAuthor: Author | null = null
-  export let settings: any | null = null
+  let { footer = null, pageAuthor = null, settings = null }: {
+    footer: Footer | null,
+    pageAuthor: Author | null,
+    settings: any | null
+  } = $props()
 
   const currentYear = new Date().getFullYear()
 
-  // Determine contact person (pageAuthor > footer.contactAuthor > fallback)
-  $: contactPerson = pageAuthor || footer?.contactAuthor || { name: 'Michel', position: 'expert énergie', image: null, email: null }
-  $: contactEmail = (contactPerson as any)?.email || 'contact@axeriel.fr'
-  $: contactPhone = footer?.location?.phone
+  // Company-level contact info (always the same regardless of page)
+  const companyEmail = $derived((settings as any)?.contactEmail || 'contact@axeriel.fr')
+  const companyPhone = $derived(footer?.location?.phone)
+
+  // Page-specific contact person (pageAuthor > footer.contactAuthor > fallback)
+  const contactPerson = $derived(pageAuthor || footer?.contactAuthor || { name: 'Michel', position: 'expert énergie', image: null, email: null, phone: null })
+  const authorEmail = $derived((contactPerson as any)?.email)
+  const authorPhone = $derived((contactPerson as any)?.phone)
 </script>
 
 <!-- Contact Section -->
@@ -26,56 +32,85 @@
     />
   {/if}
 
-  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center w-full py-8 md:py-10 text-center gap-8 md:gap-16 px-4 md:px-20">
-    <!-- Left: Logo + Contact info -->
-    <div class="w-full md:w-1/2 flex flex-col items-center gap-6 md:gap-12 text-center">
-      {#if settings?.logo}
-        <span class="flex items-center justify-center gap-4">
-          <SanityImage
-            image={settings.logo}
-            alt="logo"
-            imgClass="w-24 md:w-32"
-          />
-        </span>
-      {/if}
-      <div class="text-white text-lg md:text-3xl flex flex-col items-center gap-3 md:gap-4">
-        {#if contactPhone}
-          <span class="flex flex-col md:flex-row gap-2 md:gap-8 items-center">
-            <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-            <span class="text-base md:text-3xl">{contactPhone}</span>
-          </span>
+  <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 w-full py-8 md:py-10 gap-12 md:gap-16 px-4 md:px-20">
+
+    <!-- Column 1: Company contact -->
+    <div class="flex flex-col items-center gap-6 text-white text-center">
+      <!-- Logo (même hauteur que la photo de la col 2) -->
+      <div class="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
+        {#if settings?.logo}
+          <SanityImage image={settings.logo} alt="logo" imgClass="max-w-full max-h-full object-contain" />
         {/if}
-        <a href="mailto:{contactEmail}" class="flex flex-col md:flex-row gap-2 md:gap-8 items-center hover:text-primary-200 transition-colors">
-          <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-          <span class="text-base md:text-3xl">{contactEmail}</span>
+      </div>
+      <!-- Adresse (même style que nom/titre) -->
+      <div class="text-base md:text-xl font-semibold leading-tight">
+        {#if footer?.location?.address || footer?.location?.city}
+          {footer?.location?.address ?? ''}
+          {#if footer?.location?.address && footer?.location?.city}<br />{/if}
+          {footer?.location?.city ?? ''}
+        {:else}
+          &nbsp;
+        {/if}
+      </div>
+      <!-- Email + téléphone -->
+      <div class="flex flex-col items-center gap-3 text-base md:text-xl">
+        <a href="mailto:{companyEmail}" class="flex gap-3 items-center hover:text-primary-200 transition-colors">
+          <svg class="w-5 h-5 md:w-6 md:h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          <span>{companyEmail}</span>
         </a>
+        {#if companyPhone}
+          <a href="tel:{companyPhone}" class="flex gap-3 items-center hover:text-primary-200 transition-colors">
+            <svg class="w-5 h-5 md:w-6 md:h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+            <span>{companyPhone}</span>
+          </a>
+        {/if}
       </div>
     </div>
 
-    <!-- Right: Contact person -->
-    <div class="text-lg md:text-3xl text-white w-full md:w-1/2 items-center gap-6 md:gap-8">
-      <div class="flex flex-col items-center text-center gap-6 md:gap-12">
-        {#if (contactPerson as any)?.image?.asset}
-          <div class="rounded-full w-24 h-24 md:w-32 md:h-32 overflow-hidden">
-            <SanityImage
-              image={(contactPerson as any).image}
-              alt={(contactPerson as any).name || 'Contact person'}
-              imgClass="w-full h-full object-cover"
-            />
-          </div>
-        {:else}
-          <div class="rounded-full w-24 h-24 md:w-32 md:h-32 bg-neutral-500 flex items-center justify-center"></div>
-        {/if}
-        <a href="mailto:{contactEmail}" class="hover:text-primary-200 transition-colors text-center">
-          <div class="text-base md:text-3xl">
-            Contactez {(contactPerson as any)?.name || 'notre expert'}
-            <br />
-            {#if (contactPerson as any)?.position}notre {(contactPerson as any).position}{/if}
-            {` ->`}
-          </div>
-        </a>
-      </div>
+    <!-- Column 2: Page author -->
+    <div class="flex flex-col items-center gap-6 text-white text-center">
+      {#key (contactPerson as any)?._id ?? (contactPerson as any)?.name}
+        <!-- Photo (même hauteur que le logo de la col 1) -->
+        <div class="w-24 h-24 md:w-32 md:h-32">
+          {#if (contactPerson as any)?.image?.asset}
+            <div class="rounded-full w-full h-full overflow-hidden">
+              <SanityImage
+                image={(contactPerson as any).image}
+                alt={(contactPerson as any).name || 'Contact'}
+                imgClass="w-full h-full object-cover"
+              />
+            </div>
+          {:else}
+            <div class="rounded-full w-full h-full bg-white/20 flex items-center justify-center">
+              <svg class="w-12 h-12 md:w-16 md:h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            </div>
+          {/if}
+        </div>
+        <!-- Nom + titre (même style que l'adresse de la col 1) -->
+        <div class="text-base md:text-xl font-semibold leading-tight">
+          {(contactPerson as any)?.name || 'Notre expert'}
+          {#if (contactPerson as any)?.position}
+            <div class="font-normal text-sm md:text-base text-white/80 mt-1">{(contactPerson as any).position}</div>
+          {/if}
+        </div>
+        <!-- Email + téléphone -->
+        <div class="flex flex-col items-center gap-3 text-base md:text-xl">
+          {#if authorEmail}
+            <a href="mailto:{authorEmail}" class="flex gap-3 items-center hover:text-primary-200 transition-colors">
+              <svg class="w-5 h-5 md:w-6 md:h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+              <span>{authorEmail}</span>
+            </a>
+          {/if}
+          {#if authorPhone}
+            <a href="tel:{authorPhone}" class="flex gap-3 items-center hover:text-primary-200 transition-colors">
+              <svg class="w-5 h-5 md:w-6 md:h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+              <span>{authorPhone}</span>
+            </a>
+          {/if}
+        </div>
+      {/key}
     </div>
+
   </div>
 
   <iframe

@@ -10,7 +10,7 @@
   
   const {data, children}: LayoutProps = $props()
   const {previewEnabled, navbar, footer, settings} = data
-  const pageAuthor = (data as any).pageAuthor as Author | null
+  const pageAuthor = $derived((data as any).pageAuthor as Author | null)
   
   
   // Vérification que les données nécessaires sont présentes

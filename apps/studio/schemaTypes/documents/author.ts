@@ -30,6 +30,12 @@ export const author = defineType({
         Rule.email().error("Please enter a valid email address"),
     }),
     defineField({
+      name: "phone",
+      type: "string",
+      title: "Phone",
+      description: "Contact phone number for this author",
+    }),
+    defineField({
       name: "image",
       type: "image",
       title: "Image",

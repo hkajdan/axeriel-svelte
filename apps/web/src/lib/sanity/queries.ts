@@ -478,6 +478,7 @@ export const footerQuery = defineQuery(`*[_type == "footer"][0]{
     name,
     position,
     email,
+    phone,
     image,
     bio
   },
@@ -497,6 +498,7 @@ export const authorQuery = defineQuery(`*[_type == "author" && _id == $authorId]
   name,
   position,
   email,
+  phone,
   image,
   bio
 }`)
@@ -505,6 +507,7 @@ export const pageAuthorBySlugQuery = defineQuery(`*[_type == "page" && slug.curr
   name,
   position,
   email,
+  phone,
   image,
   bio
 }`)
@@ -513,6 +516,7 @@ export const homePageAuthorQuery = defineQuery(`*[_type == "homePage"][0].author
   name,
   position,
   email,
+  phone,
   image,
   bio
 }`)
