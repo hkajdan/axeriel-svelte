@@ -39,7 +39,7 @@
     <!-- Column 1: Company contact -->
     <div class="flex flex-col items-center gap-6 text-white text-center">
       <!-- Logo (même hauteur que la photo de la col 2) -->
-      <div class="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
+      <div class="w-36 h-36 md:w-48 md:h-48 flex items-center justify-center">
         {#if settings?.logoWhite || settings?.logo}
           <SanityImage image={settings.logoWhite ?? settings.logo} alt="logo" imgClass="max-w-full max-h-full object-contain" />
         {/if}
@@ -73,7 +73,7 @@
     <div class="flex flex-col items-center gap-6 text-white text-center">
       {#key (contactPerson as any)?._id ?? (contactPerson as any)?.name}
         <!-- Photo (même hauteur que le logo de la col 1) -->
-        <div class="w-24 h-24 md:w-32 md:h-32">
+        <div class="w-36 h-36 md:w-48 md:h-48">
           {#if (contactPerson as any)?.image?.asset}
             <div class="rounded-full w-full h-full overflow-hidden">
               <SanityImage
@@ -139,7 +139,7 @@
                 <SanityImage
                   image={settings.logoWhite ?? settings.logo}
                   alt="logo"
-                  imgClass="w-20 md:w-24 lg:w-32"
+                  imgClass="w-32 md:w-40 lg:w-52"
                 />
               </span>
             {/if}

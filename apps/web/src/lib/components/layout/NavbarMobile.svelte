@@ -81,9 +81,11 @@
     <!-- Logo - Increased size, stays visible when menu open -->
     <div class="flex items-center relative z-50">
       {#if props.settings?.logo?.asset}
+        {@const useWhite = !isScrolledPastHero && !isMenuOpen}
+        {@const activeLogo = useWhite && props.settings?.logoWhite?.asset ? props.settings.logoWhite : props.settings.logo}
         <a href="/">
           <img
-            src={urlFor(props.settings.logo).width(150).height(50).url()}
+            src={urlFor(activeLogo).width(150).height(50).url()}
             alt={props.settings.siteTitle || 'Company Logo'}
             class="h-12 w-auto transition-all duration-300"
             loading="eager"
