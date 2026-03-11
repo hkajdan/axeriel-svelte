@@ -37,10 +37,8 @@
       <div class="mx-auto grid gap-8 lg:grid-cols-3">
         {#each cards as card}
           <div class="rounded-3xl bg-neutral-100 p-8 md:min-h-[300px]">
-            {#if card.icon?.name}
-              <span class="mb-9 flex w-fit p-3 items-center justify-center rounded-full bg-white drop-shadow-xl">
-                <span class="text-3xl text-primary-500">{card.icon.name}</span>
-              </span>
+            {#if card.icon?.svg}
+              <span class="mb-9 flex w-14 h-14 items-center justify-center rounded-full bg-white drop-shadow-xl text-primary-500 [&>svg]:w-7 [&>svg]:h-7 [&>svg]:stroke-current [&>svg]:shrink-0">{@html card.icon.svg}</span>
             {/if}
             <div>
               {#if card.title}

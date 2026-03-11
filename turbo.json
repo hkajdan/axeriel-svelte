@@ -11,7 +11,13 @@
         "packages/**/*.env*"
       ],
       "outputs": ["dist/**", ".svelte-kit/**", "!.svelte-kit/cache/**"],
-      "env": ["SANITY_VIEWER_TOKEN", "SANITY_API_WRITE_TOKEN"]
+      "env": [
+        "SANITY_VIEWER_TOKEN",
+        "PUBLIC_SANITY_PROJECT_ID",
+        "PUBLIC_SANITY_DATASET",
+        "PUBLIC_SANITY_API_VERSION",
+        "PUBLIC_SANITY_STUDIO_URL"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]

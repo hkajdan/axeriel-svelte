@@ -46,7 +46,7 @@
       html: `<div style="display:flex;flex-direction:column;align-items:center;gap:6px">
         <div style="
           width:36px;height:36px;border-radius:50% 50% 50% 0;
-          background:#3b6dce;border:3px solid white;
+          background:#0092D6;border:3px solid white;
           transform:rotate(-45deg);
           box-shadow:0 2px 8px rgba(0,0,0,0.35);
           flex-shrink:0
