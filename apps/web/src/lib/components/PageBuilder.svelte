@@ -23,14 +23,6 @@
 
   export let pageBuilder: PageBuilder;
   
-  // Debug: log the pageBuilder data when it changes
-  $: {
-    console.log('PageBuilder data update:', {
-      hasData: !!pageBuilder,
-      length: pageBuilder?.length,
-      firstBlock: pageBuilder?.[0]
-    });
-  }
   
   // Get the component loader function for a block type
   function getComponentLoader(block: any) {

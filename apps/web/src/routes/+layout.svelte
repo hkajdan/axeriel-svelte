@@ -12,8 +12,6 @@
   const {previewEnabled, navbar, footer, settings} = data
   const pageAuthor = (data as any).pageAuthor as Author | null
   
-  // Debug: log des données pour le diagnostic
-  console.log('Layout data:', { navbar, footer, settings, pageAuthor })
   
   // Vérification que les données nécessaires sont présentes
   onMount(() => {
