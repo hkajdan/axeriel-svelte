@@ -3,10 +3,7 @@
   import { urlForImage as urlFor } from '$lib/sanity/image';
   import { resolveSanityUrl } from '$lib/sanity/links';
   import { onMount, onDestroy } from 'svelte';
-  import { fly } from 'svelte/transition';
-  import { fade } from 'svelte/transition';
   import { slide } from 'svelte/transition';
-  import { cubicOut, cubicIn } from 'svelte/easing';
 
   let props = $props<{
     settings: Settings;
@@ -125,28 +122,26 @@
 
 </nav>
 
-<!-- Mobile menu panel - outside nav so it's not affected by nav's transform -->
-{#if isMenuOpen}
-  <div
-    id="mobile-menu"
-    class="fixed top-0 right-0 h-full w-full bg-white shadow-2xl z-40"
-    in:fly={{ x: 100, opacity: 0, duration: 300, easing: cubicOut }}
-    out:fly={{ x: 100, opacity: 0, duration: 300, easing: cubicIn }}
-  >
+<!-- Mobile menu panel — toujours dans le DOM, déplacé hors écran via translateX(100%) -->
+<div
+  id="mobile-menu"
+  class="fixed top-0 right-0 h-full w-full bg-white shadow-2xl z-40 transition-[transform,opacity] duration-500 ease-in-out {isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}"
+  aria-hidden={!isMenuOpen}
+  inert={!isMenuOpen || undefined}
+>
     <div class="flex flex-col h-full pt-24 px-6 pb-6 overflow-y-auto">
 
-      <!-- Menu items with staggered animation -->
       <ul class="space-y-2">
         {#each props.navbar?.columns as column (column._key || `col-${column._type}-${column.title}`)}
           {#if column._type === 'navbarColumn'}
             <li>
               <button
                 onclick={() => toggleAccordion(column._key || '')}
-                class="w-full flex items-center justify-between py-4 px-4 text-gray-800 hover:bg-gray-100 rounded-md transition-all duration-200"
+                class="w-full flex items-center justify-between py-4 px-4 text-gray-800 hover:bg-gray-100 rounded-md transition-colors duration-200"
               >
                 <span class="font-medium">{column.title}</span>
                 <svg
-                  class={`w-5 h-5 transform transition-transform ${activeAccordion === (column._key || '') ? 'rotate-180' : 'rotate-0'}`}
+                  class="w-5 h-5 transition-transform duration-200 {activeAccordion === (column._key || '') ? 'rotate-180' : ''}"
                   fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 >
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -154,11 +149,11 @@
               </button>
 
               {#if activeAccordion === (column._key || '') && column.links && column.links.length > 0}
-                <div class="pl-6 pt-2 pb-2 space-y-2 border-l-2 border-gray-200 ml-2 overflow-hidden">
+                <div transition:slide={{ duration: 200 }} class="pl-6 pt-2 pb-2 space-y-2 border-l-2 border-gray-200 ml-2">
                   {#each column.links as link (link._key || `link-${link.name}`)}
                     <a
                       href={resolveSanityUrl(link.url)}
-                      class="block py-3 px-4 text-gray-600 hover:bg-gray-50 rounded-md transition-all duration-200 transform hover:translate-x-1"
+                      class="block py-3 px-4 text-gray-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
                       onclick={toggleMenu}
                     >
                       {link.name}
@@ -171,7 +166,7 @@
             <li>
               <a
                 href={resolveSanityUrl(column.url)}
-                class="block py-4 px-4 text-gray-800 hover:bg-gray-100 rounded-md transition-all duration-200 transform hover:translate-x-1"
+                class="block py-4 px-4 text-gray-800 hover:bg-gray-100 rounded-md transition-colors duration-200"
                 onclick={toggleMenu}
               >
                 {column.name}
@@ -184,7 +179,7 @@
         <li class="mt-8">
           <a
             href="#contact"
-            class="block w-full py-4 px-6 text-center bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+            class="block w-full py-4 px-6 text-center bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-200 shadow-md"
             onclick={toggleMenu}
           >
             Contact
@@ -198,7 +193,7 @@
               href={props.settings.socialLinks.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-center py-4 px-6 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+              class="flex items-center justify-center py-4 px-6 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-200 shadow-md"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="mr-3">
                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
@@ -209,67 +204,28 @@
         {/if}
       </ul>
     </div>
-  </div>
-{/if}
+</div>
 
-<!-- Overlay when menu is open -->
-{#if isMenuOpen}
-  <button
-    class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-30 cursor-default"
-    onclick={toggleMenu}
-    aria-label="Close menu"
-    in:fade={{ duration: 300 }}
-    out:fade={{ duration: 300 }}
-  ></button>
-{/if}
+<!-- Overlay — toujours dans le DOM, toggle via opacity -->
+<button
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 cursor-default transition-opacity duration-500 {isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}"
+  onclick={toggleMenu}
+  aria-label="Close menu"
+  tabindex={isMenuOpen ? 0 : -1}
+></button>
 
 <style>
-  /* Ensure the navbar stays on top of other content */
   nav {
     z-index: 1000;
   }
-  
-  /* Smooth transitions for menu */
+
+  /* Exclure le menu des View Transitions du navigateur pour éviter
+     les animations parasites sur les éléments internes */
   #mobile-menu {
-    transform: translateX(0);
+    view-transition-name: none;
   }
-  
-  
-  /* Enhanced accordion animation */
-  .accordion-content {
-    transition: all 0.3s ease-in-out;
-  }
-  
-  /* Hamburger icon animation */
+
   #hamburger-button:active {
     transform: scale(0.95);
-  }
-  
-  /* Menu item hover effects */
-  .menu-item:hover {
-    transform: translateX(4px);
-  }
-  
-  /* Panel slide animation */
-  .panel-slide-enter {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  
-  .panel-slide-enter-active {
-    transform: translateX(0);
-    opacity: 1;
-    transition: all 0.5s ease-out;
-  }
-  
-  .panel-slide-exit {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  
-  .panel-slide-exit-active {
-    transform: translateX(100%);
-    opacity: 0;
-    transition: all 0.5s ease-in;
   }
 </style>

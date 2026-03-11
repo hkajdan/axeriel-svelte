@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { FooterQueryResult as Footer, Author, Settings } from '$lib/sanity/sanity.types'
   import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links'
+  import { urlForImage } from '$lib/sanity/image'
   import RichText from '$lib/components/PortableText.svelte'
   import SanityButtons from '$lib/components/SanityButtons.svelte'
   import SanityImage from '$lib/components/SanityImage.svelte'
@@ -120,7 +121,7 @@
       lng={footer.location.lng}
       address={footer.location.address ?? ''}
       city={footer.location.city ?? ''}
-      label={settings?.siteTitle ?? 'Axeriel'}
+      logoUrl={settings?.logo ? urlForImage(settings.logo).width(120).url() : undefined}
     />
   {/if}
 </section>

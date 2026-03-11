@@ -8,13 +8,13 @@
     lng,
     address = '',
     city = '',
-    label = 'Axeriel'
+    logoUrl = undefined
   }: {
     lat: number
     lng: number
     address?: string
     city?: string
-    label?: string
+    logoUrl?: string
   } = $props()
 
   let mapEl: HTMLDivElement
@@ -36,24 +36,33 @@
       maxZoom: 20
     }).addTo(map)
 
-    // Marqueur personnalisé (couleur primaire)
+    // Marqueur avec logo ou fallback texte en dessous du pin
+    const badgeContent = logoUrl
+      ? `<img src="${logoUrl}" alt="logo" style="height:20px;width:auto;display:block">`
+      : `<span style="font-size:12px;font-weight:600;color:#1f2937">Axeriel</span>`
+
     const icon = L.divIcon({
       className: '',
-      html: `<div style="
-        width:36px;height:36px;border-radius:50% 50% 50% 0;
-        background:#3b6dce;border:3px solid white;
-        transform:rotate(-45deg);
-        box-shadow:0 2px 8px rgba(0,0,0,0.35)
-      "></div>`,
-      iconSize: [36, 36],
-      iconAnchor: [18, 36],
-      popupAnchor: [0, -38]
+      html: `<div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div style="
+          width:36px;height:36px;border-radius:50% 50% 50% 0;
+          background:#3b6dce;border:3px solid white;
+          transform:rotate(-45deg);
+          box-shadow:0 2px 8px rgba(0,0,0,0.35);
+          flex-shrink:0
+        "></div>
+        <div style="
+          background:white;
+          padding:4px 10px;border-radius:99px;
+          box-shadow:0 2px 6px rgba(0,0,0,0.2);
+          display:flex;align-items:center
+        ">${badgeContent}</div>
+      </div>`,
+      iconSize: [120, 80],
+      iconAnchor: [60, 36]
     })
 
-    L.marker([lat, lng], { icon })
-      .addTo(map)
-      .bindPopup(`<strong>${label}</strong>${address ? `<br>${address}` : ''}${city ? `<br>${city}` : ''}`)
-      .openPopup()
+    L.marker([lat, lng], { icon }).addTo(map)
   })
 
   onDestroy(() => {
