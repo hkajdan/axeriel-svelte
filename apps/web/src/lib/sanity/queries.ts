@@ -52,9 +52,7 @@ export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)
          "productData": *[_type == "product" && _id == ^._ref][0]{
            _id,
            title,
-           description,
-           price,
-           features,
+           richText,
            images
          }
        }
@@ -189,9 +187,7 @@ export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current ==
          "productData": *[_type == "product" && _id == ^._ref][0]{
            _id,
            title,
-           description,
-           price,
-           features,
+           richText,
            images
          }
        }
@@ -326,9 +322,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
          "productData": *[_type == "product" && _id == ^._ref][0]{
            _id,
            title,
-           description,
-           price,
-           features,
+           richText,
            images
          }
        }
