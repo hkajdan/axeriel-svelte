@@ -1,8 +1,7 @@
 import { createClient } from '@sanity/sveltekit'
 import {
   PUBLIC_SANITY_DATASET,
-  PUBLIC_SANITY_PROJECT_ID,
-  PUBLIC_SANITY_STUDIO_URL
+  PUBLIC_SANITY_PROJECT_ID
 } from '$env/static/public'
 
 export const client = createClient({
@@ -11,7 +10,6 @@ export const client = createClient({
   apiVersion: '2024-10-28',
   useCdn: true,
   stega: {
-    enabled: true,
-    studioUrl: PUBLIC_SANITY_STUDIO_URL
+    enabled: false
   }
 })
