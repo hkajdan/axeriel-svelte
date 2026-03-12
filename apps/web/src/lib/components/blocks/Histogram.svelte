@@ -21,11 +21,21 @@
   } = $props();
 
   // Layout constants
-  const DEPTH = 14;       // 3D depth in px
+  const MAX_DEPTH = 14;   // 3D depth in px (max)
   const CHART_H = 260;    // chart area height in px
-  const BAR_W = 52;       // bar face width in px
+  const MAX_BAR_W = 52;   // bar face width in px (max)
   const Y_AXIS_W = 56;    // y-axis label column width in px
   const DEFAULT_CLR = '#0092D6';
+
+  let containerW: number = $state(0);
+
+  let barW = $derived.by(() => {
+    if (!containerW || !bars?.length) return MAX_BAR_W;
+    const slotW = (containerW - Y_AXIS_W) / bars.length;
+    return Math.min(MAX_BAR_W, Math.max(6, Math.floor(slotW * 0.55)));
+  });
+
+  let DEPTH = $derived(Math.min(MAX_DEPTH, Math.max(4, Math.round(barW * 0.27))));
 
   let sectionClasses = $derived(getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) }));
   let textColorClass = $derived(getTextColorClass(backgroundColor || ''));
@@ -104,7 +114,7 @@
     {/if}
 
     {#if bars?.length}
-      <div class="max-w-5xl mx-auto overflow-x-auto" bind:this={chartEl}>
+      <div class="max-w-5xl mx-auto overflow-x-auto" bind:this={chartEl} bind:clientWidth={containerW}>
         <div class="flex min-w-[320px]">
 
           <!-- Y-axis labels -->
@@ -154,7 +164,7 @@
                 {@const ready = !!animatedBars[i]}
 
                 <!-- Bar slot (full-height relative container) -->
-                <div class="relative flex-1" style="max-width: {BAR_W + DEPTH + 24}px;">
+                <div class="relative flex-1" style="max-width: {barW + DEPTH + 24}px;">
 
                   <!-- Value label (above bar, fades in after animation) -->
                   {#if showValues !== false && bar.value !== undefined}
@@ -176,8 +186,8 @@
                     class="absolute overflow-visible"
                     style="
                       bottom: 0;
-                      left: calc(50% - {BAR_W / 2}px);
-                      width: {BAR_W}px;
+                      left: calc(50% - {barW / 2}px);
+                      width: {barW}px;
                       height: {bh}px;
                       transform: scaleY({ready ? 1 : 0});
                       transform-origin: center bottom;
