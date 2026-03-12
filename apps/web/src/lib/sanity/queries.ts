@@ -117,7 +117,16 @@ export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)
     },
     _type == "jobOffers" => {
       "type": "jobOffers",
-      ...@
+      ...,
+      "offers": offers[]->{
+        _id,
+        title,
+        "slug": slug.current,
+        image,
+        summary,
+        profile,
+        type
+      }
     },
     _type == "videoSection" => {
       "type": "videoSection",
@@ -252,7 +261,16 @@ export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current ==
     },
     _type == "jobOffers" => {
       "type": "jobOffers",
-      ...@
+      ...,
+      "offers": offers[]->{
+        _id,
+        title,
+        "slug": slug.current,
+        image,
+        summary,
+        profile,
+        type
+      }
     },
     _type == "videoSection" => {
       "type": "videoSection",
@@ -387,7 +405,16 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     },
     _type == "jobOffers" => {
       "type": "jobOffers",
-      ...@
+      ...,
+      "offers": offers[]->{
+        _id,
+        title,
+        "slug": slug.current,
+        image,
+        summary,
+        profile,
+        type
+      }
     },
     _type == "videoSection" => {
       "type": "videoSection",

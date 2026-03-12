@@ -8,7 +8,7 @@ type BackgroundColor = '' | 'white' | 'light-blue' | 'blue' | 'grey' | 'light-gr
  * based on the background color selection from Sanity
  */
 export function getSectionClasses(bg: BackgroundColor, opts?: { hasTitle?: boolean }): string {
-  const pyClass = opts?.hasTitle === false ? 'py-8 md:py-24 lg:py-32' : 'py-16 md:py-24 lg:py-32'
+  const pyClass = opts?.hasTitle === false ? 'py-6 md:py-10 lg:py-16' : 'py-8 md:py-12 lg:py-16'
   const baseClasses = `w-full ${pyClass} px-4 md:px-8 scroll-mt-24 md:scroll-mt-32`
 
   switch (bg) {

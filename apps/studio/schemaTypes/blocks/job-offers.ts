@@ -24,6 +24,18 @@ export const jobOffers = defineType({
     richTextField,
     backgroundColorField,
     defineField({
+      name: "offers",
+      title: "Job Offers",
+      type: "array",
+      description: "Select job offers to display in this section",
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "offer" }],
+        },
+      ],
+    }),
+    defineField({
       name: "anchor",
       title: "Anchor",
       type: "string",

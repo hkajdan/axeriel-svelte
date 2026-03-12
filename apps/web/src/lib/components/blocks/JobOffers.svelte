@@ -16,7 +16,7 @@
   const textColorClass = getTextColorClass(backgroundColor || '');
 </script>
 
-<section id={anchor || 'job-offers'} class={sectionClasses}>
+<section id={anchor || 'job-offers'} class="{sectionClasses} !pt-32 md:!pt-40 lg:!pt-48">
   <div class="container mx-auto">
     <div class="flex w-full flex-col items-center {textColorClass}">
       {#if eyebrow || title || richText}
@@ -25,7 +25,7 @@
             <span class="inline-block px-3 py-1.5 text-sm font-medium bg-neutral-200 rounded-full">{eyebrow}</span>
           {/if}
           {#if title}
-            <h2 class="text-3xl font-semibold md:text-5xl text-balance">{title}</h2>
+            <h2 class="text-4xl font-semibold md:text-6xl lg:text-7xl text-balance">{title}</h2>
           {/if}
           {#if richText}
             <RichText value={richText} textClass="text-balance max-w-3xl" />
@@ -37,7 +37,7 @@
         <div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {#each offers as offer}
             <a
-              href={offer.slug ? `/career/${offer.slug.split('/').pop()}` : `/career/${offer._id}`}
+              href={`/career/${offer.slug ?? offer._id}`}
               class="group block rounded-2xl border border-neutral-200/50 bg-white p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
             >
               {#if offer.image?.asset}
@@ -47,13 +47,13 @@
                     alt={offer.title || 'Job offer'}
                     imgClass="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
+                  {#if offer.type}
+                    <span class="absolute top-3 left-3 px-2 py-1 text-xs font-medium bg-white/90 rounded-full">{offer.type}</span>
+                  {/if}
                 </div>
               {/if}
 
               <div class="space-y-4">
-                {#if offer.type}
-                  <span class="inline-block px-2 py-1 text-xs font-medium bg-neutral-200 rounded-full">{offer.type}</span>
-                {/if}
 
                 <div>
                   {#if offer.title}
