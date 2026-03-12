@@ -1,5 +1,4 @@
 <script lang="ts">
-  import {PreviewMode,VisualEditing} from '@sanity/sveltekit'
   import type {LayoutProps} from './$types'
   import './layout.css'
   import NavbarComponent from '$lib/components/layout/Navbar.svelte'
@@ -8,7 +7,7 @@
   import { onNavigate } from '$app/navigation'
 
   const {data, children}: LayoutProps = $props()
-  const {previewEnabled, navbar, footer, settings} = data
+  const {navbar, footer, settings} = data
   const pageAuthor = $derived((data as any).pageAuthor as Author | null)
 
   onNavigate((navigation) => {
@@ -28,24 +27,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<PreviewMode enabled={previewEnabled}>
-  <VisualEditing enabled={previewEnabled}>
-    <!-- Layout container -->
-    <div class="flex flex-col min-h-screen">
-      <!-- Header/Navbar will go here -->
-      <header>
-        {#if navbar && settings}
-          <NavbarComponent navbar={navbar as any} settings={settings as any} />
-        {/if}
-      </header>
-      
-      <!-- Main content -->
-      <main class="flex-1 min-h-screen">
-        {@render children()}
-      </main>
-      
-      <!-- Footer -->
-      <FooterComponent {footer} {pageAuthor} {settings} />
-    </div>
-    </VisualEditing>
-</PreviewMode>
+<!-- Layout container -->
+<div class="flex flex-col min-h-screen">
+  <!-- Header/Navbar will go here -->
+  <header>
+    {#if navbar && settings}
+      <NavbarComponent navbar={navbar as any} settings={settings as any} />
+    {/if}
+  </header>
+
+  <!-- Main content -->
+  <main class="flex-1 min-h-screen">
+    {@render children()}
+  </main>
+
+  <!-- Footer -->
+  <FooterComponent {footer} {pageAuthor} {settings} />
+</div>

@@ -2,28 +2,25 @@ import { navbarQuery, footerQuery, settingsQuery, pageAuthorBySlugQuery, homePag
 import type { LayoutServerLoad } from './$types'
 import { client } from '$lib/sanity/client'
 
-export const load: LayoutServerLoad = async (event) => {
-  const { locals: { sanity }, url, params } = event
-  const { previewEnabled } = sanity
-  const options = { stega: previewEnabled ? true : false }
+export const prerender = true
 
+export const load: LayoutServerLoad = async ({ url, params }) => {
   // Determine which author query to run
   const authorQuery = url.pathname === '/'
-    ? client.fetch(homePageAuthorQuery, {}, options)
+    ? client.fetch(homePageAuthorQuery)
     : params.slug
-      ? client.fetch(pageAuthorBySlugQuery, { slug: `/${params.slug}` }, options)
+      ? client.fetch(pageAuthorBySlugQuery, { slug: `/${params.slug}` })
       : Promise.resolve(null)
 
   // Fetch all layout data in parallel (including page author)
   const [navbar, footer, settings, pageAuthor] = await Promise.all([
-    client.fetch(navbarQuery, {}, options),
-    client.fetch(footerQuery, {}, options),
-    client.fetch(settingsQuery, {}, options),
+    client.fetch(navbarQuery),
+    client.fetch(footerQuery),
+    client.fetch(settingsQuery),
     authorQuery
   ])
 
   return {
-    previewEnabled,
     navbar,
     footer,
     settings,

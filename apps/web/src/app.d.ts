@@ -3,11 +3,8 @@
 declare global {
   namespace App {
     // interface Error {}
-    interface Locals {
-      sanity: SanityLocals
-    }
+    // interface Locals {}
     interface PageData {
-      previewEnabled: any
       navbar?: any
       footer?: any
       settings?: any
