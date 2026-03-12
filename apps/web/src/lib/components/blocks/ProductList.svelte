@@ -213,7 +213,7 @@
                   </button>
 
                   <!-- Dot indicators -->
-                  <div class="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5">
+                  <div class="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5">
                     {#each images as _, j}
                       <button
                         onclick={(e) => { e.stopPropagation(); goTo(i, j); }}
@@ -224,15 +224,24 @@
                   </div>
                 {/if}
 
+                <!-- Caption overlay -->
+                {#key activeIdx}
+                  {@const activeCaption = images[activeIdx]?.caption}
+                  {#if activeCaption}
+                    <div class="caption-fade absolute inset-x-0 bottom-0 z-10 pointer-events-none select-none">
+                      <div class="bg-gradient-to-t from-black/90 via-black/50 to-transparent px-5 pt-20 pb-7">
+                        <RichText value={activeCaption} textClass="text-sm md:text-base prose-invert [&_*]:!text-white [&_*]:!opacity-100 line-clamp-3" />
+                      </div>
+                    </div>
+                  {/if}
+                {/key}
+
               </div>
 
               <!-- Content -->
-              <div class="p-6 md:p-8 flex flex-col gap-3 flex-1">
+              <div class="px-6 md:px-8 py-6">
                 {#if data?.title}
                   <h3 class="text-xl font-semibold md:text-2xl leading-tight">{data.title}</h3>
-                {/if}
-                {#if data?.richText}
-                  <RichText value={data.richText} textClass="text-sm md:text-base opacity-75 line-clamp-3" />
                 {/if}
               </div>
 
@@ -244,3 +253,13 @@
     </div>
   </div>
 </section>
+
+<style>
+  .caption-fade {
+    animation: captionFadeIn 280ms ease both;
+  }
+  @keyframes captionFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
