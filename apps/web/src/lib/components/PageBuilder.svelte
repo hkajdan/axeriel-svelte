@@ -1,9 +1,10 @@
 <script lang="ts">
   import type { PageBuilder } from '$lib/sanity/sanity.types';
   import { reveal } from '$lib/actions/reveal';
+  import Hero from './blocks/Hero.svelte';
 
   const componentMap: Record<string, any> = {
-    hero: () => import('./blocks/Hero.svelte'),
+    hero: null, // loaded eagerly above
     cta: () => import('./blocks/CTA.svelte'),
     featureCardsIcon: () => import('./blocks/FeatureCardsIcon.svelte'),
     productList: () => import('./blocks/ProductList.svelte'),
@@ -21,15 +22,22 @@
 
   export let pageBuilder: PageBuilder;
 
+  function getBlockType(block: any) {
+    return block?._type || block?.type;
+  }
+
   function getComponentLoader(block: any) {
-    const blockType = block?._type || block?.type;
+    const blockType = getBlockType(block);
     return blockType ? componentMap[blockType] ?? null : null;
   }
 </script>
 <main class="flex flex-col gap-10 md:gap-16 max-w-8xl mx-auto relative">
   {#if pageBuilder && pageBuilder.length > 0}
     {#each pageBuilder as block}
-      {#if getComponentLoader(block)}
+      {#if getBlockType(block) === 'hero'}
+        <!-- Hero is eagerly loaded and never revealed (it's above the fold) -->
+        <Hero {...block} />
+      {:else if getComponentLoader(block)}
         <div use:reveal>
           {#await getComponentLoader(block)()}
             <!-- loading -->

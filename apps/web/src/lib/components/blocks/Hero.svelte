@@ -14,7 +14,7 @@
   export let anchor: Hero['anchor'];
 </script>
 
-<section class="relative h-screen min-h-150 flex items-center justify-center" id={anchor}>
+<section class="relative h-screen min-h-150 flex items-center justify-center bg-neutral-900" id={anchor}>
   <!-- Background Media - Fullscreen and Absolute -->
   {#if video?.asset && (video.asset as any)?.playbackId}
     {@const playbackId = (video.asset as any).playbackId}

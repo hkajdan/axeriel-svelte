@@ -7,22 +7,20 @@ export const load: LayoutServerLoad = async (event) => {
   const { previewEnabled } = sanity
   const options = { stega: previewEnabled ? true : false }
 
-  // Fetch all layout data in parallel
-  const [navbar, footer, settings] = await Promise.all([
+  // Determine which author query to run
+  const authorQuery = url.pathname === '/'
+    ? client.fetch(homePageAuthorQuery, {}, options)
+    : params.slug
+      ? client.fetch(pageAuthorBySlugQuery, { slug: `/${params.slug}` }, options)
+      : Promise.resolve(null)
+
+  // Fetch all layout data in parallel (including page author)
+  const [navbar, footer, settings, pageAuthor] = await Promise.all([
     client.fetch(navbarQuery, {}, options),
     client.fetch(footerQuery, {}, options),
-    client.fetch(settingsQuery, {}, options)
+    client.fetch(settingsQuery, {}, options),
+    authorQuery
   ])
-
-  // Fetch page author based on current route
-  let pageAuthor = null
-  if (url.pathname === '/') {
-    // Homepage - fetch homepage author
-    pageAuthor = await client.fetch(homePageAuthorQuery, {}, options)
-  } else if (params.slug) {
-    // Page route - extract slug and fetch page author
-    pageAuthor = await client.fetch(pageAuthorBySlugQuery, { slug: `/${params.slug}` }, options)
-  }
 
   return {
     previewEnabled,

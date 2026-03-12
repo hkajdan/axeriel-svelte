@@ -40,7 +40,7 @@
       </header>
       
       <!-- Main content -->
-      <main class="flex-1">
+      <main class="flex-1 min-h-screen">
         {@render children()}
       </main>
       
