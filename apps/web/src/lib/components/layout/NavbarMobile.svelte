@@ -3,11 +3,16 @@
   import { urlForImage as urlFor } from '$lib/sanity/image';
   import { resolveSanityUrl } from '$lib/sanity/links';
   import { slide } from 'svelte/transition';
+  import { page as pageStore } from '$app/stores';
+  import { localePath } from '$lib/utils/i18n';
 
   let props = $props<{
     settings: Settings;
     navbar: Navbar;
   }>();
+
+  const uiStrings = $derived($pageStore.data.uiStrings);
+  const lang = $derived($pageStore.data.lang ?? 'fr');
 
   // State for mobile menu
   let isMenuOpen = $state(false);
@@ -120,7 +125,7 @@
       {#if props.settings?.logo?.asset}
         {@const useWhite = !isScrolledPastHero && !isMenuOpen}
         {@const activeLogo = useWhite && props.settings?.logoWhite?.asset ? props.settings.logoWhite : props.settings.logo}
-        <a href="/">
+        <a href={localePath('/', lang)}>
           <img
             src={urlFor(activeLogo).width(150).height(50).url()}
             alt={props.settings.siteTitle || 'Company Logo'}
@@ -141,7 +146,7 @@
       id="hamburger-button"
       onclick={(e) => { e.stopPropagation(); toggleMenu(); }}
       class="{isMenuOpen || isScrolledPastHero ? 'text-gray-800' : 'text-white'} focus:outline-none p-4 relative z-50"
-      aria-label="Toggle menu"
+      aria-label={uiStrings?.toggleMenu ?? 'Ouvrir le menu'}
       aria-expanded={isMenuOpen}
     >
       {#if isMenuOpen}
@@ -188,7 +193,7 @@
                 <div transition:slide={{ duration: 200 }} class="pl-6 pt-2 pb-2 space-y-2 border-l-2 border-gray-200 ml-2">
                   {#each column.links as link (link._key || `link-${link.name}`)}
                     <a
-                      href={resolveSanityUrl(link.url)}
+                      href={resolveSanityUrl(link.url, lang)}
                       class="block py-3 px-4 text-gray-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
                       onclick={toggleMenu}
                     >
@@ -201,7 +206,7 @@
           {:else if column._type === 'navbarLink'}
             <li>
               <a
-                href={resolveSanityUrl(column.url)}
+                href={resolveSanityUrl(column.url, lang)}
                 class="block py-4 px-4 text-gray-800 hover:bg-gray-100 rounded-md transition-colors duration-200"
                 onclick={toggleMenu}
               >
@@ -218,7 +223,7 @@
             class="block w-full py-4 px-6 text-center bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-200 shadow-md"
             onclick={toggleMenu}
           >
-            Contact
+            {uiStrings?.contact ?? 'Contact'}
           </a>
         </li>
 
@@ -246,7 +251,7 @@
 <button
   class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 cursor-default transition-opacity duration-500 {isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}"
   onclick={toggleMenu}
-  aria-label="Close menu"
+  aria-label={uiStrings?.closeMenu ?? 'Fermer le menu'}
   tabindex={isMenuOpen ? 0 : -1}
 ></button>
 

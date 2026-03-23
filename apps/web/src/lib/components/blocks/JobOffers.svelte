@@ -4,6 +4,8 @@
   import { SECTION_HEADER_SPACING } from '$lib/utils/section-spacing';
   import RichText from '$lib/components/PortableText.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
+  import { page as pageStore } from '$app/stores';
+  import { localePath } from '$lib/utils/i18n';
 
   interface Props {
     eyebrow?: JobOffers['eyebrow'];
@@ -15,6 +17,9 @@
   }
 
   let { eyebrow, title, richText, offers = [], backgroundColor, anchor }: Props = $props();
+
+  const uiStrings = $derived($pageStore.data.uiStrings);
+  const lang = $derived($pageStore.data.lang ?? 'fr');
 
   const sectionClasses = $derived(getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) }));
   const textColorClass = $derived(getTextColorClass(backgroundColor || ''));
@@ -41,7 +46,7 @@
         <div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {#each offers as offer}
             <a
-              href={`/career/${offer.slug ?? offer._id}`}
+              href={localePath('/career/' + (offer.slug ?? offer._id), lang)}
               class="group block rounded-2xl border border-neutral-200/50 bg-white p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
             >
               {#if offer.image?.asset}
@@ -73,7 +78,7 @@
                 {/if}
 
                 <div class="pt-2">
-                  <span class="text-sm font-medium text-primary-500 group-hover:underline">Learn more →</span>
+                  <span class="text-sm font-medium text-primary-500 group-hover:underline">{uiStrings?.learnMore ?? 'En savoir plus →'}</span>
                 </div>
               </div>
             </a>
@@ -82,8 +87,8 @@
       {:else}
         <div class="text-center w-full">
           <div class="rounded-2xl border border-dashed border-neutral-200/50 p-12">
-            <h3 class="text-lg font-medium text-neutral-500">No job offers available</h3>
-            <p class="mt-2 text-sm text-neutral-500">We're always looking for talented people. Check back soon for new opportunities!</p>
+            <h3 class="text-lg font-medium text-neutral-500">{uiStrings?.noJobOffers ?? 'Pas d\'offres disponibles'}</h3>
+            <p class="mt-2 text-sm text-neutral-500">{uiStrings?.noJobOffersDescription ?? 'Nous sommes toujours à la recherche de talents. Revenez bientôt !'}</p>
           </div>
         </div>
       {/if}

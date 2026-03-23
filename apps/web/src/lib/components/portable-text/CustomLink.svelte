@@ -1,5 +1,7 @@
 <script lang="ts">
   import type { MarkComponentProps } from '@portabletext/svelte'
+  import { page } from '$app/stores'
+  import { localePath } from '$lib/utils/i18n'
 
   interface Props {
     portableText: MarkComponentProps
@@ -7,6 +9,7 @@
   }
 
   let { portableText, children }: Props = $props()
+  const lang = $derived($page.data.lang ?? 'fr')
 
   let linkAttrs = $derived.by(() => {
     const linkData = (portableText.value as any)?.customLink || {}
@@ -26,11 +29,10 @@
       target = openInNewTab ? '_blank' : undefined
       rel = openInNewTab ? 'noopener noreferrer' : undefined
     } else if (type === 'internal' && internal) {
-      // Use resolved slug from GROQ projection, fallback to _ref for unresolved refs
       const slug = internal.slug?.current;
       if (slug) {
         const cleanSlug = slug.startsWith('/') ? slug.slice(1) : slug;
-        href = `/${cleanSlug}`;
+        href = localePath(`/${cleanSlug}`, lang);
       } else {
         console.warn('CustomLink: internal reference missing resolved slug', internal);
         href = '#';

@@ -2,11 +2,15 @@
   import type { Settings, Navbar } from '$lib/sanity/sanity.types';
   import { urlForImage as urlFor } from '$lib/sanity/image';
   import { resolveSanityUrl } from '$lib/sanity/links';
+  import { page as pageStore } from '$app/stores';
+  import { localePath } from '$lib/utils/i18n';
 
   let props = $props<{
     settings: Settings;
     navbar: Navbar;
   }>();
+
+  const lang = $derived($pageStore.data.lang ?? 'fr');
 
   let isVisible = $state(true);
   let lastScrollPosition = $state(0);
@@ -38,7 +42,7 @@
     <!-- Logo -->
     <div class="flex z-50">
       {#if props.settings?.logo?.asset}
-        <a href="/">
+        <a href={localePath('/', lang)}>
           <img
             src={urlFor(props.settings.logo).width(120).height(40).url()}
             alt={props.settings.siteTitle || 'Company Logo'}
@@ -77,7 +81,7 @@
                 <div class="flex h-80 space-x-4 w-full p-4 pt-6">
                    {#each column.links as link (link._key || `link-${link.name}-${link.description}`)}
                      <a 
-                       href={resolveSanityUrl(link.url)}
+                       href={resolveSanityUrl(link.url, lang)}
                        class="flex flex-row items-center transition-colors relative rounded-md overflow-hidden h-full w-full bg-white hover:bg-gray-50"
                        onclick={() => showSubmenu = false}
                      >
@@ -102,7 +106,7 @@
             
           {:else}
             <a 
-              href={resolveSanityUrl(column.url)}
+              href={resolveSanityUrl(column.url, lang)}
               class="flex items-center text-white transition-colors h-full"
             >
               {column.name}

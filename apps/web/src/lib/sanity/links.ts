@@ -1,6 +1,7 @@
 import type { CustomUrl, Slug } from './sanity.types';
 import { client } from './client';
 import { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } from '$env/static/public';
+import { localePath, type SupportedLang } from '$lib/utils/i18n';
 
 /**
  * Sanity Link Handling Utilities
@@ -14,7 +15,7 @@ import { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } from '$env/static/pub
  * @param url - The Sanity CustomUrl object to resolve
  * @returns Resolved URL string suitable for href attribute
  */
-export function resolveSanityUrl(url: CustomUrl | undefined): string {
+export function resolveSanityUrl(url: CustomUrl | undefined, lang: SupportedLang = 'fr'): string {
   if (!url) return '#';
 
   switch (url.type) {
@@ -32,11 +33,11 @@ export function resolveSanityUrl(url: CustomUrl | undefined): string {
         if (slug?.current) {
           // Handle anchor if present
           const cleanSlug = slug.current.startsWith('/') ? slug.current.slice(1) : slug.current;
-          const baseUrl = `/${cleanSlug}`;
+          const baseUrl = localePath(`/${cleanSlug}`, lang);
           return url.anchor ? `${baseUrl}#${url.anchor}` : baseUrl;
         }
       }
-      
+
       // Fallback for cases where slug might not be available
       // This should rarely happen with the updated queries
       console.warn(`Sanity internal reference doesn't include slug data for document type: ${(internalRef as any)?._type}`);
@@ -165,7 +166,7 @@ export function getLinkTypeLabel(url: CustomUrl | undefined): string {
  * @param url - The Sanity CustomUrl object
  * @returns Display-friendly URL string
  */
-export function getDisplayUrl(url: CustomUrl | undefined): string {
+export function getDisplayUrl(url: CustomUrl | undefined, lang: SupportedLang = 'fr'): string {
   if (!url) return '#';
   
   switch (url.type) {
@@ -179,7 +180,7 @@ export function getDisplayUrl(url: CustomUrl | undefined): string {
           // Handle anchor if present
           // Remove leading slash if present to avoid double slashes
           const cleanSlug = slug.current.startsWith('/') ? slug.current.slice(1) : slug.current;
-          const baseUrl = `/${cleanSlug}`;
+          const baseUrl = localePath(`/${cleanSlug}`, lang);
           return url.anchor ? `${baseUrl}#${url.anchor}` : baseUrl;
         }
       }
@@ -232,7 +233,7 @@ export async function resolveInternalReferenceSlug(refId: string): Promise<strin
  * @param url - The Sanity CustomUrl object to resolve
  * @returns Promise resolving to the resolved URL string
  */
-export async function resolveSanityUrlAsync(url: CustomUrl | undefined): Promise<string> {
+export async function resolveSanityUrlAsync(url: CustomUrl | undefined, lang: SupportedLang = 'fr'): Promise<string> {
   if (!url) return '#';
 
   switch (url.type) {
@@ -242,14 +243,14 @@ export async function resolveSanityUrlAsync(url: CustomUrl | undefined): Promise
     case 'internal':
       // First, check if the reference already includes slug data
       if ((url.internal as any)?.slug?.current) {
-        return `/${(url.internal as any).slug.current}`;
+        return localePath(`/${(url.internal as any).slug.current}`, lang);
       }
-      
+
       // If not, try to fetch the actual document to get the slug
       if (url.internal?._ref) {
         const resolvedSlug = await resolveInternalReferenceSlug(url.internal._ref);
         if (resolvedSlug) {
-          return resolvedSlug;
+          return localePath(resolvedSlug, lang);
         }
         
         // Fallback to using the reference ID as path

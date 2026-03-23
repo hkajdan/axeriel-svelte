@@ -5,14 +5,19 @@
   import Button from '$lib/components/ui/Button.svelte';
   import { urlForImage } from '$lib/sanity/image';
   import { reveal } from '$lib/actions/reveal';
+  import { page as pageStore } from '$app/stores';
+  import { localePath } from '$lib/utils/i18n';
 
   const { data }: PageProps = $props();
+
+  const uiStrings = $derived($pageStore.data.uiStrings);
+  const lang = $derived($pageStore.data.lang ?? 'fr');
 
   const offer = $derived(data.offer);
   const contactEmail = $derived(data.settings?.contactEmail);
   const mailtoHref = $derived(
     contactEmail
-      ? `mailto:${contactEmail}?subject=${encodeURIComponent(`Candidature - ${offer?.title || ''}`)}`
+      ? `mailto:${contactEmail}?subject=${encodeURIComponent(`${uiStrings?.applicationSubject ?? 'Candidature - '}${offer?.title || ''}`)}`
       : undefined
   );
   const imageUrl = $derived(
@@ -32,11 +37,11 @@
 
     <!-- Back link -->
     <a
-      href="/career"
+      href={localePath('/career', lang)}
       class="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-primary-500 transition-colors duration-200 mb-8 md:mb-12"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-      Toutes les offres
+      {uiStrings?.allOffers ?? 'Toutes les offres'}
     </a>
 
     <!-- Image banner -->
@@ -94,7 +99,7 @@
     {#if mailtoHref}
       <div class="flex justify-center mt-12 md:mt-16" use:reveal>
         <Button variant="primary" size="lg" href={mailtoHref}>
-          Postuler par email
+          {uiStrings?.applyByEmail ?? 'Postuler par email'}
         </Button>
       </div>
     {/if}

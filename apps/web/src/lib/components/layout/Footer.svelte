@@ -6,12 +6,17 @@
   import SanityButtons from '$lib/components/SanityButtons.svelte'
   import SanityImage from '$lib/components/SanityImage.svelte'
   import FooterMap from '$lib/components/layout/FooterMap.svelte'
+  import { page as pageStore } from '$app/stores'
+  import { localePath, type SupportedLang } from '$lib/utils/i18n'
 
   let { footer = null, pageAuthor = null, settings = null }: {
     footer: Footer | null,
     pageAuthor: Author | null,
     settings: any | null
   } = $props()
+
+  const uiStrings = $derived($pageStore.data.uiStrings)
+  const lang = $derived(($pageStore.data.lang ?? 'fr') as SupportedLang)
 
   const currentYear = new Date().getFullYear()
 
@@ -90,7 +95,7 @@
         </div>
         <!-- Nom + titre (même style que l'adresse de la col 1) -->
         <div class="text-base md:text-xl font-semibold leading-tight">
-          {(contactPerson as any)?.name || 'Notre expert'}
+          {(contactPerson as any)?.name || (uiStrings?.ourExpert ?? 'Notre expert')}
           {#if (contactPerson as any)?.position}
             <div class="font-normal text-sm md:text-base text-white/80 mt-1">{(contactPerson as any).position}</div>
           {/if}
@@ -184,7 +189,7 @@
                       {#if link.url}
                         <li class="font-medium hover:text-primary-500">
                           <a
-                            href={resolveSanityUrl(link.url as any)}
+                            href={resolveSanityUrl(link.url as any, lang)}
                             target={getLinkTarget(link.url as any)}
                             rel={getLinkRel(link.url as any)}
                           >
@@ -204,7 +209,7 @@
       <!-- Bottom bar -->
       <div class="mt-12 md:mt-16 lg:mt-20 border-t pt-6 md:pt-8">
         <div class="flex flex-col justify-between gap-4 text-center text-xs md:text-sm font-normal lg:flex-row lg:items-center lg:text-left mx-auto max-w-7xl px-4 md:px-6">
-          <p class="text-gray-300">© {currentYear} {settings?.siteTitle || 'Axeriel'}. All rights reserved.</p>
+          <p class="text-gray-300">© {currentYear} {settings?.siteTitle || 'Axeriel'}. {uiStrings?.allRightsReserved ?? 'Tous droits réservés.'}</p>
           <ul class="flex flex-col gap-2 md:flex-row md:gap-4 lg:justify-start">
             <li class="hover:text-primary-500 transition-colors"><a href="/terms">Terms and Conditions</a></li>
             <li class="hover:text-primary-500 transition-colors"><a href="/privacy">Privacy Policy</a></li>
