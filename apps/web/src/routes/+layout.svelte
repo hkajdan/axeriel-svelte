@@ -37,7 +37,7 @@
   </header>
 
   <!-- Main content -->
-  <main class="flex-1 min-h-screen">
+  <main class="flex-1 min-h-screen" style="view-transition-name: main-content;">
     {@render children()}
   </main>
 

@@ -97,11 +97,16 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+
+  ::view-transition-old(main-content) {
     animation: 150ms ease both page-out;
   }
 
-  ::view-transition-new(root) {
+  ::view-transition-new(main-content) {
     animation: 250ms ease both page-in;
   }
 }
