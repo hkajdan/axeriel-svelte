@@ -18,6 +18,7 @@
   let isScrolledPastHero = $state(false);
   let lastScrollPosition = $state(0);
   let scrollUpAccumulator = $state(0);
+  let hasHydrated = $state(false);
 
   const SCROLL_UP_THRESHOLD = 60; // px to scroll up before navbar re-appears
 
@@ -44,14 +45,35 @@
     lastScrollPosition = currentScrollPosition;
   };
 
+  // Scroll lock helpers (iOS-compatible)
+  let savedScrollY = 0;
+
+  function lockScroll() {
+    savedScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function unlockScroll() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.overflow = '';
+    window.scrollTo(0, savedScrollY);
+  }
+
   // Toggle menu
   const toggleMenu = () => {
     isMenuOpen = !isMenuOpen;
     if (!isMenuOpen) {
       activeAccordion = null;
-      document.body.style.overflow = '';
+      unlockScroll();
     } else {
-      document.body.style.overflow = 'hidden';
+      lockScroll();
     }
   };
 
@@ -65,22 +87,24 @@
     const menu = document.getElementById('mobile-menu');
     const hamburger = document.getElementById('hamburger-button');
     
-    if (menu && hamburger && 
-        !menu.contains(event.target as Node) && 
+    if (menu && hamburger &&
+        !menu.contains(event.target as Node) &&
         !hamburger.contains(event.target as Node)) {
       isMenuOpen = false;
       activeAccordion = null;
-      document.body.style.overflow = '';
+      unlockScroll();
     }
   };
 
   $effect(() => {
+    // Enable transitions only after hydration to prevent white flash
+    requestAnimationFrame(() => { hasHydrated = true; });
     document.addEventListener('click', handleClickOutside);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       document.removeEventListener('click', handleClickOutside);
       window.removeEventListener('scroll', handleScroll);
-      document.body.style.overflow = '';
+      if (isMenuOpen) unlockScroll();
     };
   });
 </script>
@@ -90,7 +114,7 @@
   class="fixed z-50 w-full top-0 left-0 right-0 transition-transform duration-300 ease-in-out"
   style="transform: {!isVisible ? 'translateY(-100%)' : 'translateY(0)'}"
 >
-  <div class="flex items-center justify-between p-6 transition-colors duration-300 {isScrolledPastHero && !isMenuOpen ? 'bg-white shadow-md' : isScrolledPastHero && isMenuOpen ? 'bg-white' : 'bg-transparent'}">
+  <div class="flex items-center justify-between p-6 {hasHydrated ? 'transition-colors duration-300' : ''} {isScrolledPastHero && !isMenuOpen ? 'bg-white shadow-md' : isScrolledPastHero && isMenuOpen ? 'bg-white' : 'bg-transparent'}">
     <!-- Logo - Increased size, stays visible when menu open -->
     <div class="flex items-center relative z-50">
       {#if props.settings?.logo?.asset}
@@ -118,6 +142,7 @@
       onclick={(e) => { e.stopPropagation(); toggleMenu(); }}
       class="{isMenuOpen || isScrolledPastHero ? 'text-gray-800' : 'text-white'} focus:outline-none p-4 relative z-50"
       aria-label="Toggle menu"
+      aria-expanded={isMenuOpen}
     >
       {#if isMenuOpen}
         <svg class="w-8 h-8 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">

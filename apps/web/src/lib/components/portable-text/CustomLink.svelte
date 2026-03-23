@@ -26,9 +26,17 @@
       target = openInNewTab ? '_blank' : undefined
       rel = openInNewTab ? 'noopener noreferrer' : undefined
     } else if (type === 'internal' && internal) {
-      href = `/${internal._ref || internal._id}`
+      // Use resolved slug from GROQ projection, fallback to _ref for unresolved refs
+      const slug = internal.slug?.current;
+      if (slug) {
+        const cleanSlug = slug.startsWith('/') ? slug.slice(1) : slug;
+        href = `/${cleanSlug}`;
+      } else {
+        console.warn('CustomLink: internal reference missing resolved slug', internal);
+        href = '#';
+      }
       if (anchor) {
-        href += `#${anchor}`
+        href += `#${anchor}`;
       }
     } else if (type === 'file' && file) {
       href = file.asset?.url || '#'

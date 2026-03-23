@@ -16,6 +16,7 @@
   }
 
   let { badge, title, richText, image, video, buttons, anchor }: Props = $props();
+  let videoReady = $state(false);
 </script>
 
 <section class="relative h-screen min-h-150 flex items-center justify-center bg-neutral-900" id={anchor}>
@@ -35,10 +36,11 @@
         loop
         playsinline
         preload="auto"
-        class="w-full h-full brightness-50"
+        class="w-full h-full brightness-50 transition-opacity duration-700 {videoReady ? 'opacity-100' : 'opacity-0'}"
         style="--media-object-fit: cover; --media-object-position: center;"
         playback-id={playbackId}
         poster={posterUrl}
+        onplaying={() => { videoReady = true; }}
       ></mux-player>
     </div>
   {:else if image?.asset}

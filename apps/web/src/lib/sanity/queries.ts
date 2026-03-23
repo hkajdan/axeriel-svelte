@@ -1,6 +1,27 @@
 import { defineQuery } from '@sanity/sveltekit'
 
-// Shared pageBuilder projection - single source of truth
+// Shared projections - single source of truth
+// Resolves internal references in portable text markDefs (customLink marks)
+const portableTextProjection = (fieldName: string) => `${fieldName}[]{
+    ...,
+    markDefs[]{
+      ...,
+      _type == "customLink" => {
+        ...,
+        customLink{
+          ...,
+          internal->{
+            _id,
+            _type,
+            slug
+          }
+        }
+      }
+    }
+  }`
+
+const richTextProjection = portableTextProjection('richText')
+
 const buttonsProjection = `buttons[]{
     ...,
     url{
@@ -18,6 +39,7 @@ const pageBuilderProjection = `pageBuilder[]{
     _type == "hero" => {
       "type": "hero",
       ...,
+      ${richTextProjection},
       video {
         asset-> {
           playbackId
@@ -28,25 +50,33 @@ const pageBuilderProjection = `pageBuilder[]{
     _type == "cta" => {
       "type": "cta",
       ...@,
+      ${richTextProjection},
       ${buttonsProjection}
     },
     _type == "featureCardsIcon" => {
       "type": "featureCardsIcon",
-      ...@
+      ...@,
+      ${richTextProjection}
     },
     _type == "productList" => {
       "type": "productList",
       ...@,
-      products[]->{
-        _id,
-        title,
-        richText,
-        images
+      ${richTextProjection},
+      products[]{
+        _ref,
+        _key,
+        "productData": @->{
+          _id,
+          title,
+          ${richTextProjection},
+          images
+        }
       }
     },
     _type == "imageLinkCards" => {
       "type": "imageLinkCards",
       ...@,
+      ${richTextProjection},
       ${buttonsProjection},
       cards[]{
         ...,
@@ -61,15 +91,18 @@ const pageBuilderProjection = `pageBuilder[]{
     },
     _type == "subscribeNewsletter" => {
       "type": "subscribeNewsletter",
-      ...@
+      ...@,
+      ${portableTextProjection('subTitle')}
     },
     _type == "statList" => {
       "type": "statList",
-      ...@
+      ...@,
+      ${richTextProjection}
     },
     _type == "logoList" => {
       "type": "logoList",
       ...@,
+      ${richTextProjection},
       logos[]{
         ...,
         url{
@@ -83,19 +116,23 @@ const pageBuilderProjection = `pageBuilder[]{
     },
     _type == "timeline" => {
       "type": "timeline",
-      ...@
+      ...@,
+      ${richTextProjection}
     },
     _type == "textImage" => {
       "type": "textImage",
-      ...@
+      ...@,
+      ${richTextProjection}
     },
     _type == "carousel" => {
       "type": "carousel",
-      ...@
+      ...@,
+      ${richTextProjection}
     },
     _type == "jobOffers" => {
       "type": "jobOffers",
       ...,
+      ${richTextProjection},
       "offers": offers[]->{
         _id,
         title,
@@ -109,6 +146,7 @@ const pageBuilderProjection = `pageBuilder[]{
     _type == "videoSection" => {
       "type": "videoSection",
       ...,
+      ${richTextProjection},
       video {
         asset-> {
           playbackId
@@ -117,7 +155,8 @@ const pageBuilderProjection = `pageBuilder[]{
     },
     _type == "histogram" => {
       "type": "histogram",
-      ...@
+      ...@,
+      ${richTextProjection}
     }
   }`
 
