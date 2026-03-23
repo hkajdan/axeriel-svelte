@@ -3,7 +3,9 @@
   import SanityImage from '$lib/components/SanityImage.svelte';
   import RichText from '$lib/components/PortableText.svelte';
   import Button from '$lib/components/ui/Button.svelte';
+  import Seo from '$lib/components/Seo.svelte';
   import { urlForImage } from '$lib/sanity/image';
+  import { PUBLIC_SITE_URL } from '$env/static/public';
   import { reveal } from '$lib/actions/reveal';
   import { page as pageStore } from '$app/stores';
   import { localePath } from '$lib/utils/i18n';
@@ -23,10 +25,34 @@
   const imageUrl = $derived(
     offer?.image?.asset ? urlForImage(offer.image).width(1600).url() : null
   );
+
+  const siteUrl = PUBLIC_SITE_URL.replace(/\/$/, '');
+  const careerLabel = $derived(lang === 'en' ? 'Career' : 'Carrière');
+  const pageTitle = $derived(offer?.title ? `${offer.title} — ${careerLabel}` : careerLabel);
+
+  const jobPostingJsonLd = $derived(offer ? {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: offer.title,
+    description: offer.summary || offer.title,
+    employmentType: offer.type || undefined,
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: data.settings?.siteTitle || 'Axeriel',
+    },
+    url: `${siteUrl}${localePath(`/career/${offer.slug}`, lang as 'fr' | 'en')}`,
+  } : null);
 </script>
 
+<Seo
+  title={pageTitle}
+  siteName={data.settings?.siteTitle}
+  description={offer?.summary}
+  ogImage={offer?.image}
+  jsonLd={jobPostingJsonLd}
+/>
+
 <svelte:head>
-  <title>{offer?.title || 'Offre'} — Carrière</title>
   {#if imageUrl}
     <link rel="preload" as="image" href={imageUrl} />
   {/if}

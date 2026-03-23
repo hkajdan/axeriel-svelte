@@ -33,6 +33,15 @@ const buttonsProjection = `buttons[]{
     }
   }`
 
+const seoProjection = `
+  seoTitle,
+  seoDescription,
+  seoImage,
+  seoNoIndex,
+  ogTitle,
+  ogDescription
+`
+
 const pageBuilderProjection = `pageBuilder[]{
     _type,
     _key,
@@ -163,18 +172,21 @@ const pageBuilderProjection = `pageBuilder[]{
 export const pageQuery = defineQuery(`*[_type == "page" && language == $lang] | order(_createdAt asc)[0]{
   title,
   slug,
+  ${seoProjection},
   ${pageBuilderProjection}
 }`)
 
 export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current == $slug && language == $lang][0]{
   title,
   slug,
+  ${seoProjection},
   ${pageBuilderProjection}
 }`)
 
 export const homePageQuery = defineQuery(`*[_type == "homePage" && language == $lang][0]{
   title,
   slug,
+  ${seoProjection},
   ${pageBuilderProjection}
 }`)
 
