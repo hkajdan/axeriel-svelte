@@ -160,25 +160,25 @@ const pageBuilderProjection = `pageBuilder[]{
     }
   }`
 
-export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)[0]{
+export const pageQuery = defineQuery(`*[_type == "page" && language == $lang] | order(_createdAt asc)[0]{
   title,
   slug,
   ${pageBuilderProjection}
 }`)
 
-export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current == $slug][0]{
+export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current == $slug && language == $lang][0]{
   title,
   slug,
   ${pageBuilderProjection}
 }`)
 
-export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
+export const homePageQuery = defineQuery(`*[_type == "homePage" && language == $lang][0]{
   title,
   slug,
   ${pageBuilderProjection}
 }`)
 
-export const navbarQuery = defineQuery(`*[_type == "navbar"][0]{
+export const navbarQuery = defineQuery(`*[_type == "navbar" && language == $lang][0]{
   label,
   columns[]{
     _type,
@@ -222,7 +222,7 @@ export const navbarQuery = defineQuery(`*[_type == "navbar"][0]{
   }
 }`)
 
-export const footerQuery = defineQuery(`*[_type == "footer"][0]{
+export const footerQuery = defineQuery(`*[_type == "footer" && language == $lang][0]{
   label,
   subtitle,
   download,
@@ -259,7 +259,7 @@ export const footerQuery = defineQuery(`*[_type == "footer"][0]{
   }
 }`)
 
-export const settingsQuery = defineQuery(`*[_type == "settings"][0]{
+export const settingsQuery = defineQuery(`*[_type == "settings" && language == $lang][0]{
   siteTitle,
   siteDescription,
   logo,
@@ -278,7 +278,7 @@ export const authorQuery = defineQuery(`*[_type == "author" && _id == $authorId]
   bio
 }`)
 
-export const pageAuthorBySlugQuery = defineQuery(`*[_type == "page" && slug.current == $slug][0].author->{
+export const pageAuthorBySlugQuery = defineQuery(`*[_type == "page" && slug.current == $slug && language == $lang][0].author->{
   name,
   position,
   email,
@@ -287,7 +287,7 @@ export const pageAuthorBySlugQuery = defineQuery(`*[_type == "page" && slug.curr
   bio
 }`)
 
-export const homePageAuthorQuery = defineQuery(`*[_type == "homePage"][0].author->{
+export const homePageAuthorQuery = defineQuery(`*[_type == "homePage" && language == $lang][0].author->{
   name,
   position,
   email,
@@ -296,7 +296,7 @@ export const homePageAuthorQuery = defineQuery(`*[_type == "homePage"][0].author
   bio
 }`)
 
-export const offerBySlugQuery = defineQuery(`*[_type == "offer" && slug.current == $slug][0]{
+export const offerBySlugQuery = defineQuery(`*[_type == "offer" && slug.current == $slug && language == $lang][0]{
   _id,
   title,
   "slug": slug.current,
@@ -305,4 +305,18 @@ export const offerBySlugQuery = defineQuery(`*[_type == "offer" && slug.current 
   ${portableTextProjection('description')},
   profile,
   type
+}`)
+
+export const uiStringsQuery = defineQuery(`*[_type == "uiStrings" && language == $lang][0]{
+  allOffers,
+  applyByEmail,
+  applicationSubject,
+  learnMore,
+  noJobOffers,
+  noJobOffersDescription,
+  ourExpert,
+  contact,
+  allRightsReserved,
+  toggleMenu,
+  closeMenu
 }`)

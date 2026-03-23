@@ -1,3 +1,4 @@
+import { documentInternationalization } from '@sanity/document-internationalization'
 import { assist } from "@sanity/assist";
 import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
@@ -52,6 +53,16 @@ export default defineConfig({
     presentationUrl(),
     unsplashImageAsset(),
     muxInput(),
+    documentInternationalization({
+      supportedLanguages: [
+        { id: 'fr', title: 'French' },
+        { id: 'en', title: 'English' }
+      ],
+      schemaTypes: [
+        'homePage', 'page', 'offer', 'product', 'blog', 'blogIndex',
+        'settings', 'footer', 'navbar', 'uiStrings'
+      ],
+    }),
   ],
 
   form: {

@@ -8,7 +8,8 @@ import { navbar } from "./navbar";
 import { page } from "./page";
 import { settings } from "./settings";
 import { offer } from "./offer";
+import { uiStrings } from "./ui-strings";
 
-export const singletons = [homePage, blogIndex, settings, footer, navbar];
+export const singletons = [homePage, blogIndex, settings, footer, navbar, uiStrings];
 
 export const documents = [blog, page, product, author, offer, ...singletons];
