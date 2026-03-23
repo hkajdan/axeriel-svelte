@@ -13,16 +13,17 @@
   const pageAuthor = $derived((data as any).pageAuthor as Author | null)
 
   onNavigate((navigation) => {
-	if (!document.startViewTransition) return;
-	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!document.startViewTransition) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (navigation.type === 'popstate') return;
 
-	return new Promise((resolve) => {
-		document.startViewTransition(async () => {
-			resolve();
-			await navigation.complete;
-		});
-	});
-});
+    return new Promise((resolve) => {
+      document.startViewTransition(async () => {
+        resolve();
+        await navigation.complete;
+      });
+    });
+  });
 </script>
 
 

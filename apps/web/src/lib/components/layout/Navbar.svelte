@@ -7,20 +7,11 @@
     settings: Settings;
     navbar: Navbar;
   }>();
-
-  let isMobile = $state(false);
-
-  $effect(() => {
-    const check = () => { isMobile = window.innerWidth < 1024; };
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  });
 </script>
 
-{#if isMobile}
+<div class="block lg:hidden">
   <NavbarMobile navbar={props.navbar} settings={props.settings} />
-{:else}
+</div>
+<div class="hidden lg:block">
   <NavbarDesktop navbar={props.navbar} settings={props.settings} />
-{/if}
-
+</div>
