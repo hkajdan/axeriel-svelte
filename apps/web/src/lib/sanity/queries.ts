@@ -295,3 +295,14 @@ export const homePageAuthorQuery = defineQuery(`*[_type == "homePage"][0].author
   image,
   bio
 }`)
+
+export const offerBySlugQuery = defineQuery(`*[_type == "offer" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  image,
+  summary,
+  ${portableTextProjection('description')},
+  profile,
+  type
+}`)
