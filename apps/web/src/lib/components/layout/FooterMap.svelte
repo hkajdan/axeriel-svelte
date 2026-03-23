@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte'
   import { browser } from '$app/environment'
-  import 'leaflet/dist/leaflet.css'
 
   let {
     lat,
@@ -25,6 +24,7 @@
   onMount(async () => {
     if (!browser || !lat || !lng) return
 
+    await import('leaflet/dist/leaflet.css')
     const L = (await import('leaflet')).default
 
     map = L.map(mapEl, { zoomControl: true, scrollWheelZoom: false }).setView([lat, lng], 15)

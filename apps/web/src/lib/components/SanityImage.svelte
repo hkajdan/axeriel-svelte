@@ -15,6 +15,8 @@
     sizes?: string
     loading?: 'lazy' | 'eager'
     fetchpriority?: 'high' | 'low' | 'auto'
+    width?: number
+    height?: number
   }
 
   let {
@@ -23,7 +25,9 @@
     imgClass = '',
     sizes = '(max-width: 768px) 100vw, 50vw',
     loading = 'lazy',
-    fetchpriority = 'auto'
+    fetchpriority = 'auto',
+    width = undefined,
+    height = undefined
   }: Props = $props();
 
   const srcSet = $derived(
@@ -33,6 +37,16 @@
           .join(', ')
       : ''
   );
+
+  // Extract dimensions from Sanity asset ref (format: image-{id}-{width}x{height}-{ext})
+  const intrinsicDimensions = $derived.by(() => {
+    if (width && height) return { width, height };
+    const ref = image?.asset?._ref;
+    if (!ref) return null;
+    const match = ref.match(/-(\d+)x(\d+)/);
+    if (!match) return null;
+    return { width: parseInt(match[1]), height: parseInt(match[2]) };
+  });
 </script>
 
 {#if image?.asset?._ref}
@@ -44,5 +58,7 @@
     {sizes}
     {loading}
     {fetchpriority}
+    width={intrinsicDimensions?.width}
+    height={intrinsicDimensions?.height}
   />
 {/if}

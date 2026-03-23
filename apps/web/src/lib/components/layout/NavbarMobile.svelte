@@ -130,6 +130,8 @@
             src={urlFor(activeLogo).width(150).height(50).url()}
             alt={props.settings.siteTitle || 'Company Logo'}
             class="h-12 w-auto transition-all duration-300"
+            width={150}
+            height={50}
             loading="eager"
             fetchpriority="high"
           />

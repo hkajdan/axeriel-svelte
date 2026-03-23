@@ -47,6 +47,8 @@
             src={urlFor(props.settings.logo).width(120).height(40).url()}
             alt={props.settings.siteTitle || 'Company Logo'}
             class="h-12 w-auto"
+            width={120}
+            height={40}
             loading="eager"
             fetchpriority="high"
           />
@@ -89,7 +91,9 @@
                           src={urlFor(link.image).width(200).height(200).url()}
                           alt={link.name || ''}
                           class="absolute w-full h-full overflow-hidden brightness-50 object-cover hover:scale-105 transition-transform duration-200 ease-in-out"
-                          loading="eager"
+                          width={200}
+                          height={200}
+                          loading="lazy"
                         />
                       {/if}
                       <div class="absolute bottom-4 left-4 text-white z-10">

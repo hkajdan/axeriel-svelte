@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "@mux/mux-player"
+  import { onMount } from 'svelte';
   import type { Hero } from '$lib/sanity/sanity.types';
   import RichText from '$lib/components/PortableText.svelte';
   import SanityButtons from '$lib/components/SanityButtons.svelte';
@@ -17,13 +17,15 @@
 
   let { badge, title, richText, image, video, buttons, anchor }: Props = $props();
   let videoReady = $state(false);
+
+  onMount(() => { import("@mux/mux-player"); });
 </script>
 
 <section class="relative h-screen min-h-150 flex items-center justify-center bg-neutral-900" id={anchor}>
   <!-- Background Media - Fullscreen and Absolute -->
   {#if video?.asset && (video.asset as any)?.playbackId}
     {@const playbackId = (video.asset as any).playbackId}
-    {@const posterUrl = `https://image.mux.com/${playbackId}/thumbnail.jpg`}
+    {@const posterUrl = `https://image.mux.com/${playbackId}/thumbnail.webp?width=1920`}
     <div
       class="absolute inset-0 w-full h-full overflow-hidden"
       style="background: url('{posterUrl}') center/cover no-repeat"

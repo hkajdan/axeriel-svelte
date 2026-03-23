@@ -28,7 +28,7 @@
     <link rel="preload" as="image" href={heroImageUrl} />
   {/if}
   {#if heroVideoId}
-    <link rel="preload" as="image" href="https://image.mux.com/{heroVideoId}/thumbnail.jpg" />
+    <link rel="preload" as="image" href="https://image.mux.com/{heroVideoId}/thumbnail.webp?width=1920" />
   {/if}
 </svelte:head>
 
