@@ -16,8 +16,8 @@
     anchor: StatList['anchor'];
   } = $props();
 
-  const sectionClasses = getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) });
-  const textColorClass = getTextColorClass(backgroundColor || '');
+  const sectionClasses = $derived(getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) }));
+  const textColorClass = $derived(getTextColorClass(backgroundColor || ''));
 
   let cleanTextAlign = $derived((textAlign || 'center').replace(/[^\x20-\x7E]/g, '') as 'left' | 'center' | 'right');
 

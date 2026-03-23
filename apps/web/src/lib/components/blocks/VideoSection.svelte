@@ -30,7 +30,7 @@
     '9/16': 'aspect-[9/16]'
   };
 
-  const aspectClass = aspectClasses[aspectRatio || '16/9'] || aspectClasses['16/9'];
+  const aspectClass = $derived(aspectClasses[aspectRatio || '16/9'] || aspectClasses['16/9']);
 </script>
 
 <section class={bgClass} id={anchor}>

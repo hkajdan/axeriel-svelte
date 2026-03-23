@@ -7,7 +7,9 @@
   import { onNavigate } from '$app/navigation'
 
   const {data, children}: LayoutProps = $props()
-  const {navbar, footer, settings} = data
+  const navbar = $derived(data.navbar)
+  const footer = $derived(data.footer)
+  const settings = $derived(data.settings)
   const pageAuthor = $derived((data as any).pageAuthor as Author | null)
 
   onNavigate((navigation) => {

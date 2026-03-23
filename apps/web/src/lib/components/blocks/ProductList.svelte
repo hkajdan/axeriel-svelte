@@ -148,6 +148,8 @@
               -->
               <div
                 class="group/slider relative aspect-[4/3] overflow-hidden bg-neutral-200"
+                role="region"
+                aria-label="Image slider for {data?.title ?? 'product'}"
                 ontouchstart={(e) => handleTouchStart(i, e)}
                 ontouchmove={(e) => handleTouchMove(i, e)}
                 ontouchend={() => handleTouchEnd(i, imageCount)}

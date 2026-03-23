@@ -17,7 +17,7 @@
     logoUrl?: string
   } = $props()
 
-  let mapEl: HTMLDivElement
+  let mapEl: HTMLDivElement = $state() as HTMLDivElement
   let map: any = null
 
   const directionsUrl = $derived(`https://www.google.com/maps/dir//${lat},${lng}`)
