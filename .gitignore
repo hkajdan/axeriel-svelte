@@ -36,6 +36,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Superpowers
+.superpowers/
+docs/
+
 # Misc
 .DS_Store
 *.pem
