@@ -21,7 +21,8 @@
         "SANITY_STUDIO_DATASET",
         "SANITY_STUDIO_TITLE",
         "SANITY_STUDIO_PRESENTATION_URL",
-        "REVALIDATION_SECRET"
+        "REVALIDATION_SECRET",
+        "PUBLIC_SITE_URL"
       ]
     },
     "lint": {
@@ -38,7 +39,8 @@
         "PUBLIC_SANITY_DATASET",
         "PUBLIC_SANITY_API_VERSION",
         "PUBLIC_SANITY_STUDIO_URL",
-        "PUBLIC_ANALYTICS"
+        "PUBLIC_ANALYTICS",
+        "PUBLIC_SITE_URL"
       ]
     }
   }
