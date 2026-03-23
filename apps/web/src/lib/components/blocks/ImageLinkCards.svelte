@@ -6,15 +6,19 @@
   import RichText from '$lib/components/PortableText.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
 
-  export let eyebrow: ImageLinkCards['eyebrow'];
-  export let title: ImageLinkCards['title'];
-  export let richText: ImageLinkCards['richText'];
-  export let cards: ImageLinkCards['cards'];
-  export let backgroundColor: ImageLinkCards['backgroundColor'];
-  export let anchor: ImageLinkCards['anchor'];
+  interface Props {
+    eyebrow?: ImageLinkCards['eyebrow'];
+    title?: ImageLinkCards['title'];
+    richText?: ImageLinkCards['richText'];
+    cards?: ImageLinkCards['cards'];
+    backgroundColor?: ImageLinkCards['backgroundColor'];
+    anchor?: ImageLinkCards['anchor'];
+  }
 
-  const sectionClasses = getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) });
-  const textColorClass = getTextColorClass(backgroundColor || '');
+  let { eyebrow, title, richText, cards, backgroundColor, anchor }: Props = $props();
+
+  const sectionClasses = $derived(getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) }));
+  const textColorClass = $derived(getTextColorClass(backgroundColor || ''));
 
   function getGridCols(count: number): string {
     if (count >= 4) return 'lg:grid-cols-4'

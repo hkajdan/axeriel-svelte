@@ -4,14 +4,18 @@
   import { SECTION_HEADER_SPACING } from '$lib/utils/section-spacing';
   import RichText from '$lib/components/PortableText.svelte';
 
-  export let title: SubscribeNewsletter['title'];
-  export let subTitle: SubscribeNewsletter['subTitle'];
-  export let helperText: SubscribeNewsletter['helperText'];
-  export let backgroundColor: SubscribeNewsletter['backgroundColor'];
-  export let anchor: SubscribeNewsletter['anchor'];
+  interface Props {
+    title?: SubscribeNewsletter['title'];
+    subTitle?: SubscribeNewsletter['subTitle'];
+    helperText?: SubscribeNewsletter['helperText'];
+    backgroundColor?: SubscribeNewsletter['backgroundColor'];
+    anchor?: SubscribeNewsletter['anchor'];
+  }
 
-  const sectionClasses = getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) });
-  const textColorClass = getTextColorClass(backgroundColor || '');
+  let { title, subTitle, helperText, backgroundColor, anchor }: Props = $props();
+
+  const sectionClasses = $derived(getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) }));
+  const textColorClass = $derived(getTextColorClass(backgroundColor || ''));
 </script>
 
 <section id={anchor || 'subscribe'} class={sectionClasses}>
@@ -36,6 +40,7 @@
               name="email"
               required
               placeholder="Enter your email address"
+              aria-label="Adresse email"
               class="rounded-e-none border-e-0 focus-visible:ring-0 outline-none bg-transparent w-full"
             />
             <button

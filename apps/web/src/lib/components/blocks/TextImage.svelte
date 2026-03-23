@@ -5,14 +5,18 @@
   import RichText from '$lib/components/PortableText.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
 
-  export let title: TextImage['title'];
-  export let richText: TextImage['richText'];
-  export let rows: TextImage['rows'];
-  export let backgroundColor: TextImage['backgroundColor'];
-  export let anchor: TextImage['anchor'];
+  interface Props {
+    title?: TextImage['title'];
+    richText?: TextImage['richText'];
+    rows?: TextImage['rows'];
+    backgroundColor?: TextImage['backgroundColor'];
+    anchor?: TextImage['anchor'];
+  }
 
-  const sectionClasses = getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) });
-  const textColorClass = getTextColorClass(backgroundColor || 'white');
+  let { title, richText, rows, backgroundColor, anchor }: Props = $props();
+
+  const sectionClasses = $derived(getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) }));
+  const textColorClass = $derived(getTextColorClass(backgroundColor || 'white'));
 
   function isImageRight(position: string | null | undefined): boolean {
     return (position || '').replace(/[^\x20-\x7E]/g, '') === 'right'

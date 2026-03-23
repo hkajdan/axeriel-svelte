@@ -5,14 +5,18 @@
   import RichText from '$lib/components/PortableText.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
 
-  export let title: LogoList['title'];
-  export let richText: LogoList['richText'];
-  export let logos: LogoList['logos'];
-  export let backgroundColor: LogoList['backgroundColor'];
-  export let anchor: LogoList['anchor'];
+  interface Props {
+    title?: LogoList['title'];
+    richText?: LogoList['richText'];
+    logos?: LogoList['logos'];
+    backgroundColor?: LogoList['backgroundColor'];
+    anchor?: LogoList['anchor'];
+  }
 
-  const sectionClasses = getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) });
-  const textColorClass = getTextColorClass(backgroundColor || 'white');
+  let { title, richText, logos, backgroundColor, anchor }: Props = $props();
+
+  const sectionClasses = $derived(getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) }));
+  const textColorClass = $derived(getTextColorClass(backgroundColor || 'white'));
 </script>
 
 <section id={anchor || 'features'} class={sectionClasses}>

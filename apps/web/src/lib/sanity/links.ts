@@ -1,5 +1,6 @@
 import type { CustomUrl, Slug } from './sanity.types';
 import { client } from './client';
+import { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } from '$env/static/public';
 
 /**
  * Sanity Link Handling Utilities
@@ -53,13 +54,10 @@ export function resolveSanityUrl(url: CustomUrl | undefined): string {
         const originalFilename = (url.file as any)?.asset?.originalFilename || 'download';
         
         // In a real implementation, you would get these from your Sanity config
-        const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'your-project-id';
-        const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
-        
-        return `https://cdn.sanity.io/files/${projectId}/${dataset}/${assetId}/${originalFilename}`;
+        return `https://cdn.sanity.io/files/${PUBLIC_SANITY_PROJECT_ID}/${PUBLIC_SANITY_DATASET}/${assetId}/${originalFilename}`;
       }
       return '#';
-    
+
     default:
       return '#';
   }
@@ -266,9 +264,7 @@ export async function resolveSanityUrlAsync(url: CustomUrl | undefined): Promise
       if (url.file?.asset?._ref) {
         const assetId = url.file.asset._ref.replace(/^.*-([a-f0-9]+)$/, '$1');
         const originalFilename = (url.file as any)?.asset?.originalFilename || 'download';
-        const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'your-project-id';
-        const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
-        return `https://cdn.sanity.io/files/${projectId}/${dataset}/${assetId}/${originalFilename}`;
+        return `https://cdn.sanity.io/files/${PUBLIC_SANITY_PROJECT_ID}/${PUBLIC_SANITY_DATASET}/${assetId}/${originalFilename}`;
       }
       return '#';
     

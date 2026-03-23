@@ -19,7 +19,7 @@ export function getSectionClasses(bg: BackgroundColor, opts?: { hasTitle?: boole
     case 'blue':
       return `${baseClasses} bg-primary-500 text-white`
     case 'grey':
-      return `${baseClasses} bg-neutral-200 text-white`
+      return `${baseClasses} bg-neutral-200 text-neutral-900`
     case 'light-grey':
       return `${baseClasses} bg-neutral-50 text-neutral-900`
     default:
@@ -35,7 +35,7 @@ export function getTextColorClass(bg: BackgroundColor): string {
     case 'blue':
       return 'text-white'
     case 'grey':
-      return 'text-white'
+      return 'text-neutral-900'
     default:
       return 'text-neutral-900'
   }

@@ -4,15 +4,19 @@
   import { SECTION_HEADER_SPACING } from '$lib/utils/section-spacing';
   import RichText from '$lib/components/PortableText.svelte';
 
-  export let eyebrow: FeatureCardsIcon['eyebrow'];
-  export let title: FeatureCardsIcon['title'];
-  export let richText: FeatureCardsIcon['richText'];
-  export let cards: FeatureCardsIcon['cards'];
-  export let backgroundColor: FeatureCardsIcon['backgroundColor'];
-  export let anchor: FeatureCardsIcon['anchor'];
+  interface Props {
+    eyebrow?: FeatureCardsIcon['eyebrow'];
+    title?: FeatureCardsIcon['title'];
+    richText?: FeatureCardsIcon['richText'];
+    cards?: FeatureCardsIcon['cards'];
+    backgroundColor?: FeatureCardsIcon['backgroundColor'];
+    anchor?: FeatureCardsIcon['anchor'];
+  }
 
-  const sectionClasses = getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) });
-  const textColorClass = getTextColorClass(backgroundColor || 'white');
+  let { eyebrow, title, richText, cards, backgroundColor, anchor }: Props = $props();
+
+  const sectionClasses = $derived(getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) }));
+  const textColorClass = $derived(getTextColorClass(backgroundColor || 'white'));
 </script>
 
 <section id={anchor || 'features'} class={sectionClasses}>

@@ -1,9 +1,18 @@
 import { defineQuery } from '@sanity/sveltekit'
 
-export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)[0]{
-  title,
-  slug,
-  pageBuilder[]{
+// Shared pageBuilder projection - single source of truth
+const buttonsProjection = `buttons[]{
+    ...,
+    url{
+      ...,
+      internal->{
+        slug,
+        _type
+      }
+    }
+  }`
+
+const pageBuilderProjection = `pageBuilder[]{
     _type,
     _key,
     _type == "hero" => {
@@ -14,62 +23,31 @@ export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)
           playbackId
         }
       },
-      buttons[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      }
+      ${buttonsProjection}
     },
     _type == "cta" => {
       "type": "cta",
       ...@,
-      buttons[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      }
+      ${buttonsProjection}
     },
     _type == "featureCardsIcon" => {
       "type": "featureCardsIcon",
       ...@
     },
-     _type == "productList" => {
-       "type": "productList",
-       ...@,
-       products[]{
-         _ref,
-         _key,
-         "productData": *[_type == "product" && _id == ^._ref][0]{
-           _id,
-           title,
-           richText,
-           images
-         }
-       }
-     },
+    _type == "productList" => {
+      "type": "productList",
+      ...@,
+      products[]->{
+        _id,
+        title,
+        richText,
+        images
+      }
+    },
     _type == "imageLinkCards" => {
       "type": "imageLinkCards",
       ...@,
-      buttons[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      },
+      ${buttonsProjection},
       cards[]{
         ...,
         url{
@@ -141,295 +119,24 @@ export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)
       "type": "histogram",
       ...@
     }
-  }
+  }`
+
+export const pageQuery = defineQuery(`*[_type == "page"] | order(_createdAt asc)[0]{
+  title,
+  slug,
+  ${pageBuilderProjection}
 }`)
 
 export const pageBySlugQuery = defineQuery(`*[_type == "page" && slug.current == $slug][0]{
   title,
   slug,
-  pageBuilder[]{
-    _type,
-    _key,
-    _type == "hero" => {
-      "type": "hero",
-      ...,
-      video {
-        asset-> {
-          playbackId
-        }
-      },
-      buttons[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      }
-    },
-    _type == "cta" => {
-      "type": "cta",
-      ...@,
-      buttons[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      }
-    },
-    _type == "featureCardsIcon" => {
-      "type": "featureCardsIcon",
-      ...@
-    },
-     _type == "productList" => {
-       "type": "productList",
-       ...@,
-       products[]{
-         _ref,
-         _key,
-         "productData": *[_type == "product" && _id == ^._ref][0]{
-           _id,
-           title,
-           richText,
-           images
-         }
-       }
-     },
-    _type == "imageLinkCards" => {
-      "type": "imageLinkCards",
-      ...@,
-      buttons[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      },
-      cards[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      }
-    },
-    _type == "subscribeNewsletter" => {
-      "type": "subscribeNewsletter",
-      ...@
-    },
-    _type == "statList" => {
-      "type": "statList",
-      ...@
-    },
-    _type == "logoList" => {
-      "type": "logoList",
-      ...@,
-      logos[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      }
-    },
-    _type == "timeline" => {
-      "type": "timeline",
-      ...@
-    },
-    _type == "textImage" => {
-      "type": "textImage",
-      ...@
-    },
-    _type == "carousel" => {
-      "type": "carousel",
-      ...@
-    },
-    _type == "jobOffers" => {
-      "type": "jobOffers",
-      ...,
-      "offers": offers[]->{
-        _id,
-        title,
-        "slug": slug.current,
-        image,
-        summary,
-        profile,
-        type
-      }
-    },
-    _type == "videoSection" => {
-      "type": "videoSection",
-      ...,
-      video {
-        asset-> {
-          playbackId
-        }
-      }
-    },
-    _type == "histogram" => {
-      "type": "histogram",
-      ...@
-    }
-  }
+  ${pageBuilderProjection}
 }`)
 
 export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   title,
   slug,
-  pageBuilder[]{
-    _type,
-    _key,
-    _type == "hero" => {
-      "type": "hero",
-      ...,
-      video {
-        asset-> {
-          playbackId
-        }
-      },
-      buttons[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      }
-    },
-    _type == "cta" => {
-      "type": "cta",
-      ...@,
-      buttons[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      }
-    },
-    _type == "featureCardsIcon" => {
-      "type": "featureCardsIcon",
-      ...@
-    },
-     _type == "productList" => {
-       "type": "productList",
-       ...@,
-       products[]{
-         _ref,
-         _key,
-         "productData": *[_type == "product" && _id == ^._ref][0]{
-           _id,
-           title,
-           richText,
-           images
-         }
-       }
-     },
-    _type == "imageLinkCards" => {
-      "type": "imageLinkCards",
-      ...@,
-      buttons[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      },
-      cards[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      }
-    },
-    _type == "subscribeNewsletter" => {
-      "type": "subscribeNewsletter",
-      ...@
-    },
-    _type == "statList" => {
-      "type": "statList",
-      ...@
-    },
-    _type == "logoList" => {
-      "type": "logoList",
-      ...@,
-      logos[]{
-        ...,
-        url{
-          ...,
-          internal->{
-            slug,
-            _type
-          }
-        }
-      }
-    },
-    _type == "timeline" => {
-      "type": "timeline",
-      ...@
-    },
-    _type == "textImage" => {
-      "type": "textImage",
-      ...@
-    },
-    _type == "carousel" => {
-      "type": "carousel",
-      ...@
-    },
-    _type == "jobOffers" => {
-      "type": "jobOffers",
-      ...,
-      "offers": offers[]->{
-        _id,
-        title,
-        "slug": slug.current,
-        image,
-        summary,
-        profile,
-        type
-      }
-    },
-    _type == "videoSection" => {
-      "type": "videoSection",
-      ...,
-      video {
-        asset-> {
-          playbackId
-        }
-      }
-    },
-    _type == "histogram" => {
-      "type": "histogram",
-      ...@
-    }
-  }
+  ${pageBuilderProjection}
 }`)
 
 export const navbarQuery = defineQuery(`*[_type == "navbar"][0]{

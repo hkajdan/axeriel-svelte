@@ -13,55 +13,38 @@
     anchor: Carousel['anchor'];
   } = $props();
 
-  const sectionClasses = getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) });
-  const textColorClass = getTextColorClass(backgroundColor || 'white');
-  
+  const sectionClasses = $derived(getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) }));
+  const textColorClass = $derived(getTextColorClass(backgroundColor || 'white'));
+
   // Carousel state
-  let currentSlide = 0;
-  let isAutoPlaying = true;
-  let autoPlayInterval: ReturnType<typeof setInterval>;
-  
-  // Auto-play functionality
-  function startAutoPlay() {
-    autoPlayInterval = setInterval(() => {
-      if (isAutoPlaying && images && images.length > 0) {
-        currentSlide = (currentSlide + 1) % images.length;
-      }
-    }, 5000);
-  }
-  
-  function stopAutoPlay() {
-    clearInterval(autoPlayInterval);
-  }
-  
+  let currentSlide = $state(0);
+  let isAutoPlaying = $state(true);
+
   function goToSlide(index: number) {
     currentSlide = index;
   }
-  
+
   function nextSlide() {
     if (images && images.length > 0) {
       currentSlide = (currentSlide + 1) % images.length;
     }
   }
-  
+
   function prevSlide() {
     if (images && images.length > 0) {
       currentSlide = (currentSlide - 1 + images.length) % images.length;
     }
   }
-  
-  // Start auto-play when component mounts
+
+  // Single $effect with proper cleanup - no more memory leak
   $effect(() => {
-    if (images && images.length > 0) {
-      startAutoPlay();
-    }
-  });
-  
-  // Clean up auto-play when component is destroyed
-  $effect(() => {
-    return () => {
-      stopAutoPlay();
-    };
+    if (!images?.length) return;
+    const id = setInterval(() => {
+      if (isAutoPlaying) {
+        currentSlide = (currentSlide + 1) % images.length;
+      }
+    }, 5000);
+    return () => clearInterval(id);
   });
 </script>
 
@@ -88,7 +71,7 @@
             class="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all hidden md:block"
             aria-label="Previous slide"
           >
-            <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
           </button>
@@ -100,7 +83,7 @@
             class="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all hidden md:block"
             aria-label="Next slide"
           >
-            <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
           </button>
@@ -151,7 +134,7 @@
                 onclick={() => goToSlide(index)}
                 onmouseenter={() => isAutoPlaying = false}
                 onmouseleave={() => isAutoPlaying = true}
-                class="w-3 h-3 rounded-full transition-colors {currentSlide === index ? 'bg-primary-500 shadow-lg scale-110' : 'bg-gray-300 hover:bg-gray-400'}"
+                class="w-3 h-3 rounded-full transition-colors {currentSlide === index ? 'bg-primary-500 shadow-lg scale-110' : 'bg-neutral-200 hover:bg-neutral-500'}"
                 aria-label={`Go to slide ${index + 1}`}
               ></button>
             {/each}

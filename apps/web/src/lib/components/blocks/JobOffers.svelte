@@ -5,15 +5,19 @@
   import RichText from '$lib/components/PortableText.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
 
-  export let eyebrow: JobOffers['eyebrow'];
-  export let title: JobOffers['title'];
-  export let richText: JobOffers['richText'];
-  export let offers: any[];
-  export let backgroundColor: JobOffers['backgroundColor'];
-  export let anchor: JobOffers['anchor'];
+  interface Props {
+    eyebrow?: JobOffers['eyebrow'];
+    title?: JobOffers['title'];
+    richText?: JobOffers['richText'];
+    offers?: any[];
+    backgroundColor?: JobOffers['backgroundColor'];
+    anchor?: JobOffers['anchor'];
+  }
 
-  const sectionClasses = getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) });
-  const textColorClass = getTextColorClass(backgroundColor || '');
+  let { eyebrow, title, richText, offers = [], backgroundColor, anchor }: Props = $props();
+
+  const sectionClasses = $derived(getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) }));
+  const textColorClass = $derived(getTextColorClass(backgroundColor || ''));
 </script>
 
 <section id={anchor || 'job-offers'} class="{sectionClasses} !pt-32 md:!pt-40 lg:!pt-48">

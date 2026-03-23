@@ -1,13 +1,14 @@
 <script lang="ts">
   import type { Button } from '$lib/sanity/sanity.types'
   import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links'
-  
-  export let buttons: Button[] = []
-  export let justify: 'center' | 'start' | 'end' = 'center'
-  
-  /**
-   * Map Sanity button variants to Tailwind classes
-   */
+
+  interface Props {
+    buttons?: Button[];
+    justify?: 'center' | 'start' | 'end';
+  }
+
+  let { buttons = [], justify = 'center' }: Props = $props();
+
   function getButtonClasses(variant: Button['variant']) {
     switch (variant) {
       case 'default':
@@ -21,26 +22,15 @@
         return 'text-primary-500 underline hover:no-underline'
     }
   }
-  
-  /**
-   * Get justify classes for flex container
-   */
-  function getJustifyClasses() {
-    switch (justify) {
-      case 'start':
-        return 'justify-start'
-      case 'end':
-        return 'justify-end'
-      case 'center':
-      default:
-        return 'justify-center'
-    }
-  }
+
+  const justifyClass = $derived(
+    justify === 'start' ? 'justify-start' : justify === 'end' ? 'justify-end' : 'justify-center'
+  );
 </script>
 
 {#if buttons && buttons.length > 0}
-  <div class="flex flex-wrap gap-4 {getJustifyClasses()}">
-    {#each buttons as button}
+  <div class="flex flex-wrap gap-4 {justifyClass}">
+    {#each buttons as button (button._key)}
       <a
         href={resolveSanityUrl(button.url)}
         target={getLinkTarget(button.url)}

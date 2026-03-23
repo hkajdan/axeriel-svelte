@@ -3,8 +3,8 @@
   import { reveal } from '$lib/actions/reveal';
   import Hero from './blocks/Hero.svelte';
 
-  const componentMap: Record<string, any> = {
-    hero: null, // loaded eagerly above
+  const componentMap: Record<string, (() => Promise<any>) | null> = {
+    hero: null,
     cta: () => import('./blocks/CTA.svelte'),
     featureCardsIcon: () => import('./blocks/FeatureCardsIcon.svelte'),
     productList: () => import('./blocks/ProductList.svelte'),
@@ -20,36 +20,43 @@
     histogram: () => import('./blocks/Histogram.svelte')
   };
 
-  export let pageBuilder: PageBuilder;
+  interface Props {
+    pageBuilder: PageBuilder;
+  }
 
-  function getBlockType(block: any) {
+  let { pageBuilder }: Props = $props();
+
+  function getBlockType(block: Record<string, any>) {
     return block?._type || block?.type;
   }
 
-  function getComponentLoader(block: any) {
+  function getComponentLoader(block: Record<string, any>) {
     const blockType = getBlockType(block);
     return blockType ? componentMap[blockType] ?? null : null;
   }
 </script>
 <main class="flex flex-col gap-10 md:gap-16 max-w-8xl mx-auto relative">
   {#if pageBuilder && pageBuilder.length > 0}
-    {#each pageBuilder as block}
+    {#each pageBuilder as block (block._key)}
       {#if getBlockType(block) === 'hero'}
-        <!-- Hero is eagerly loaded and never revealed (it's above the fold) -->
         <Hero {...block} />
-      {:else if getComponentLoader(block)}
-        <div use:reveal>
-          {#await getComponentLoader(block)()}
-            <!-- loading -->
-          {:then module}
-            <svelte:component this={module.default} {...block} />
-          {:catch error}
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-              <strong class="font-bold">Error loading component:</strong>
-              <span class="block sm:inline">Failed to load {(block as any).type || block._type}: {error.message}</span>
-            </div>
-          {/await}
-        </div>
+      {:else}
+        {@const loader = getComponentLoader(block)}
+        {#if loader}
+          <div use:reveal>
+            {#await loader()}
+              <!-- loading -->
+            {:then module}
+              {@const Component = module.default}
+              <Component {...block} />
+            {:catch error}
+              <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Error loading component:</strong>
+                <span class="block sm:inline">Failed to load {getBlockType(block)}: {error.message}</span>
+              </div>
+            {/await}
+          </div>
+        {/if}
       {/if}
     {/each}
   {/if}

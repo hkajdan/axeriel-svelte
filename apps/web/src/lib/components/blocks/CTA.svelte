@@ -5,15 +5,19 @@
   import RichText from '$lib/components/PortableText.svelte';
   import SanityButtons from '$lib/components/SanityButtons.svelte';
 
-  export let eyebrow: Cta['eyebrow'];
-  export let title: Cta['title'];
-  export let richText: Cta['richText'];
-  export let buttons: Cta['buttons'];
-  export let backgroundColor: Cta['backgroundColor'];
-  export let anchor: Cta['anchor'];
+  interface Props {
+    eyebrow?: Cta['eyebrow'];
+    title?: Cta['title'];
+    richText?: Cta['richText'];
+    buttons?: Cta['buttons'];
+    backgroundColor?: Cta['backgroundColor'];
+    anchor?: Cta['anchor'];
+  }
 
-  const sectionClasses = getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) });
-  const textColorClass = getTextColorClass(backgroundColor || 'white');
+  let { eyebrow, title, richText, buttons, backgroundColor, anchor }: Props = $props();
+
+  const sectionClasses = $derived(getSectionClasses(backgroundColor || 'white', { hasTitle: Boolean(title) }));
+  const textColorClass = $derived(getTextColorClass(backgroundColor || 'white'));
 </script>
 
 <section id={anchor || 'features'} class={sectionClasses}>

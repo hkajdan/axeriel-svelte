@@ -5,13 +5,17 @@
   import RichText from '$lib/components/PortableText.svelte';
   import SanityImage from '$lib/components/SanityImage.svelte';
 
-  export let title: Timeline['title'];
-  export let timeline: Timeline['timeline'];
-  export let backgroundColor: Timeline['backgroundColor'];
-  export let anchor: Timeline['anchor'];
+  interface Props {
+    title?: Timeline['title'];
+    timeline?: Timeline['timeline'];
+    backgroundColor?: Timeline['backgroundColor'];
+    anchor?: Timeline['anchor'];
+  }
 
-  const sectionClasses = getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) });
-  const textColorClass = getTextColorClass(backgroundColor || '');
+  let { title, timeline, backgroundColor, anchor }: Props = $props();
+
+  const sectionClasses = $derived(getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) }));
+  const textColorClass = $derived(getTextColorClass(backgroundColor || ''));
 </script>
 
 <section id={anchor || 'timeline'} class={sectionClasses}>
@@ -25,14 +29,14 @@
     {#if timeline && timeline.length > 0}
       <div class="relative mx-auto flex w-full flex-col gap-8 md:gap-36">
         <!-- Central vertical line -->
-        <div class="absolute left-1/2 top-0 h-full w-[2px] bg-gray-300 hidden md:block"></div>
+        <div class="absolute left-1/2 top-0 h-full w-[2px] bg-neutral-200 hidden md:block"></div>
 
         {#each timeline as event, index (event._key)}
           <div class="relative flex w-full flex-col md:items-center md:justify-between md:flex-row gap-4 md:gap-0">
             <!-- Image side -->
             <div class="flex w-full md:w-[53%] {index % 2 === 0 ? 'md:order-1 md:justify-end md:mr-40' : 'md:order-2 md:ml-40'}">
               {#if event.image}
-                <div class="w-full max-w-[400px] mx-auto md:mx-0 aspect-video overflow-hidden rounded-3xl bg-gray-200">
+                <div class="w-full max-w-[400px] mx-auto md:mx-0 aspect-video overflow-hidden rounded-3xl bg-neutral-200">
                   <SanityImage
                     image={event.image}
                     alt={event.title || 'Timeline image'}
