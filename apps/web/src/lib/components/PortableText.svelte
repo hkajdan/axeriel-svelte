@@ -62,6 +62,7 @@
     listItem: {
       bullet: BulletListItem,
       number: NumberListItem,
+      normal: BulletListItem,
     },
   }
 </script>

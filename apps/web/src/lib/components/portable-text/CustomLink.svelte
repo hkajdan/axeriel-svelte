@@ -33,8 +33,9 @@
       if (slug) {
         const cleanSlug = slug.startsWith('/') ? slug.slice(1) : slug;
         href = localePath(`/${cleanSlug}`, lang);
+      } else if (internal._type === 'homePage') {
+        href = localePath('/', lang);
       } else {
-        console.warn('CustomLink: internal reference missing resolved slug', internal);
         href = '#';
       }
       if (anchor) {
