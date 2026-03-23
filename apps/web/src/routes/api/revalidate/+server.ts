@@ -10,30 +10,43 @@ export const POST: RequestHandler = async ({ request, url }) => {
   }
 
   const body = await request.json();
-  const { _type, slug } = body;
+  const { _type, slug, language } = body;
 
   // Build the list of paths to revalidate
   const paths: string[] = [];
 
+  // Helper to add both FR and EN paths, or just the relevant one
+  const addPath = (frPath: string) => {
+    if (!language || language === 'fr') {
+      paths.push(frPath);
+    }
+    if (!language || language === 'en') {
+      paths.push(`/en${frPath === '/' ? '' : frPath}`);
+    }
+  };
+
   if (_type === 'homePage') {
-    paths.push('/');
+    addPath('/');
   } else if (_type === 'page' && slug?.current) {
     const cleanSlug = slug.current.startsWith('/') ? slug.current.slice(1) : slug.current;
-    paths.push(`/${cleanSlug}`);
+    addPath(`/${cleanSlug}`);
   } else if (_type === 'offer') {
     if (slug?.current) {
-      paths.push(`/career/${slug.current}`);
+      addPath(`/career/${slug.current}`);
     }
-    // Also revalidate the career page which lists job offers
-    paths.push('/career');
+    // Also revalidate the career listing page
+    addPath('/career');
+  } else if (_type === 'uiStrings') {
+    // UI strings affect all pages — revalidate home at minimum
+    addPath('/');
   }
 
-  // Also revalidate the homepage when navbar/footer/settings change
+  // Singletons (navbar, footer, settings) affect all pages
   if (['navbar', 'footer', 'settings'].includes(_type)) {
-    paths.push('/');
+    addPath('/');
   }
 
-  // Revalidate each path by sending a GET request with the bypass token
+  // Revalidate each path
   const origin = url.origin;
   const results = await Promise.allSettled(
     paths.map((path) =>

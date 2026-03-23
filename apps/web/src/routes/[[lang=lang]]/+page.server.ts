@@ -11,8 +11,8 @@ export const config = {
   }
 }
 
-export const load: PageServerLoad = async () => {
-  const page = await client.fetch(homePageQuery)
+export const load: PageServerLoad = async ({ locals }) => {
+  const page = await client.fetch(homePageQuery, { lang: locals.lang })
 
   if (!page) {
     error(404, 'Home page not found')

@@ -1,7 +1,7 @@
 import { BillIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
-import { defineSlug } from "../../utils/slug";
+import { defineSlug, isUnique } from "../../utils/slug";
 
 export const offer = defineType({
   name: "offer",
@@ -17,12 +17,23 @@ export const offer = defineType({
       validation: (Rule) => Rule.required().error("Job title is required"),
     }),
 
-    defineSlug({
+    defineField({
       name: "slug",
+      type: "slug",
       title: "URL Slug",
       options: {
         source: "title",
+        isUnique,
       },
+      validation: (Rule) =>
+        Rule.required()
+          .error("A URL slug is required for the offer")
+          .custom((slug) => {
+            if (slug?.current === "en" || slug?.current === "/en") {
+              return '"en" is reserved for the English language prefix and cannot be used as an offer slug';
+            }
+            return true;
+          }),
     }),
 
     defineField({

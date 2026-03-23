@@ -11,8 +11,8 @@ export const config = {
   }
 };
 
-export const load: PageServerLoad = async ({ params }) => {
-  const offer = await client.fetch(offerBySlugQuery, { slug: params.slug });
+export const load: PageServerLoad = async ({ params, locals }) => {
+  const offer = await client.fetch(offerBySlugQuery, { slug: params.slug, lang: locals.lang });
 
   if (!offer) {
     error(404, 'Offer not found');

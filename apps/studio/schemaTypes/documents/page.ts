@@ -63,7 +63,14 @@ export const page = defineType({
         isUnique,
       },
       validation: (Rule) =>
-        Rule.required().error("A URL slug is required for the page"),
+        Rule.required()
+          .error("A URL slug is required for the page")
+          .custom((slug) => {
+            if (slug?.current === "en" || slug?.current === "/en") {
+              return '"en" is reserved for the English language prefix and cannot be used as a page slug';
+            }
+            return true;
+          }),
     }),
     defineField({
       name: "image",

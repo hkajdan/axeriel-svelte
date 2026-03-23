@@ -11,8 +11,8 @@ export const config = {
   }
 };
 
-export const load: PageServerLoad = async ({ params }) => {
-  const page = await client.fetch(pageBySlugQuery, { slug: `/${params.slug}` });
+export const load: PageServerLoad = async ({ params, locals }) => {
+  const page = await client.fetch(pageBySlugQuery, { slug: `/${params.slug}`, lang: locals.lang });
 
   if (!page) {
     error(404, 'Page not found');
