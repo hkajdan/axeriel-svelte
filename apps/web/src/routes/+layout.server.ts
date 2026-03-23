@@ -2,8 +2,6 @@ import { navbarQuery, footerQuery, settingsQuery, pageAuthorBySlugQuery, homePag
 import type { LayoutServerLoad } from './$types'
 import { client } from '$lib/sanity/client'
 
-export const prerender = true
-
 export const load: LayoutServerLoad = async ({ url, params }) => {
   // Determine which author query to run
   const authorQuery = url.pathname === '/'
