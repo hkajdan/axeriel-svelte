@@ -21,6 +21,12 @@ export const blog = defineType({
   description:
     "A blog post that will be published on the website. Add a title, description, author, and content to create a new article for readers.",
   fields: [
+    defineField({
+      name: "language",
+      type: "string",
+      readOnly: true,
+      hidden: true,
+    }),
     orderRankField({ type: "blog" }),
     defineField({
       name: "title",

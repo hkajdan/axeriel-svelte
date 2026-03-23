@@ -81,6 +81,12 @@ export const footer = defineType({
   description: "Footer content for your website",
   fields: [
     defineField({
+      name: "language",
+      type: "string",
+      readOnly: true,
+      hidden: true,
+    }),
+    defineField({
       name: "label",
       type: "string",
       initialValue: "Footer",

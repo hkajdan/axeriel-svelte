@@ -162,6 +162,12 @@ export const navbar = defineType({
   description: "Configure the main navigation structure for your site",
   fields: [
     defineField({
+      name: "language",
+      type: "string",
+      readOnly: true,
+      hidden: true,
+    }),
+    defineField({
       name: "label",
       type: "string",
       initialValue: "Navbar",

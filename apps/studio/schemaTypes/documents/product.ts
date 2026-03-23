@@ -13,6 +13,12 @@ export const product = defineType({
   icon: Package,
   fields: [
     defineField({
+      name: "language",
+      type: "string",
+      readOnly: true,
+      hidden: true,
+    }),
+    defineField({
       name: "title",
       title: "Product Title",
       type: "string",
