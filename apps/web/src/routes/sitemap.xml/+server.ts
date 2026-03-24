@@ -18,7 +18,8 @@ const sitemapQuery = `{
     "slug": slug.current,
     language,
     _updatedAt
-  }
+  },
+  "enableEnglish": *[_type == "settings" && language == "fr"][0].enableEnglish
 }`;
 
 function buildUrl(path: string, lang: string): string {
@@ -36,17 +37,26 @@ interface SitemapUrl {
 
 export const GET: RequestHandler = async () => {
   const data = await client.fetch(sitemapQuery);
+  const enableEnglish = data.enableEnglish ?? false;
 
   // Group by content path to avoid duplicates per language
   const urlMap = new Map<string, SitemapUrl>();
 
   const addEntry = (path: string, lang: string, updatedAt?: string) => {
+    // Skip EN entries entirely when English is disabled
+    if (lang === 'en' && !enableEnglish) return;
+
     const existing = urlMap.get(path);
-    const alternates = [
-      { lang: 'fr', href: buildUrl(path, 'fr') },
-      { lang: 'en', href: buildUrl(path, 'en') },
-      { lang: 'x-default', href: buildUrl(path, 'fr') },
-    ];
+
+    const alternates = enableEnglish
+      ? [
+          { lang: 'fr', href: buildUrl(path, 'fr') },
+          { lang: 'en', href: buildUrl(path, 'en') },
+          { lang: 'x-default', href: buildUrl(path, 'fr') },
+        ]
+      : [
+          { lang: 'x-default', href: buildUrl(path, 'fr') },
+        ];
 
     if (!existing) {
       urlMap.set(path, {
