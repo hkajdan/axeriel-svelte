@@ -278,8 +278,11 @@ export const settingsQuery = defineQuery(`*[_type == "settings" && language == $
   logoWhite,
   contactEmail,
   socialLinks,
-  floatingButton
+  floatingButton,
+  enableEnglish
 }`)
+
+export const enableEnglishQuery = defineQuery(`*[_type == "settings" && language == "fr"][0].enableEnglish`)
 
 export const authorQuery = defineQuery(`*[_type == "author" && _id == $authorId][0]{
   name,

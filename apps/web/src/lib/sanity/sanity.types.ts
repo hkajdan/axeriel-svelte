@@ -556,6 +556,7 @@ export type Navbar = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  language?: string;
   label?: string;
   columns?: Array<{
     title?: string;
@@ -614,6 +615,7 @@ export type Footer = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  language?: string;
   label?: string;
   subtitle?: string;
   download?: {
@@ -666,6 +668,8 @@ export type Settings = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  language?: string;
+  enableEnglish?: boolean;
   label?: string;
   siteTitle?: string;
   siteDescription?: string;
@@ -719,6 +723,7 @@ export type BlogIndex = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  language?: string;
   title?: string;
   description?: string;
   slug?: Slug;
@@ -745,6 +750,7 @@ export type Blog = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  language?: string;
   orderRank?: string;
   title?: string;
   description?: string;
@@ -776,6 +782,7 @@ export type Product = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  language?: string;
   title?: string;
   richText?: RichText;
   images?: Array<{
@@ -799,6 +806,7 @@ export type Offer = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  language?: string;
   title?: string;
   slug?: Slug;
   image?: {
@@ -820,6 +828,7 @@ export type Page = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  language?: string;
   title?: string;
   description?: string;
   slug?: Slug;
@@ -846,6 +855,7 @@ export type HomePage = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  language?: string;
   title?: string;
   description?: string;
   slug?: Slug;
@@ -4295,7 +4305,7 @@ export type FooterQueryResult = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: settingsQuery
-// Query: *[_type == "settings" && language == $lang][0]{  siteTitle,  siteDescription,  logo,  logoWhite,  contactEmail,  socialLinks,  floatingButton}
+// Query: *[_type == "settings" && language == $lang][0]{  siteTitle,  siteDescription,  logo,  logoWhite,  contactEmail,  socialLinks,  floatingButton,  enableEnglish}
 export type SettingsQueryResult = {
   siteTitle: string | null;
   siteDescription: string | null;
@@ -4334,7 +4344,13 @@ export type SettingsQueryResult = {
     tooltip?: string;
     position?: "bottom-left" | "bottom-right";
   } | null;
+  enableEnglish: boolean | null;
 } | null;
+
+// Source: ../web/src/lib/sanity/queries.ts
+// Variable: enableEnglishQuery
+// Query: *[_type == "settings" && language == "fr"][0].enableEnglish
+export type EnableEnglishQueryResult = boolean | null;
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: authorQuery
@@ -4462,6 +4478,13 @@ export type OfferBySlugQueryResult = {
 } | null;
 
 // Source: ../web/src/lib/sanity/queries.ts
+// Variable: jobOffersParentPageQuery
+// Query: *[_type == "page" && language == $lang && defined(pageBuilder) && count(pageBuilder[_type == "jobOffers"]) > 0][0]{  slug}
+export type JobOffersParentPageQueryResult = {
+  slug: Slug | null;
+} | null;
+
+// Source: ../web/src/lib/sanity/queries.ts
 // Variable: uiStringsQuery
 // Query: *[_type == "uiStrings" && language == $lang][0]{  allOffers,  applyByEmail,  applicationSubject,  learnMore,  noJobOffers,  noJobOffersDescription,  ourExpert,  contact,  allRightsReserved,  toggleMenu,  closeMenu}
 export type UiStringsQueryResult = {
@@ -4487,11 +4510,13 @@ declare module "@sanity/client" {
     "*[_type == \"homePage\" && language == $lang][0]{\n  title,\n  slug,\n  \n  seoTitle,\n  seoDescription,\n  seoImage,\n  seoNoIndex,\n  ogTitle,\n  ogDescription\n,\n  pageBuilder[]{\n    _type,\n    _key,\n    _type == \"hero\" => {\n      \"type\": \"hero\",\n      ...,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  },\n      video {\n        asset-> {\n          playbackId\n        }\n      },\n      buttons[]{\n    ...,\n    url{\n      ...,\n      internal->{\n        slug,\n        _type\n      }\n    }\n  }\n    },\n    _type == \"cta\" => {\n      \"type\": \"cta\",\n      ...@,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  },\n      buttons[]{\n    ...,\n    url{\n      ...,\n      internal->{\n        slug,\n        _type\n      }\n    }\n  }\n    },\n    _type == \"featureCardsIcon\" => {\n      \"type\": \"featureCardsIcon\",\n      ...@,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  }\n    },\n    _type == \"productList\" => {\n      \"type\": \"productList\",\n      ...@,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  },\n      products[]{\n        _ref,\n        _key,\n        \"productData\": @->{\n          _id,\n          title,\n          richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  },\n          images\n        }\n      }\n    },\n    _type == \"imageLinkCards\" => {\n      \"type\": \"imageLinkCards\",\n      ...@,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  },\n      buttons[]{\n    ...,\n    url{\n      ...,\n      internal->{\n        slug,\n        _type\n      }\n    }\n  },\n      cards[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"subscribeNewsletter\" => {\n      \"type\": \"subscribeNewsletter\",\n      ...@,\n      subTitle[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  }\n    },\n    _type == \"statList\" => {\n      \"type\": \"statList\",\n      ...@,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  }\n    },\n    _type == \"logoList\" => {\n      \"type\": \"logoList\",\n      ...@,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  },\n      logos[]{\n        ...,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        }\n      }\n    },\n    _type == \"timeline\" => {\n      \"type\": \"timeline\",\n      ...@,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  }\n    },\n    _type == \"textImage\" => {\n      \"type\": \"textImage\",\n      ...@,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  }\n    },\n    _type == \"carousel\" => {\n      \"type\": \"carousel\",\n      ...@,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  }\n    },\n    _type == \"jobOffers\" => {\n      \"type\": \"jobOffers\",\n      ...,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  },\n      \"offers\": offers[]->{\n        _id,\n        title,\n        \"slug\": slug.current,\n        image,\n        summary,\n        profile,\n        type\n      }\n    },\n    _type == \"videoSection\" => {\n      \"type\": \"videoSection\",\n      ...,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  },\n      video {\n        asset-> {\n          playbackId\n        }\n      }\n    },\n    _type == \"histogram\" => {\n      \"type\": \"histogram\",\n      ...@,\n      richText[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  }\n    }\n  }\n}": HomePageQueryResult;
     "*[_type == \"navbar\" && language == $lang][0]{\n  label,\n  columns[]{\n    _type,\n    _key,\n    _type == \"navbarColumn\" => {\n      \"type\": \"navbarColumn\",\n      title,\n      links[]{\n        name,\n        url{\n          ...,\n          internal->{\n            slug,\n            _type\n          }\n        },\n        image\n      }\n    },\n    _type == \"navbarLink\" => {\n      \"type\": \"navbarLink\",\n      name,\n      url{\n        ...,\n        internal->{\n          slug,\n          _type\n        }\n      }\n    }\n  },\n  buttons[]{\n    ...,\n    url{\n      ...,\n      internal->{\n        slug,\n        _type\n      }\n    }\n  }\n}": NavbarQueryResult;
     "*[_type == \"footer\" && language == $lang][0]{\n  label,\n  subtitle,\n  download,\n  logo,\n  columns[]{\n    title,\n    links[]{\n      name,\n      url{\n        ...,\n        internal->{\n          slug,\n          _type\n        }\n      }\n    }\n  },\n  contact,\n  contactAuthor->{\n    name,\n    position,\n    email,\n    phone,\n    image,\n    bio\n  },\n  location{\n    title,\n    address,\n    city,\n    phone,\n    lat,\n    lng\n  }\n}": FooterQueryResult;
-    "*[_type == \"settings\" && language == $lang][0]{\n  siteTitle,\n  siteDescription,\n  logo,\n  logoWhite,\n  contactEmail,\n  socialLinks,\n  floatingButton\n}": SettingsQueryResult;
+    "*[_type == \"settings\" && language == $lang][0]{\n  siteTitle,\n  siteDescription,\n  logo,\n  logoWhite,\n  contactEmail,\n  socialLinks,\n  floatingButton,\n  enableEnglish\n}": SettingsQueryResult;
+    "*[_type == \"settings\" && language == \"fr\"][0].enableEnglish": EnableEnglishQueryResult;
     "*[_type == \"author\" && _id == $authorId][0]{\n  name,\n  position,\n  email,\n  phone,\n  image,\n  bio\n}": AuthorQueryResult;
     "*[_type == \"page\" && slug.current == $slug && language == $lang][0].author->{\n  name,\n  position,\n  email,\n  phone,\n  image,\n  bio\n}": PageAuthorBySlugQueryResult;
     "*[_type == \"homePage\" && language == $lang][0].author->{\n  name,\n  position,\n  email,\n  phone,\n  image,\n  bio\n}": HomePageAuthorQueryResult;
     "*[_type == \"offer\" && slug.current == $slug && language == $lang][0]{\n  _id,\n  title,\n  \"slug\": slug.current,\n  image,\n  summary,\n  description[]{\n    ...,\n    markDefs[]{\n      ...,\n      _type == \"customLink\" => {\n        ...,\n        customLink{\n          ...,\n          internal->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  },\n  profile,\n  type\n}": OfferBySlugQueryResult;
+    "*[_type == \"page\" && language == $lang && defined(pageBuilder) && count(pageBuilder[_type == \"jobOffers\"]) > 0][0]{\n  slug\n}": JobOffersParentPageQueryResult;
     "*[_type == \"uiStrings\" && language == $lang][0]{\n  allOffers,\n  applyByEmail,\n  applicationSubject,\n  learnMore,\n  noJobOffers,\n  noJobOffersDescription,\n  ourExpert,\n  contact,\n  allRightsReserved,\n  toggleMenu,\n  closeMenu\n}": UiStringsQueryResult;
   }
 }
