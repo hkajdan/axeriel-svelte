@@ -54,10 +54,17 @@ type CreateList = {
 
 const createList = ({ S, type, icon, title, id }: CreateList) => {
   const newTitle = title ?? getTitleCase(type);
-  return S.documentTypeListItem(type)
+  return S.listItem()
     .id(id ?? type)
     .title(newTitle)
-    .icon(icon ?? File);
+    .icon(icon ?? File)
+    .child(
+      S.documentList()
+        .title(newTitle)
+        .schemaType(type)
+        .filter('_type == $type && (!defined(language) || language == "fr")')
+        .params({ type })
+    );
 };
 
 type CreateIndexList = {
@@ -97,6 +104,7 @@ const createIndexListWithOrderableItems = ({
             context,
             icon: list.icon ?? File,
             title: `${listTitle}`,
+            filter: '!defined(language) || language == "fr"',
           }),
         ]),
     );
