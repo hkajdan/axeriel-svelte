@@ -55,6 +55,14 @@ export const settings = defineType({
       hidden: true,
     }),
     defineField({
+      name: "enableEnglish",
+      type: "boolean",
+      title: "Activer la version anglaise",
+      description:
+        "Active le switcher de langue dans la navbar et rend les pages EN accessibles au public",
+      initialValue: false,
+    }),
+    defineField({
       name: "label",
       type: "string",
       initialValue: "Settings",
