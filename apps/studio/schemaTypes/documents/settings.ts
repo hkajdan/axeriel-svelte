@@ -61,6 +61,7 @@ export const settings = defineType({
       description:
         "Active le switcher de langue dans la navbar et rend les pages EN accessibles au public",
       initialValue: false,
+      hidden: ({ document }) => document?.language !== "fr",
     }),
     defineField({
       name: "label",
