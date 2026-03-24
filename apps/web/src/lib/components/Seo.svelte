@@ -44,19 +44,11 @@
     pathname
   );
 
-  const enableEnglish = $derived($page.data.enableEnglish ?? false);
-
-  const hreflangs = $derived(
-    enableEnglish
-      ? [
-          { lang: 'fr', href: `${siteUrl}${basePath}` },
-          { lang: 'en', href: `${siteUrl}/en${basePath === '/' ? '' : basePath}` },
-          { lang: 'x-default', href: `${siteUrl}${basePath}` },
-        ]
-      : [
-          { lang: 'x-default', href: `${siteUrl}${basePath}` },
-        ]
-  );
+  const hreflangs = $derived([
+    { lang: 'fr', href: `${siteUrl}${basePath}` },
+    { lang: 'en', href: `${siteUrl}/en${basePath === '/' ? '' : basePath}` },
+    { lang: 'x-default', href: `${siteUrl}${basePath}` },
+  ]);
 
   // Resolve OG image URL
   const ogImageUrl = $derived(
@@ -71,7 +63,7 @@
 
   // Locale for og:locale
   const ogLocale = $derived(lang === 'en' ? 'en_US' : 'fr_FR');
-  const ogLocaleAlternate = $derived(enableEnglish ? (lang === 'en' ? 'fr_FR' : 'en_US') : null);
+  const ogLocaleAlternate = $derived(lang === 'en' ? 'fr_FR' : 'en_US');
 
   // BreadcrumbList JSON-LD from URL segments
   const breadcrumbJsonLd = $derived(() => {
@@ -151,9 +143,7 @@
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:type" content={type} />
   <meta property="og:locale" content={ogLocale} />
-  {#if ogLocaleAlternate}
-    <meta property="og:locale:alternate" content={ogLocaleAlternate} />
-  {/if}
+  <meta property="og:locale:alternate" content={ogLocaleAlternate} />
   {#if siteName}
     <meta property="og:site_name" content={siteName} />
   {/if}
