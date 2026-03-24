@@ -74,12 +74,21 @@ const pageBuilderProjection = `pageBuilder[]{
       products[]{
         _ref,
         _key,
-        "productData": @->{
-          _id,
-          title,
-          ${richTextProjection},
-          images
-        }
+        "productData": coalesce(
+          *[_type == "translation.metadata" && references(^._ref)][0]
+            .translations[_key == $lang][0].value->{
+              _id,
+              title,
+              ${richTextProjection},
+              images
+            },
+          @->{
+            _id,
+            title,
+            ${richTextProjection},
+            images
+          }
+        )
       }
     },
     _type == "imageLinkCards" => {
