@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Button } from '$lib/sanity/sanity.types'
   import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links'
+  import { page } from '$app/stores'
 
   interface Props {
     buttons?: Button[];
@@ -8,6 +9,7 @@
   }
 
   let { buttons = [], justify = 'center' }: Props = $props();
+  const lang = $derived($page.data.lang ?? 'fr');
 
   function getButtonClasses(variant: Button['variant']) {
     switch (variant) {
@@ -32,7 +34,7 @@
   <div class="flex flex-wrap gap-4 {justifyClass}">
     {#each buttons as button (button._key)}
       <a
-        href={resolveSanityUrl(button.url)}
+        href={resolveSanityUrl(button.url, lang)}
         target={getLinkTarget(button.url)}
         rel={getLinkRel(button.url)}
         class={getButtonClasses(button.variant)}

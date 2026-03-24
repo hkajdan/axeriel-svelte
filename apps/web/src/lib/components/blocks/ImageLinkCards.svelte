@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { ImageLinkCards } from '$lib/sanity/sanity.types';
   import { resolveSanityUrl, getLinkTarget, getLinkRel } from '$lib/sanity/links';
+  import { page } from '$app/stores';
   import { getSectionClasses, getTextColorClass } from '$lib/utils/background-colors';
   import { SECTION_HEADER_SPACING } from '$lib/utils/section-spacing';
   import RichText from '$lib/components/PortableText.svelte';
@@ -16,6 +17,7 @@
   }
 
   let { eyebrow, title, richText, cards, backgroundColor, anchor }: Props = $props();
+  const lang = $derived($page.data.lang ?? 'fr');
 
   const sectionClasses = $derived(getSectionClasses(backgroundColor || '', { hasTitle: Boolean(title) }));
   const textColorClass = $derived(getTextColorClass(backgroundColor || ''));
@@ -55,7 +57,7 @@
         <div class="grid w-full grid-cols-1 gap-4 lg:gap-1 sm:grid-cols-2 {getGridCols(cards.length)}">
           {#each cards as card, idx}
             <a
-              href={resolveSanityUrl(card.url)}
+              href={resolveSanityUrl(card.url, lang)}
               target={getLinkTarget(card.url)}
               rel={getLinkRel(card.url)}
               class="rounded-3xl p-4 md:p-8 transition-all duration-300 relative overflow-hidden group flex flex-col justify-end h-[300px] sm:h-[350px] xl:h-[400px] hover:shadow-lg bg-neutral-200 {getCardRounding(idx, cards.length)}"
