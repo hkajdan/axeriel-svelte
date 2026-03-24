@@ -13,6 +13,15 @@
 
   const uiStrings = $derived($pageStore.data.uiStrings);
   const lang = $derived($pageStore.data.lang ?? 'fr');
+  const enableEnglish = $derived($pageStore.data.enableEnglish ?? false);
+  const alternateLang = $derived(lang === 'fr' ? 'en' : 'fr');
+  const alternateUrl = $derived.by(() => {
+    const path = $pageStore.url.pathname;
+    if (lang === 'en') {
+      return path.replace(/^\/en\/?/, '/') || '/';
+    }
+    return path === '/' ? '/en' : `/en${path}`;
+  });
 
   // State for mobile menu
   let isMenuOpen = $state(false);
@@ -217,6 +226,18 @@
             </li>
           {/if}
         {/each}
+
+        {#if enableEnglish}
+          <li>
+            <a
+              href={alternateUrl}
+              class="block py-4 px-4 text-gray-800 hover:bg-gray-100 rounded-md transition-colors duration-200 font-medium uppercase"
+              onclick={toggleMenu}
+            >
+              {alternateLang.toUpperCase()}
+            </a>
+          </li>
+        {/if}
 
         <!-- Contact button -->
         <li class="mt-8">
