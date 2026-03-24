@@ -46,7 +46,7 @@
         <div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {#each offers as offer}
             <a
-              href={localePath('/career/' + (offer.slug ?? offer._id), lang)}
+              href={localePath('/offers/' + (offer.slug ?? offer._id), lang)}
               class="group block rounded-2xl border border-neutral-200/50 bg-white p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
             >
               {#if offer.image?.asset}

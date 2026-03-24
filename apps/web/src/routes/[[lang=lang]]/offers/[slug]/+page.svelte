@@ -40,7 +40,7 @@
       '@type': 'Organization',
       name: data.settings?.siteTitle || 'Axeriel',
     },
-    url: `${siteUrl}${localePath(`/career/${offer.slug}`, lang as 'fr' | 'en')}`,
+    url: `${siteUrl}${localePath(`/offers/${offer.slug}`, lang as 'fr' | 'en')}`,
   } : null);
 </script>
 
@@ -63,7 +63,7 @@
 
     <!-- Back link -->
     <a
-      href={localePath('/career', lang)}
+      href={data.parentPageSlug ? localePath(`/${data.parentPageSlug.replace(/^\//, '')}`, lang) : localePath('/', lang)}
       class="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-primary-500 transition-colors duration-200 mb-8 md:mb-12"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>

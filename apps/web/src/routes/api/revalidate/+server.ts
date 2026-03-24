@@ -32,10 +32,8 @@ export const POST: RequestHandler = async ({ request, url }) => {
     addPath(`/${cleanSlug}`);
   } else if (_type === 'offer') {
     if (slug?.current) {
-      addPath(`/career/${slug.current}`);
+      addPath(`/offers/${slug.current}`);
     }
-    // Also revalidate the career listing page
-    addPath('/career');
   } else if (_type === 'uiStrings') {
     // UI strings affect all pages — revalidate home at minimum
     addPath('/');

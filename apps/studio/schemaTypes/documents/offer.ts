@@ -81,21 +81,13 @@ export const offer = defineType({
   preview: {
     select: {
       title: "title",
-      description: "description",
+      summary: "summary",
       media: "image",
     },
-    prepare: ({ title, description, media }) => {
-      // Create a playful subtitle with emojis
-      const positionInfo = title ? `💼 ${title}` : "Mystery offer";
-      const bioPreview = description
-        ? `📝 ${description.substring(0, 20)}${description.length > 20 ? "..." : ""}`
-        : "📝 No description yet";
-
-      return {
-        title: `✍️ ${title || "Unnamed Offer"}`,
-        subtitle: `${positionInfo} | ${bioPreview}`,
-        media,
-      };
-    },
+    prepare: ({ title, summary, media }) => ({
+      title: title || "Unnamed Offer",
+      subtitle: summary || "No summary yet",
+      media,
+    }),
   },
 });

@@ -4,7 +4,7 @@
   import NavbarComponent from '$lib/components/layout/Navbar.svelte'
   import FooterComponent from '$lib/components/layout/Footer.svelte'
   import type { Author } from '$lib/sanity/sanity.types'
-  import { onNavigate } from '$app/navigation'
+  import { onNavigate, afterNavigate } from '$app/navigation'
   import { PUBLIC_SITE_URL } from '$env/static/public'
   import { urlForImage } from '$lib/sanity/image'
 
@@ -29,6 +29,24 @@
       ].filter(Boolean)
     } : {}),
   } : null)
+
+  // Scroll to anchor after navigation — needed because lazy-loaded blocks
+  // may not be in the DOM when SvelteKit first tries to scroll
+  afterNavigate(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    const tryScroll = (attempts = 0) => {
+      const el = document.querySelector(hash);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else if (attempts < 10) {
+        requestAnimationFrame(() => tryScroll(attempts + 1));
+      }
+    };
+    // Small delay to let lazy components mount
+    requestAnimationFrame(() => tryScroll());
+  });
 
   onNavigate((navigation) => {
     if (!document.startViewTransition) return;

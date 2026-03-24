@@ -70,7 +70,7 @@ export const GET: RequestHandler = async () => {
 
   // Offers
   for (const offer of data.offers) {
-    addEntry(`/career/${offer.slug}`, offer.language, offer._updatedAt);
+    addEntry(`/offers/${offer.slug}`, offer.language, offer._updatedAt);
   }
 
   const urls = Array.from(urlMap.values());

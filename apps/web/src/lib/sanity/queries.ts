@@ -319,6 +319,10 @@ export const offerBySlugQuery = defineQuery(`*[_type == "offer" && slug.current 
   type
 }`)
 
+export const jobOffersParentPageQuery = defineQuery(`*[_type == "page" && language == $lang && defined(pageBuilder) && count(pageBuilder[_type == "jobOffers"]) > 0][0]{
+  slug
+}`)
+
 export const uiStringsQuery = defineQuery(`*[_type == "uiStrings" && language == $lang][0]{
   allOffers,
   applyByEmail,
