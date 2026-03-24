@@ -98,9 +98,11 @@
 
   // Close menu when clicking outside
   const handleClickOutside = (event: MouseEvent) => {
+    if (!isMenuOpen) return;
+
     const menu = document.getElementById('mobile-menu');
     const hamburger = document.getElementById('hamburger-button');
-    
+
     if (menu && hamburger &&
         !menu.contains(event.target as Node) &&
         !hamburger.contains(event.target as Node)) {
@@ -126,7 +128,7 @@
 <!-- Transparent navbar for mobile -->
 <nav
   class="fixed z-50 w-full top-0 left-0 right-0 transition-transform duration-300 ease-in-out"
-  style="transform: {!isVisible ? 'translateY(-100%)' : 'translateY(0)'}"
+  style="transform: {!isVisible ? 'translateY(-100%)' : 'translateY(0)'}; view-transition-name: navbar-mobile;"
 >
   <div class="flex items-center justify-between p-6 {hasHydrated ? 'transition-colors duration-300' : ''} {isScrolledPastHero && !isMenuOpen ? 'bg-white shadow-md' : isScrolledPastHero && isMenuOpen ? 'bg-white' : 'bg-transparent'}">
     <!-- Logo - Increased size, stays visible when menu open -->

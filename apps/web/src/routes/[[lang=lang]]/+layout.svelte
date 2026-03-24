@@ -52,6 +52,8 @@
     if (!document.startViewTransition) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (navigation.type === 'popstate') return;
+    // Skip view transition for same-page navigations (e.g. anchor links)
+    if (navigation.from?.url.pathname === navigation.to?.url.pathname) return;
 
     return new Promise((resolve) => {
       document.startViewTransition(async () => {

@@ -102,6 +102,13 @@
     animation: none;
   }
 
+  ::view-transition-old(navbar-desktop),
+  ::view-transition-new(navbar-desktop),
+  ::view-transition-old(navbar-mobile),
+  ::view-transition-new(navbar-mobile) {
+    animation: none;
+  }
+
   ::view-transition-old(main-content) {
     animation: 150ms ease both page-out;
   }

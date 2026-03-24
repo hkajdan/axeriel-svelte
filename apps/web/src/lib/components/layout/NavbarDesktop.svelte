@@ -45,8 +45,8 @@
   });
 </script>
 
-<nav class="fixed z-50 bg-white rounded-xl mx-auto max-w-7xl shadow-sm transition-transform duration-300 ease-in-out left-0 right-0 top-10" 
-     style="transform: {isVisible ? 'translateY(0)' : 'translateY(-250%)'}">
+<nav class="fixed z-50 bg-white rounded-xl mx-auto max-w-7xl shadow-sm transition-transform duration-300 ease-in-out left-0 right-0 top-10"
+     style="transform: {isVisible ? 'translateY(0)' : 'translateY(-250%)'}; view-transition-name: navbar-desktop;">
   <div class="relative flex items-center pl-6 justify-between">
     <!-- Logo -->
     <div class="flex z-50">
