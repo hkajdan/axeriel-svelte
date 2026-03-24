@@ -11,6 +11,15 @@
   }>();
 
   const lang = $derived($pageStore.data.lang ?? 'fr');
+  const enableEnglish = $derived($pageStore.data.enableEnglish ?? false);
+  const alternateLang = $derived(lang === 'fr' ? 'en' : 'fr');
+  const alternateUrl = $derived.by(() => {
+    const path = $pageStore.url.pathname;
+    if (lang === 'en') {
+      return path.replace(/^\/en\/?/, '/') || '/';
+    }
+    return path === '/' ? '/en' : `/en${path}`;
+  });
 
   let isVisible = $state(true);
   let lastScrollPosition = $state(0);
@@ -119,9 +128,20 @@
         </li>
       {/each}
       
+      {#if enableEnglish}
+        <li class="flex items-center h-full">
+          <a
+            href={alternateUrl}
+            class="px-3 text-sm font-medium text-neutral-600 hover:text-primary-500 transition-colors uppercase"
+          >
+            {alternateLang.toUpperCase()}
+          </a>
+        </li>
+      {/if}
+
       <li class="flex items-center h-full">
-        <a 
-          href="#contact" 
+        <a
+          href="#contact"
           class="px-4 py-6 bg-primary-500 text-white"
           aria-label="Contact"
         >
