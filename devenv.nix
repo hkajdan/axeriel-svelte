@@ -10,4 +10,9 @@
   enterShell = ''
     echo "node $(node --version) | pnpm $(pnpm --version)"
   '';
+
+  processes = {
+    web.exec = "pnpm --filter web dev";
+    studio.exec = "pnpm --filter studio dev";
+  };
 }
