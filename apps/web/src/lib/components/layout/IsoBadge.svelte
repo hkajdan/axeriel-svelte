@@ -10,11 +10,11 @@
 
 <!-- ISO 19443 badge — slides out with the navbar on scroll -->
 <a
-  href={localePath('/certifications', lang)}
-  class="fixed z-50 flex flex-col items-center justify-center rounded-full bg-linear-to-b from-red-500 to-red-600 text-white leading-none shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 {className}"
+  href={localePath('/certifications#certifications', lang)}
+  class="fixed z-50 flex flex-col items-center justify-center rounded-full bg-linear-to-b from-primary-500 to-primary-600 text-white leading-none shadow-md ring-1 ring-primary-700/20 transition-transform duration-300 ease-in-out hover:from-primary-600 hover:to-primary-700 {className}"
   style="transform: {visible ? 'translateY(0)' : 'translateY(250%)'};"
   aria-label="Certification ISO 19443"
 >
-  <span class="text-[1.25em] font-light">ISO</span>
-  <span class="text-[1.5em] font-bold">19443</span>
+  <span class="text-[0.85em] font-medium tracking-widest uppercase">ISO</span>
+  <span class="text-[1.35em] font-bold tracking-tight">19443</span>
 </a>
