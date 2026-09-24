@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/stats/:match*",
-      "destination": "https://umami-axeriel.vercel.app/:match*"
+      "destination": "https://umami-red-psi.vercel.app/:match*"
     }
   ]
 }
