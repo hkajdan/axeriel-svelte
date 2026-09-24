@@ -7,6 +7,10 @@
   import { onNavigate, afterNavigate } from '$app/navigation'
   import { PUBLIC_SITE_URL } from '$env/static/public'
   import { urlForImage } from '$lib/sanity/image'
+  import { injectAnalytics } from '@vercel/analytics/sveltekit'
+  import { dev } from '$app/environment'
+
+  injectAnalytics({ mode: dev ? 'development' : 'production' })
 
   const {data, children}: LayoutProps = $props()
   const navbar = $derived(data.navbar)
