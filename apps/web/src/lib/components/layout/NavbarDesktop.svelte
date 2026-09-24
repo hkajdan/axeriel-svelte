@@ -171,3 +171,13 @@
   </div>
 </nav>
 
+<!-- ISO 19443 badge — follows the navbar show/hide on scroll -->
+<a
+  href={localePath('/certifications', lang)}
+  class="fixed bottom-8 right-8 z-50 flex flex-col items-center justify-center size-24 rounded-full bg-linear-to-b from-red-500 to-red-600 text-white leading-none shadow-lg transition-transform duration-300 ease-in-out hover:scale-105"
+  style="transform: {isVisible ? 'translateY(0)' : 'translateY(250%)'};"
+  aria-label="Certification ISO 19443"
+>
+  <span class="text-xl font-light">ISO</span>
+  <span class="text-2xl font-bold">19443</span>
+</a>
