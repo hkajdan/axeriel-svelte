@@ -5,6 +5,7 @@
   import { slide } from 'svelte/transition';
   import { page as pageStore } from '$app/stores';
   import { localePath } from '$lib/utils/i18n';
+  import IsoBadge from './IsoBadge.svelte';
 
   let props = $props<{
     settings: Settings;
@@ -175,6 +176,8 @@
   </div>
 
 </nav>
+
+<IsoBadge visible={isVisible && !isMenuOpen} {lang} class="bottom-4 right-4 size-20 text-sm" />
 
 <!-- Mobile menu panel — toujours dans le DOM, déplacé hors écran via translateX(100%) -->
 <div

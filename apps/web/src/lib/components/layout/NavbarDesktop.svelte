@@ -4,6 +4,7 @@
   import { resolveSanityUrl } from '$lib/sanity/links';
   import { page as pageStore } from '$app/stores';
   import { localePath } from '$lib/utils/i18n';
+  import IsoBadge from './IsoBadge.svelte';
 
   let props = $props<{
     settings: Settings;
@@ -171,3 +172,5 @@
   </div>
 </nav>
 
+
+<IsoBadge visible={isVisible} {lang} class="bottom-8 right-8 size-24 text-base" />
