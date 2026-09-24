@@ -7,10 +7,7 @@
   import { onNavigate, afterNavigate } from '$app/navigation'
   import { PUBLIC_SITE_URL } from '$env/static/public'
   import { urlForImage } from '$lib/sanity/image'
-  import { injectAnalytics } from '@vercel/analytics/sveltekit'
-  import { dev } from '$app/environment'
-
-  injectAnalytics({ mode: dev ? 'development' : 'production' })
+  import { PUBLIC_UMAMI_WEBSITE_ID } from '$env/static/public'
 
   const {data, children}: LayoutProps = $props()
   const navbar = $derived(data.navbar)
@@ -72,6 +69,9 @@
 <svelte:head>
   {#if orgJsonLd}
     {@html `<script type="application/ld+json">${JSON.stringify(orgJsonLd)}</script>`}
+  {/if}
+  {#if PUBLIC_UMAMI_WEBSITE_ID}
+    <script defer src="/stats/script.js" data-website-id={PUBLIC_UMAMI_WEBSITE_ID}></script>
   {/if}
 </svelte:head>
 
